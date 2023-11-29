@@ -6,7 +6,7 @@ https://cva6.readthedocs.io/en/latest/
 
 Checkout the repository and initialize all submodules:
 ```
-$ git clone https://github.com/ThalesGroup/cva6-softcore-contest.git
+$ git clone git@github.com:adrienpelle/cva6-softcore-contest-Breizh.git
 $ git submodule update --init --recursive
 ```
 
