@@ -563,7 +563,12 @@ package ariane_pkg;
     ACCEL_OP_STORE,
     // Zicond instruction
     CZERO_EQZ,
-    CZERO_NEZ
+    CZERO_NEZ,
+    // Packed SIMD instructions
+    ADD16,
+    SUB16,
+    ADD8,
+    SUB8
   } fu_op;
 
   typedef struct packed {
