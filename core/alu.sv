@@ -126,13 +126,14 @@ module alu
   logic simd_adder_op_b_negate;
   logic simd_adder_z_flag;
   logic vsize; //Size of the vector : for 16 bits vsize = 1, for 8bit vsize =0
+  logic sext; //Sign extension : sext = 1, Zero extension : sext = 0
   logic [8:0] adder_in_a0, adder_in_a1, adder_in_a2, adder_in_a3, adder_in_b0,adder_in_b1, adder_in_b2,adder_in_b3;
-  logic [riscv::XLEN-1:0] simd_adder_result;
+  logic [riscv::XLEN-1:0] simd_adder_result, result;
   logic [riscv::XLEN-1:0] simd_operand_a_bitmanip, simd_bit_indx;
   logic [8:0] add0, add1, add2, add3;
   logic c_out0, c_out1, c_out2, c_out3;
 
-
+  // Select SIMD Vector size (8 or 16 bits)
   always_comb begin
     vsize = 1'b1;
 
@@ -140,6 +141,18 @@ module alu
       // VECTOR SIZE 
       ADD8, SUB8: vsize = 1'b0;//8 bits 
       ADD16, SUB16: vsize = 1'b1;//16 bits 
+      default: ;
+    endcase
+  end
+  
+  // Select between sign extension and zero extension 
+  always_comb begin
+    sext = 1'b0;
+
+    unique case (fu_data_i.operation)
+      // VECTOR SIZE 
+      ADD8, SUB8, ADD16, SUB16, URADD8, URSUB8, URADD16, URSUB16 : sext = 1'b0;//Zero extend 
+      RADD8, RSUB8, RADD16, RSUB16 : sext = 1'b1;//Sign extend 
       default: ;
     endcase
   end
@@ -173,17 +186,19 @@ module alu
     end
   end
 
-  // prepare operand a : a0 = a[7:0], a1 = a[15:8], a2 = a[23:16], a3 = a[31:24]
-  assign adder_in_a0         = {1'b0,simd_operand_a_bitmanip[7:0]};
-  assign adder_in_a1         = {1'b0,simd_operand_a_bitmanip[15:8]};
-  assign adder_in_a2         = {1'b0,simd_operand_a_bitmanip[23:16]};
-  assign adder_in_a3         = {1'b0,simd_operand_a_bitmanip[31:24]};
+  // Prepare operand a : a0 = a[7:0], a1 = a[15:8], a2 = a[23:16], a3 = a[31:24] 
+  // Perform zero extension or sign extension depending on the instruction 
+  assign adder_in_a0         = {simd_operand_a_bitmanip[7]  && sext && ~vsize ,simd_operand_a_bitmanip[7:0]};
+  assign adder_in_a1         = {simd_operand_a_bitmanip[15] && sext           ,simd_operand_a_bitmanip[15:8]};
+  assign adder_in_a2         = {simd_operand_a_bitmanip[23] && sext && ~vsize ,simd_operand_a_bitmanip[23:16]};
+  assign adder_in_a3         = {simd_operand_a_bitmanip[31] && sext           ,simd_operand_a_bitmanip[31:24]};
 
-  // prepare operand b : b0 = b[7:0], b1 = b[15:8], b2 = b[23:16], b3 = b[31:24]  
-  assign adder_in_b0         = {1'b0,fu_data_i.operand_b[7:0]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
-  assign adder_in_b1         = {1'b0,fu_data_i.operand_b[15:8]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
-  assign adder_in_b2         = {1'b0,fu_data_i.operand_b[23:16]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
-  assign adder_in_b3         = {1'b0,fu_data_i.operand_b[31:24]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
+  // prepare operand b : b0 = b[7:0], b1 = b[15:8], b2 = b[23:16], b3 = b[31:24] 
+  // Perform zero extension or sign extension depending on the instruction  
+  assign adder_in_b0         = {fu_data_i.operand_b[7]  && sext && ~vsize ,fu_data_i.operand_b[7:0]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b1         = {fu_data_i.operand_b[15] && sext           ,fu_data_i.operand_b[15:8]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b2         = {fu_data_i.operand_b[23] && sext && ~vsize ,fu_data_i.operand_b[23:16]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b3         = {fu_data_i.operand_b[31] && sext           ,fu_data_i.operand_b[31:24]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
 
 
   // actual adder
@@ -204,7 +219,18 @@ module alu
   assign c_out3 = add3[8];
   
   //adder result 
-  assign simd_adder_result       = {add3[7:0], add2[7:0], add1[7:0], add0[7:0]};
+  always_comb begin
+  result = {add3[7:0], add2[7:0], add1[7:0], add0[7:0]};
+  
+  unique case (fu_data_i.operation)        
+       ADD8, SUB8, ADD16, SUB16 : result = {add3[7:0], add2[7:0], add1[7:0], add0[7:0]}; //No halving operation  
+       RADD8, RSUB8, URADD8, URSUB8 : result = {add3[8:1], add2[8:1], add1[8:1], add0[8:1]}; //Halving 8 bits
+       RADD16, RSUB16, URADD16, URSUB16 : result = {add3[8:0], add2[7:1], add1[8:0], add0[7:1]}; //Halving 16 bits
+       default:            ;
+     endcase
+  end
+  
+  assign simd_adder_result       = result;
   assign simd_adder_z_flag       = ~|simd_adder_result;
 
 
@@ -351,7 +377,7 @@ module alu
       SLTS, SLTU: result_o = {{riscv::XLEN - 1{1'b0}}, less};
       
       // SIMD Adder Operations
-      ADD16,SUB16,ADD8,SUB8:
+      ADD16,SUB16,ADD8,SUB8, RADD8, RSUB8, RADD16, RSUB16, URADD8, URSUB8, URADD16, URSUB16:
       result_o = simd_adder_result;
 
       default: ;  // default case to suppress unique warning

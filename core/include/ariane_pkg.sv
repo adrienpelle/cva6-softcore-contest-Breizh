@@ -568,7 +568,15 @@ package ariane_pkg;
     ADD16,
     SUB16,
     ADD8,
-    SUB8
+    SUB8,
+    RADD8,
+    RSUB8,
+    RADD16,
+    RSUB16,
+    URADD8,
+    URSUB8,
+    URADD16,
+    URSUB16
   } fu_op;
 
   typedef struct packed {
