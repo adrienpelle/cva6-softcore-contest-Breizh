@@ -127,6 +127,7 @@ module alu
   logic simd_adder_z_flag;
   logic vsize; //Size of the vector : for 16 bits vsize = 1, for 8bit vsize =0
   logic sext; //Sign extension : sext = 1, Zero extension : sext = 0
+  logic halving; //Halving operation : halving = 1, else : halving = 0
   logic [8:0] adder_in_a0, adder_in_a1, adder_in_a2, adder_in_a3, adder_in_b0,adder_in_b1, adder_in_b2,adder_in_b3;
   logic [riscv::XLEN-1:0] simd_adder_result, result;
   logic [riscv::XLEN-1:0] simd_operand_a_bitmanip, simd_bit_indx;
@@ -139,8 +140,8 @@ module alu
 
     unique case (fu_data_i.operation)
       // VECTOR SIZE 
-      ADD8, SUB8: vsize = 1'b0;//8 bits 
-      ADD16, SUB16: vsize = 1'b1;//16 bits 
+      ADD8, SUB8, RADD8, URADD8, RSUB8, URSUB8: vsize = 1'b0;//8 bits 
+      ADD16, SUB16, RADD16, URADD16, RSUB16, URSUB16: vsize = 1'b1;//16 bits 
       default: ;
     endcase
   end
@@ -150,19 +151,30 @@ module alu
     sext = 1'b0;
 
     unique case (fu_data_i.operation)
-      // VECTOR SIZE 
+      // Extension
       ADD8, SUB8, ADD16, SUB16, URADD8, URSUB8, URADD16, URSUB16 : sext = 1'b0;//Zero extend 
       RADD8, RSUB8, RADD16, RSUB16 : sext = 1'b1;//Sign extend 
       default: ;
     endcase
-  end
+  end  
+  
+  // Halving operations
+  always_comb begin
+    halving = 1'b0;
 
+    unique case (fu_data_i.operation)
+      RADD8, RSUB8, RADD16, RSUB16, URADD16, URSUB16, URSUB8 : halving = 1'b1;//Halving operations  
+      default: ;
+    endcase
+  end
+    
+  // Negate operand B for SUB operations 
   always_comb begin
     simd_adder_op_b_negate = 1'b0;
 
     unique case (fu_data_i.operation)
       // ADDER OPS
-      SUB8, SUB16: simd_adder_op_b_negate = 1'b1;
+      SUB8, SUB16, RSUB8, RSUB16, URSUB8, URSUB16: simd_adder_op_b_negate = 1'b1;
       default: ;
     endcase
   end
@@ -188,17 +200,17 @@ module alu
 
   // Prepare operand a : a0 = a[7:0], a1 = a[15:8], a2 = a[23:16], a3 = a[31:24] 
   // Perform zero extension or sign extension depending on the instruction 
-  assign adder_in_a0         = {simd_operand_a_bitmanip[7]  && sext && ~vsize ,simd_operand_a_bitmanip[7:0]};
-  assign adder_in_a1         = {simd_operand_a_bitmanip[15] && sext           ,simd_operand_a_bitmanip[15:8]};
-  assign adder_in_a2         = {simd_operand_a_bitmanip[23] && sext && ~vsize ,simd_operand_a_bitmanip[23:16]};
-  assign adder_in_a3         = {simd_operand_a_bitmanip[31] && sext           ,simd_operand_a_bitmanip[31:24]};
+  assign adder_in_a0         = {simd_operand_a_bitmanip[7]  & sext & ~vsize ,simd_operand_a_bitmanip[7:0]};
+  assign adder_in_a1         = {simd_operand_a_bitmanip[15] & sext           ,simd_operand_a_bitmanip[15:8]};
+  assign adder_in_a2         = {simd_operand_a_bitmanip[23] & sext & ~vsize ,simd_operand_a_bitmanip[23:16]};
+  assign adder_in_a3         = {simd_operand_a_bitmanip[31] & sext           ,simd_operand_a_bitmanip[31:24]};
 
   // prepare operand b : b0 = b[7:0], b1 = b[15:8], b2 = b[23:16], b3 = b[31:24] 
   // Perform zero extension or sign extension depending on the instruction  
-  assign adder_in_b0         = {fu_data_i.operand_b[7]  && sext && ~vsize ,fu_data_i.operand_b[7:0]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
-  assign adder_in_b1         = {fu_data_i.operand_b[15] && sext           ,fu_data_i.operand_b[15:8]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
-  assign adder_in_b2         = {fu_data_i.operand_b[23] && sext && ~vsize ,fu_data_i.operand_b[23:16]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
-  assign adder_in_b3         = {fu_data_i.operand_b[31] && sext           ,fu_data_i.operand_b[31:24]} ^ {1'b0, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b0         = {fu_data_i.operand_b[7]  & sext & ~vsize ,fu_data_i.operand_b[7:0]} ^ {simd_adder_op_b_negate & halving & ~vsize, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b1         = {fu_data_i.operand_b[15] & sext           ,fu_data_i.operand_b[15:8]} ^ {simd_adder_op_b_negate & halving, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b2         = {fu_data_i.operand_b[23] & sext & ~vsize ,fu_data_i.operand_b[23:16]} ^ {simd_adder_op_b_negate & halving & ~vsize, {8{simd_adder_op_b_negate}}};
+  assign adder_in_b3         = {fu_data_i.operand_b[31] & sext           ,fu_data_i.operand_b[31:24]} ^ {simd_adder_op_b_negate & halving, {8{simd_adder_op_b_negate}}};
 
 
   // actual adder
@@ -207,15 +219,15 @@ module alu
   assign c_out0 = add0[8];
   
   //adder 1
-  assign add1 = $unsigned(adder_in_a1) + $unsigned(adder_in_b1) + {{8{0}}, simd_adder_op_b_negate | (c_out0 & vsize)};
+  assign add1 = $unsigned(adder_in_a1) + $unsigned(adder_in_b1) + {{8{0}}, (simd_adder_op_b_negate & ~vsize)  | (c_out0 & vsize)};
   assign c_out1 = add1[8];
   
   //adder 2
-  assign add2 = $unsigned(adder_in_a2) + $unsigned(adder_in_b2) + {{8{0}}, simd_adder_op_b_negate | c_out1};
+  assign add2 = $unsigned(adder_in_a2) + $unsigned(adder_in_b2) + {{8{0}}, simd_adder_op_b_negate};
   assign c_out2 = add2[8];
   
   //adder 3
-  assign add3 = $unsigned(adder_in_a3) + $unsigned(adder_in_b3) + {{8{0}}, simd_adder_op_b_negate | (c_out2 & vsize)};
+  assign add3 = $unsigned(adder_in_a3) + $unsigned(adder_in_b3) + {{8{0}}, (simd_adder_op_b_negate & ~vsize) | (c_out2 & vsize)};
   assign c_out3 = add3[8];
   
   //adder result 
