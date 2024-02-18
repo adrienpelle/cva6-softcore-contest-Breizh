@@ -565,6 +565,7 @@ package ariane_pkg;
     CZERO_EQZ,
     CZERO_NEZ,
     // Packed SIMD instructions
+    // SIMD Adder operations
     ADD16,
     SUB16,
     ADD8,
@@ -604,7 +605,38 @@ package ariane_pkg;
     RSTSA16, 
     URSTSA16, 
     KSTSA16, 
-    UKSTSA16
+    UKSTSA16,
+    // SIMD Shift operations
+    SRA16,
+    SRA16_U, //TODO
+    SRL16,
+    SRL16_U, //TODO
+    SLL16,
+    KSLL16, //TODO
+    KSLRA16,//TODO
+    KSLRA16_U,//TODO
+    SRA8,
+    SRA8_U,//TODO
+    SRL8,
+    SRL8_U,//TODO
+    SLL8,
+    KSLL8,//TODO
+    KSLRA8,//TODO
+    KSLRA8_U,//TODO
+    // SIMD Comparisons operations 
+    CMPEQ16,
+    SCMPLT16,
+    SCMPLE16,
+    UCMPLT16,
+    UCMPLE16,
+    CMPEQ8,
+    SCMPLT8,
+    SCMPLE8,
+    UCMPLT8,
+    UCMPLE8,
+    // SIMD Multiplications
+    SMUL8,
+    UMUL8
   } fu_op;
 
   typedef struct packed {
