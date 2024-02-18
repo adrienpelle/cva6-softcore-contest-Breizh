@@ -497,6 +497,86 @@ module alu
         less = ($signed({sgn & fu_data_i.operand_a[riscv::XLEN-1], fu_data_i.operand_a}) <
         $signed({sgn & fu_data_i.operand_b[riscv::XLEN-1], fu_data_i.operand_b}));
     end
+    
+    // ------------
+    // SIMD Comparisons
+    // ------------
+    logic less0_16, less1_16, eq0_16, eq1_16; // SIMD 16 bits : (opA[15:0] < opB[15:0]), (opA[31:16] < opB[31:16]), (opA[15:0] == opB[15:0]), (opA[31:16] == opB[31:16])
+    logic less0_8, less1_8,less2_8, less3_8, eq0_8, eq1_8, eq2_8, eq3_8; // SIMD 8 bits : (opA[7:0] < opB[7:0]), (opA[15:8] < opB[15:8]) ... 
+    
+    logic [15:0]   simd16_comparisons_res1, simd16_comparisons_res0; // SIMD 16 bits Comparisons results (res[31:16] and res[15:0])
+    logic [7:0]   simd8_comparisons_res3, simd8_comparisons_res2,simd8_comparisons_res1, simd8_comparisons_res0; // SIMD 8 bits Comparisons results (res[31:24], res[23:16], res[15:8], res[7:0])
+    
+    logic [31:0]   simd16_comparisons_result; // SIMD Comparisons 16 bits final result 
+    logic [31:0]   simd8_comparisons_result; // SIMD Comparisons 8 bits final result 
+    
+    always_comb begin
+        logic simd_sgn;
+        logic leq_op;
+        logic eq_op;
+        simd_sgn = 1'b0; // Signed operations
+        eq_op = 1'b0;    // Equal operation 
+        leq_op = 1'b0;   // (Less than & equal operations) and (Equal operations)
+
+        if ((fu_data_i.operation == SCMPLT16) ||
+        (fu_data_i.operation == SCMPLE16)  ||
+        (fu_data_i.operation == SCMPLT8)  ||
+        (fu_data_i.operation == SCMPLE8))
+            simd_sgn = 1'b1;
+ 
+
+        if ((fu_data_i.operation == SCMPLE8) ||
+        (fu_data_i.operation == UCMPLE8)  ||
+        (fu_data_i.operation == SCMPLE16)  ||
+        (fu_data_i.operation == UCMPLE16) ||
+        (fu_data_i.operation == CMPEQ16) ||
+        (fu_data_i.operation == CMPEQ8))
+            leq_op = 1'b1;
+            
+        if ((fu_data_i.operation == CMPEQ16) ||
+        (fu_data_i.operation == CMPEQ8))
+            eq_op = 1'b1;
+           
+        //SIMD 16 bits comparisons 
+        
+        less1_16 = ($signed({simd_sgn & fu_data_i.operand_a[31], fu_data_i.operand_a[31:16]}) <
+        $signed({simd_sgn & fu_data_i.operand_b[31], fu_data_i.operand_b[31:16]}));        
+        eq1_16 =   (fu_data_i.operand_a[31:16] == fu_data_i.operand_b[31:16]);
+        simd16_comparisons_res1 = (less1_16 & ~eq_op) | (eq1_16 & leq_op) ? 16'hffff : 0;
+             
+        less0_16 = ($signed({simd_sgn & fu_data_i.operand_a[15], fu_data_i.operand_a[15:0]}) <
+        $signed({simd_sgn & fu_data_i.operand_b[15], fu_data_i.operand_b[15:0]}));       
+        eq0_16 =   (fu_data_i.operand_a[15:0] == fu_data_i.operand_b[15:0]);
+        simd16_comparisons_res0 = (less0_16 & ~eq_op) | (eq0_16 & leq_op) ? 16'hffff : 0;
+        
+        
+        //SIMD 8 bits comparisons 
+        
+        less3_8 = ($signed({simd_sgn & fu_data_i.operand_a[31], fu_data_i.operand_a[31:24]}) <
+        $signed({simd_sgn & fu_data_i.operand_b[31], fu_data_i.operand_b[31:24]}));        
+        eq3_8 = (fu_data_i.operand_a[31:24] == fu_data_i.operand_b[31:24]);
+        simd8_comparisons_res3 = (less3_8 & ~eq_op) | (eq3_8 & leq_op) ? 8'hff : 0;
+               
+        less2_8 = ($signed({simd_sgn & fu_data_i.operand_a[23], fu_data_i.operand_a[23:16]}) <
+        $signed({simd_sgn & fu_data_i.operand_b[23], fu_data_i.operand_b[23:16]}));  
+        eq2_8 = (fu_data_i.operand_a[23:16] == fu_data_i.operand_b[23:16]);
+        simd8_comparisons_res2 = (less2_8 & ~eq_op) | (eq2_8 & leq_op) ? 8'hff : 0;
+               
+        less1_8 = ($signed({simd_sgn & fu_data_i.operand_a[15], fu_data_i.operand_a[15:8]}) <
+        $signed({simd_sgn & fu_data_i.operand_b[15], fu_data_i.operand_b[15:8]}));  
+        eq1_8 = (fu_data_i.operand_a[15:8] == fu_data_i.operand_b[15:8]);
+        simd8_comparisons_res1 = (less1_8 & ~eq_op) | (eq1_8 & leq_op) ? 8'hff : 0;
+        
+        less0_8 = ($signed({simd_sgn & fu_data_i.operand_a[7], fu_data_i.operand_a[7:0]}) <
+        $signed({simd_sgn & fu_data_i.operand_b[7], fu_data_i.operand_b[7:0]})); 
+        eq0_8 = (fu_data_i.operand_a[7:0] == fu_data_i.operand_b[7:0]);
+        simd8_comparisons_res0 = (less0_8 & ~eq_op) | (eq0_8 & leq_op) ? 8'hff : 0;
+        
+        simd16_comparisons_result = {simd16_comparisons_res1, simd16_comparisons_res0};
+        simd8_comparisons_result = {simd8_comparisons_res3, simd8_comparisons_res2, simd8_comparisons_res1, simd8_comparisons_res0};
+        
+       
+    end 
 
     if (ariane_pkg::BITMANIP) begin : gen_bitmanip
         // Count Population + Count population Word
@@ -576,6 +656,13 @@ module alu
             // SIMD 16 bits Shift Operations
             SRA16, SRA16_U, SRL16, SRL16_U, SLL16, KSLL16, KSLRA16, KSLRA16_U :
             result_o = simd_shift_result16;
+            
+            //SIMD 8 bits comparisons 
+            CMPEQ8, SCMPLT8, SCMPLE8, UCMPLT8, UCMPLE8:
+            result_o = simd8_comparisons_result;
+            //SIMD 16 bits comparisons 
+            CMPEQ16, SCMPLT16, SCMPLE16, UCMPLT16, UCMPLE16:
+            result_o = simd16_comparisons_result;
 
             default: ; // default case to suppress unique warning
         endcase

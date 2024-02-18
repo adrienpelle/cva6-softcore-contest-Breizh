@@ -622,7 +622,18 @@ package ariane_pkg;
     SLL8,
     KSLL8,//TODO
     KSLRA8,//TODO
-    KSLRA8_U//TODO
+    KSLRA8_U,//TODO
+    // SIMD Comparisons operations 
+    CMPEQ16,
+    SCMPLT16,
+    SCMPLE16,
+    UCMPLT16,
+    UCMPLE16,
+    CMPEQ8,
+    SCMPLT8,
+    SCMPLE8,
+    UCMPLT8,
+    UCMPLE8
   } fu_op;
 
   typedef struct packed {
