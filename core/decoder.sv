@@ -1189,7 +1189,7 @@ module decoder
         
         // SIMD Instruction
         riscv::OpcodeRsrvd3: begin
-          instruction_o.fu = (instr.rtype.funct7 == 7'b000_0001) ? MULT : ALU;
+          instruction_o.fu = ((instr.rtype.funct7 == 7'b101_0100) || (instr.rtype.funct7 == 7'b101_1100)) ? MULT : ALU;
           instruction_o.rs1[4:0] = instr.rtype.rs1;
           instruction_o.rs2[4:0] = instr.rtype.rs2;
           instruction_o.rd[4:0] = instr.rtype.rd;
@@ -1235,6 +1235,11 @@ module decoder
               {7'b110_1011, 3'b010} : instruction_o.op = ariane_pkg::URSTSA16; // URSTSA16
               {7'b110_0011, 3'b010} : instruction_o.op = ariane_pkg::KSTSA16;  // KSTSA16
               {7'b111_0011, 3'b010} : instruction_o.op = ariane_pkg::UKSTSA16; // UKSTSA16
+              //SIMD 8 bits multiplications 
+              {7'b101_0100, 3'b000} : instruction_o.op = ariane_pkg::SMUL8; 
+              {7'b101_1100, 3'b000} : instruction_o.op = ariane_pkg::UMUL8;
+              
+       
               default : illegal_instr = 1'b1; // Catch-all for undefined instructions
           endcase
         end
