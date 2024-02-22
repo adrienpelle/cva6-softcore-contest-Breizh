@@ -69,7 +69,7 @@ parse_cmdline()
 # ======== Default settings: GCC 13.1.0 baremetal ========
 # - toolchain configuration
 #   NOTE: config/$CONFIG_NAME.sh can be a symbolic link.
-CONFIG_NAME="gcc-13.1.0-baremetal"
+CONFIG_NAME="gcc-13.1.0-baremetal-pext"
 
 # ======== Parse the command line ========
 parse_cmdline "$@"
