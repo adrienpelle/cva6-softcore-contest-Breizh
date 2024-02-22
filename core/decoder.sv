@@ -1186,6 +1186,63 @@ module decoder
           instruction_o.fu      = ALU;
           instruction_o.rd[4:0] = instr.utype.rd;
         end
+        
+        // SIMD Instruction
+        riscv::OpcodeRsrvd3: begin
+          instruction_o.fu = ((instr.rtype.funct7 == 7'b101_0100) || (instr.rtype.funct7 == 7'b101_1100)) ? MULT : ALU;
+          instruction_o.rs1[4:0] = instr.rtype.rs1;
+          instruction_o.rs2[4:0] = instr.rtype.rs2;
+          instruction_o.rd[4:0] = instr.rtype.rd;
+          unique case ({instr.rtype.funct7, instr.rtype.funct3})
+              // Packed SIMD instructions
+              {7'b010_0000, 3'b000} : instruction_o.op = ariane_pkg::ADD16;    // ADD16
+              {7'b010_0001, 3'b000} : instruction_o.op = ariane_pkg::SUB16;    // SUB16
+              {7'b010_0100, 3'b000} : instruction_o.op = ariane_pkg::ADD8;     // ADD8
+              {7'b010_0101, 3'b000} : instruction_o.op = ariane_pkg::SUB8;     // SUB8
+              {7'b000_0100, 3'b000} : instruction_o.op = ariane_pkg::RADD8;    // RADD8
+              {7'b000_0101, 3'b000} : instruction_o.op = ariane_pkg::RSUB8;    // RSUB8
+              {7'b000_0000, 3'b000} : instruction_o.op = ariane_pkg::RADD16;   // RADD16
+              {7'b000_0001, 3'b000} : instruction_o.op = ariane_pkg::RSUB16;   // RSUB16
+              {7'b001_0100, 3'b000} : instruction_o.op = ariane_pkg::URADD8;   // URADD8
+              {7'b001_0101, 3'b000} : instruction_o.op = ariane_pkg::URSUB8;   // URSUB8
+              {7'b001_0000, 3'b000} : instruction_o.op = ariane_pkg::URADD16;  // URADD16
+              {7'b001_0001, 3'b000} : instruction_o.op = ariane_pkg::URSUB16;  // URSUB16
+              {7'b000_1000, 3'b000} : instruction_o.op = ariane_pkg::KADD16;   // KADD16
+              {7'b001_1000, 3'b000} : instruction_o.op = ariane_pkg::UKADD16;  // UKADD16
+              {7'b000_1001, 3'b000} : instruction_o.op = ariane_pkg::KSUB16;   // KSUB16
+              {7'b001_1001, 3'b000} : instruction_o.op = ariane_pkg::UKSUB16;  // UKSUB16
+              {7'b000_1100, 3'b000} : instruction_o.op = ariane_pkg::KADD8;    // KADD8
+              {7'b001_1100, 3'b000} : instruction_o.op = ariane_pkg::UKADD8;   // UKADD8
+              {7'b000_1101, 3'b000} : instruction_o.op = ariane_pkg::KSUB8;    // KSUB8
+              {7'b001_1101, 3'b000} : instruction_o.op = ariane_pkg::UKSUB8;   // UKSUB8
+              {7'b010_0010, 3'b000} : instruction_o.op = ariane_pkg::CRAS16;   // CRAS16
+              {7'b000_0010, 3'b000} : instruction_o.op = ariane_pkg::RCRAS16;  // RCRAS16
+              {7'b001_0010, 3'b000} : instruction_o.op = ariane_pkg::URCRAS16; // URCRAS16
+              {7'b000_1010, 3'b000} : instruction_o.op = ariane_pkg::KCRAS16;  // KCRAS16
+              {7'b001_1010, 3'b000} : instruction_o.op = ariane_pkg::UKCRAS16; // UKCRAS16
+              {7'b010_0011, 3'b000} : instruction_o.op = ariane_pkg::CRSA16;   // CRSA16
+              {7'b000_0011, 3'b000} : instruction_o.op = ariane_pkg::RCRSA16;  // RCRSA16
+              {7'b001_0011, 3'b000} : instruction_o.op = ariane_pkg::URCRSA16; // URCRSA16
+              {7'b000_1011, 3'b000} : instruction_o.op = ariane_pkg::KCRSA16;  // KCRSA16
+              {7'b001_1011, 3'b000} : instruction_o.op = ariane_pkg::UKCRSA16; // UKCRSA16
+              {7'b111_1010, 3'b010} : instruction_o.op = ariane_pkg::STAS16;   // STAS16
+              {7'b101_1010, 3'b010} : instruction_o.op = ariane_pkg::RSTAS16;  // RSTAS16
+              {7'b110_1010, 3'b010} : instruction_o.op = ariane_pkg::URSTAS16; // URSTAS16
+              {7'b110_0010, 3'b010} : instruction_o.op = ariane_pkg::KSTAS16;  // KSTAS16
+              {7'b111_0010, 3'b010} : instruction_o.op = ariane_pkg::UKSTAS16; // UKSTAS16
+              {7'b111_1011, 3'b010} : instruction_o.op = ariane_pkg::STSA16;   // STSA16
+              {7'b101_1011, 3'b010} : instruction_o.op = ariane_pkg::RSTSA16;  // RSTSA16
+              {7'b110_1011, 3'b010} : instruction_o.op = ariane_pkg::URSTSA16; // URSTSA16
+              {7'b110_0011, 3'b010} : instruction_o.op = ariane_pkg::KSTSA16;  // KSTSA16
+              {7'b111_0011, 3'b010} : instruction_o.op = ariane_pkg::UKSTSA16; // UKSTSA16
+              //SIMD 8 bits multiplications 
+              {7'b101_0100, 3'b000} : instruction_o.op = ariane_pkg::SMUL8; 
+              {7'b101_1100, 3'b000} : instruction_o.op = ariane_pkg::UMUL8;
+              
+       
+              default : illegal_instr = 1'b1; // Catch-all for undefined instructions
+          endcase
+        end
 
         default: illegal_instr = 1'b1;
       endcase
