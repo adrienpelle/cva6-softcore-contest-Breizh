@@ -5,32 +5,40 @@ int main(void)
 {
 
     // Inline assembly for the add8 operation
-    int result;
+    int32_t elements[2] = {0xaa0200ff, 0xaa0300ff};
+
+    // Load 32-bit elements from the array
+    int32_t element1 = elements[0];
+    int32_t element2 = elements[1];
+
+    // Perform add8 operation on the loaded 32-bit elements
+    int32_t result;
 
     asm volatile (
-        // Initialize two 8-bit vectors
-        "li a1, 0b01010101;"    // Binary representation of 8-bit vector [85, 85, 85, 85]
-        "li a2, 0b10101010;"    // Binary representation of 8-bit vector [170, 170, 170, 170]
-
         // Perform add8 operation
-        "add8 %[result], a1, a2;"
-
+        "add8 %[result], %[element1], %[element2];"
         // Exit the program
         "li a7, 10;"            // System call number for program exit
         "ecall;"
     : [result] "=r" (result)  // Output operand, "=r" means any register
-    :                         // No input operands
+    : [element1] "r" (element1), [element2] "r" (element2)  // Input operands
     : "a1", "a2", "a3"        // Clobbered registers
     );
     
-    char message[12];
-    snprintf(message, sizeof(message), "%d", result);
+    int8_t octet1 = (result >> 24) & 0xFF;
+    int8_t octet2 = (result >> 16) & 0xFF;
+    int8_t octet3 = (result >> 8) & 0xFF;
+    int8_t octet4 = result & 0xFF;
+    
+    char buffer[55];
+    //snprintf(buffer, 55, "Y[7:0] = %u,Y[15:8] = %u, Y[23:16] = %u, Y[31:24] = %u", octet1, octet2, octet3, octet4);
+    snprintf(buffer, 55, "Y = %d", result);
 
      UART_init(&g_uart_0,
              UART_115200_BAUD,
              UART_DATA_8_BITS | UART_NO_PARITY | UART_ONE_STOP_BIT);
                    
-     UART_polled_tx_string(&g_uart_0, message);
+     UART_polled_tx_string(&g_uart_0, buffer);
 
      while(UART_tx_complete(&g_uart_0)==0);
 
