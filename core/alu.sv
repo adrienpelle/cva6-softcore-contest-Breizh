@@ -505,23 +505,36 @@ module alu
     logic less0_8, less1_8,less2_8, less3_8, eq0_8, eq1_8, eq2_8, eq3_8; // SIMD 8 bits : (opA[7:0] < opB[7:0]), (opA[15:8] < opB[15:8]) ... 
     
     logic [15:0]   simd16_comparisons_res1, simd16_comparisons_res0; // SIMD 16 bits Comparisons results (res[31:16] and res[15:0])
+    logic [15:0]   simd16_min_res1, simd16_min_res0; // SIMD 16 bits Min/Max results (res[31:16] and res[15:0])
+    
     logic [7:0]   simd8_comparisons_res3, simd8_comparisons_res2,simd8_comparisons_res1, simd8_comparisons_res0; // SIMD 8 bits Comparisons results (res[31:24], res[23:16], res[15:8], res[7:0])
+    logic [7:0]   simd8_min_res3, simd8_min_res2,simd8_min_res1, simd8_min_res0; // SIMD 8 bits Min/Max results (res[31:24], res[23:16], res[15:8], res[7:0])
     
     logic [31:0]   simd16_comparisons_result; // SIMD Comparisons 16 bits final result 
     logic [31:0]   simd8_comparisons_result; // SIMD Comparisons 8 bits final result 
+    
+    logic [31:0]   simd16_min_result; // SIMD Max/Min 16 bits final result 
+    logic [31:0]   simd8_min_result; // SIMD Max/Min 8 bits final result 
+    
     
     always_comb begin
         logic simd_sgn;
         logic leq_op;
         logic eq_op;
+        logic min;
         simd_sgn = 1'b0; // Signed operations
         eq_op = 1'b0;    // Equal operation 
-        leq_op = 1'b0;   // (Less than & equal operations) and (Equal operations)
+        leq_op = 1'b0;   // (Less than & equal operations) and (Equal operations)  
+        min = 1'b0;      // MIN operation : min = 1, MAX operation = 0  
 
         if ((fu_data_i.operation == SCMPLT16) ||
         (fu_data_i.operation == SCMPLE16)  ||
         (fu_data_i.operation == SCMPLT8)  ||
-        (fu_data_i.operation == SCMPLE8))
+        (fu_data_i.operation == SCMPLE8)  || 
+        (fu_data_i.operation == SMIN16) ||
+        (fu_data_i.operation == SMAX16) ||
+        (fu_data_i.operation == SMIN8)  ||
+        (fu_data_i.operation == SMAX8))  
             simd_sgn = 1'b1;
  
 
@@ -535,7 +548,14 @@ module alu
             
         if ((fu_data_i.operation == CMPEQ16) ||
         (fu_data_i.operation == CMPEQ8))
-            eq_op = 1'b1;
+            eq_op = 1'b1;    
+            
+        if ((fu_data_i.operation == SMIN16) ||
+        (fu_data_i.operation == UMIN16) ||
+        (fu_data_i.operation == SMIN8) ||
+        (fu_data_i.operation == UMIN8))
+            min = 1'b1;       
+         
            
         //SIMD 16 bits comparisons 
         
@@ -543,12 +563,13 @@ module alu
         $signed({simd_sgn & fu_data_i.operand_b[31], fu_data_i.operand_b[31:16]}));        
         eq1_16 =   (fu_data_i.operand_a[31:16] == fu_data_i.operand_b[31:16]);
         simd16_comparisons_res1 = (less1_16 & ~eq_op) | (eq1_16 & leq_op) ? 16'hffff : 0;
-             
+        simd16_min_res1 = less1_16? (fu_data_i.operand_a[31:16] & {16{min}}) | (fu_data_i.operand_b[31:16] & {16{~min}}) : (fu_data_i.operand_a[31:16] & {16{~min}}) | (fu_data_i.operand_b[31:16] & {16{min}});
+            
         less0_16 = ($signed({simd_sgn & fu_data_i.operand_a[15], fu_data_i.operand_a[15:0]}) <
         $signed({simd_sgn & fu_data_i.operand_b[15], fu_data_i.operand_b[15:0]}));       
         eq0_16 =   (fu_data_i.operand_a[15:0] == fu_data_i.operand_b[15:0]);
         simd16_comparisons_res0 = (less0_16 & ~eq_op) | (eq0_16 & leq_op) ? 16'hffff : 0;
-        
+        simd16_min_res0 = less0_16? (fu_data_i.operand_a[15:0] & {16{min}}) | (fu_data_i.operand_b[15:0] & {16{~min}}) : (fu_data_i.operand_a[15:0] & {16{~min}}) | (fu_data_i.operand_b[15:0] & {16{min}});
         
         //SIMD 8 bits comparisons 
         
@@ -556,25 +577,31 @@ module alu
         $signed({simd_sgn & fu_data_i.operand_b[31], fu_data_i.operand_b[31:24]}));        
         eq3_8 = (fu_data_i.operand_a[31:24] == fu_data_i.operand_b[31:24]);
         simd8_comparisons_res3 = (less3_8 & ~eq_op) | (eq3_8 & leq_op) ? 8'hff : 0;
+        simd8_min_res3 = less3_8? (fu_data_i.operand_a[31:24] & {8{min}}) | (fu_data_i.operand_b[31:24] & {8{~min}}) : (fu_data_i.operand_a[31:24] & {8{~min}}) | (fu_data_i.operand_b[31:24] & {8{min}});
                
         less2_8 = ($signed({simd_sgn & fu_data_i.operand_a[23], fu_data_i.operand_a[23:16]}) <
         $signed({simd_sgn & fu_data_i.operand_b[23], fu_data_i.operand_b[23:16]}));  
         eq2_8 = (fu_data_i.operand_a[23:16] == fu_data_i.operand_b[23:16]);
         simd8_comparisons_res2 = (less2_8 & ~eq_op) | (eq2_8 & leq_op) ? 8'hff : 0;
+        simd8_min_res2 = less2_8? (fu_data_i.operand_a[23:16] & {8{min}}) | (fu_data_i.operand_b[23:16] & {8{~min}}) : (fu_data_i.operand_a[23:16] & {8{~min}}) | (fu_data_i.operand_b[23:16] & {8{min}});
                
         less1_8 = ($signed({simd_sgn & fu_data_i.operand_a[15], fu_data_i.operand_a[15:8]}) <
         $signed({simd_sgn & fu_data_i.operand_b[15], fu_data_i.operand_b[15:8]}));  
         eq1_8 = (fu_data_i.operand_a[15:8] == fu_data_i.operand_b[15:8]);
         simd8_comparisons_res1 = (less1_8 & ~eq_op) | (eq1_8 & leq_op) ? 8'hff : 0;
+        simd8_min_res1 = less1_8? (fu_data_i.operand_a[15:8] & {8{min}}) | (fu_data_i.operand_b[15:8] & {8{~min}}) : (fu_data_i.operand_a[15:8] & {8{~min}}) | (fu_data_i.operand_b[15:8] & {8{min}});
         
         less0_8 = ($signed({simd_sgn & fu_data_i.operand_a[7], fu_data_i.operand_a[7:0]}) <
         $signed({simd_sgn & fu_data_i.operand_b[7], fu_data_i.operand_b[7:0]})); 
         eq0_8 = (fu_data_i.operand_a[7:0] == fu_data_i.operand_b[7:0]);
         simd8_comparisons_res0 = (less0_8 & ~eq_op) | (eq0_8 & leq_op) ? 8'hff : 0;
+        simd8_min_res0 = less0_8? (fu_data_i.operand_a[7:0] & {8{min}}) | (fu_data_i.operand_b[7:0] & {8{~min}}) : (fu_data_i.operand_a[7:0] & {8{~min}}) | (fu_data_i.operand_b[7:0] & {8{min}});
         
         simd16_comparisons_result = {simd16_comparisons_res1, simd16_comparisons_res0};
+        simd16_min_result = {simd16_min_res1, simd16_min_res0};
+            
         simd8_comparisons_result = {simd8_comparisons_res3, simd8_comparisons_res2, simd8_comparisons_res1, simd8_comparisons_res0};
-        
+        simd8_min_result = {simd8_min_res3, simd8_min_res2, simd8_min_res1, simd8_min_res0};
        
     end 
 
@@ -663,6 +690,13 @@ module alu
             //SIMD 16 bits comparisons 
             CMPEQ16, SCMPLT16, SCMPLE16, UCMPLT16, UCMPLE16:
             result_o = simd16_comparisons_result;
+            
+            //SIMD 8 bits Maximum/minimum operations
+            SMIN8, UMIN8, SMAX8, UMAX8 :
+            result_o = simd8_min_result;
+            //SIMD 16 bits Maximum/minimum operations
+            SMIN16, UMIN16, SMAX16, UMAX16 :
+            result_o = simd16_min_result;
 
             default: ; // default case to suppress unique warning
         endcase

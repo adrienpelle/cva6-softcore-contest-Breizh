@@ -633,7 +633,17 @@ package ariane_pkg;
     SCMPLT8,
     SCMPLE8,
     UCMPLT8,
-    UCMPLE8
+    UCMPLE8,
+    //SIMD Miscellaneous instructions
+    SMIN8,
+    UMIN8,
+    SMAX8,
+    UMAX8,
+    SMIN16,
+    UMIN16,
+    SMAX16,
+    UMAX16
+    
   } fu_op;
 
   typedef struct packed {
