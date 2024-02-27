@@ -54,6 +54,7 @@ module mult
       .operation_i    (fu_data_i.operation),
       .operand_a_i    (fu_data_i.operand_a),
       .operand_b_i    (fu_data_i.operand_b),
+      .operand_c_i    (fu_data_i.imm),
       .result_o       (mul_result),
       .mult_valid_i   (mul_valid_op),
       .mult_valid_o   (mul_valid),

@@ -27,6 +27,7 @@ module multiplier
     input  fu_op                             operation_i,
     input  riscv::xlen_t                     operand_a_i,
     input  riscv::xlen_t                     operand_b_i,
+    input  riscv::xlen_t                     operand_c_i,       // the third operand for SMAQA
     output riscv::xlen_t                     result_o,
     output logic                             mult_valid_o,
     output logic                             mult_ready_o,
@@ -72,6 +73,7 @@ module multiplier
   fu_op operator_d, operator_q;
   logic [riscv::XLEN*2-1:0] mult_result_d, mult_result_q;
   logic [riscv::XLEN*2-1:0] simd_mult_result_d, simd_mult_result_q;
+  logic [riscv::XLEN:0] simd_smaqa_result_d, simd_smaqa_result_q;
 
   // control registers
   logic sign_a, sign_b;
@@ -82,7 +84,7 @@ module multiplier
   assign mult_trans_id_o = trans_id_q;
   assign mult_ready_o = 1'b1;
 
-  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8});
+  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA});
 
   // Sign Select MUX
   always_comb begin
@@ -90,7 +92,7 @@ module multiplier
     sign_b = 1'b0;
 
     // signed multiplication
-    if (operation_i == MULH | operation_i == SMUL8) begin
+    if (operation_i == MULH | operation_i == SMUL8| operation_i == SMAQA) begin
       sign_a = 1'b1;
       sign_b = 1'b1;
       // signed - unsigned multiplication
@@ -111,7 +113,7 @@ module multiplier
       {operand_b_i[riscv::XLEN-1] & sign_b, operand_b_i}
   );
   
-  //SIMD Multiplier 8 bits 
+  // SIMD Multiplier 8 bits 
   // Y[63:48] = A[31:24] * B[31:24] 
   assign simd_mult_result_d[63:48] = $signed(
       {operand_a_i[31] & sign_a, operand_a_i[31:24]}
@@ -136,7 +138,20 @@ module multiplier
   ) * $signed(
       {operand_b_i[7] & sign_b, operand_b_i[7:0]}
   );
-
+  
+  // SIMD SMAQA 8 bits 
+  assign simd_smaqa_result_d = $signed(
+      {simd_mult_result_d[63] & sign_a, simd_mult_result_d[63:48]}
+  ) + $signed(
+      {simd_mult_result_d[47] & sign_a, simd_mult_result_d[47:32]}
+  ) + $signed(
+      {simd_mult_result_d[31] & sign_a, simd_mult_result_d[31:16]}
+  ) + $signed(
+      {simd_mult_result_d[15] & sign_a, simd_mult_result_d[15:0]}
+  ) + $signed(
+      {operand_c_i[31] & sign_a, operand_c_i}
+  );  
+  
   assign operator_d = operation_i;
 
   always_comb begin : p_selmux
@@ -147,7 +162,9 @@ module multiplier
       CLMULH:              result_o = clmulr_q >> 1;
       CLMULR:              result_o = clmulr_q;
       SMUL8, UMUL8 :       result_o = simd_mult_result_q[riscv::XLEN-1:0];
+      SMAQA:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
       // MUL performs an XLEN-bit×XLEN-bit multiplication and places the lower XLEN bits in the destination register
+      
       default:             result_o = mult_result_q[riscv::XLEN-1:0];  // including MUL
     endcase
   end
@@ -180,6 +197,7 @@ module multiplier
       operator_q    <= operator_d;
       mult_result_q <= mult_result_d;
       simd_mult_result_q <= simd_mult_result_d;
+      simd_smaqa_result_q <= simd_smaqa_result_d;
     end
   end
 endmodule
