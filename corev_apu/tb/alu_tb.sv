@@ -738,6 +738,86 @@ fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
 fu_data_i.operation = UMAX8;
 #10;
 if (result_o !== 32'hff9f918c) $fatal("Test Case 77 failed!");   
+
+// Test Case 78: SUNPKD810 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = SUNPKD810;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 78 failed!");   
+
+// Test Case 79: ZUNPKD810 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = ZUNPKD810;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 79 failed!");   
+
+// Test Case 80: SUNPKD820 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = SUNPKD820;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 78 failed!");   
+
+// Test Case 81: ZUNPKD820 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = ZUNPKD820;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 79 failed!"); 
+
+// Test Case 82: SUNPKD830 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = SUNPKD830;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 78 failed!");   
+
+// Test Case 83: ZUNPKD830 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = ZUNPKD830;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 79 failed!");   
+    
+// Test Case 84: SUNPKD831 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = SUNPKD831;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 78 failed!");   
+
+// Test Case 85: ZUNPKD830 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = ZUNPKD831;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 79 failed!");   
+
+// Test Case 86: SUNPKD832 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = SUNPKD832;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 78 failed!");   
+
+// Test Case 87: ZUNPKD832 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
+fu_data_i.operation = ZUNPKD832;
+#10;
+//if (result_o !== 32'hff9f918c) $fatal("Test Case 79 failed!");   
     
     
       

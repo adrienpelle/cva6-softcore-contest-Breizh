@@ -154,8 +154,8 @@ module alu
 
         unique case (fu_data_i.operation)
             // Extension
-            ADD8, SUB8, ADD16, SUB16, URADD8, URSUB8, URADD16, URSUB16, UKADD16, UKSUB16, UKADD8, UKSUB8, CRAS16,URCRAS16, UKCRAS16, CRSA16, URCRSA16, UKCRSA16, STAS16, URSTAS16, UKSTAS16, STSA16, URSTSA16, UKSTSA16 : sext = 1'b0; //Zero extend 
-            RADD8, RSUB8, RADD16, RSUB16, KADD16, KSUB16, KADD8, KSUB8, RCRAS16, KCRAS16, RCRSA16, KCRSA16, RSTAS16, KSTAS16, RSTSA16, KSTSA16 : sext = 1'b1; //Sign extend 
+            ADD8, SUB8, ADD16, SUB16, URADD8, URSUB8, URADD16, URSUB16, UKADD16, UKSUB16, UKADD8, UKSUB8, CRAS16,URCRAS16, UKCRAS16, CRSA16, URCRSA16, UKCRSA16, STAS16, URSTAS16, UKSTAS16, STSA16, URSTSA16, UKSTSA16, ZUNPKD810, ZUNPKD820, ZUNPKD830, ZUNPKD831, ZUNPKD832  : sext = 1'b0; //Zero extend 
+            RADD8, RSUB8, RADD16, RSUB16, KADD16, KSUB16, KADD8, KSUB8, RCRAS16, KCRAS16, RCRSA16, KCRSA16, RSTAS16, KSTAS16, RSTSA16, KSTSA16, SUNPKD810, SUNPKD820, SUNPKD830, SUNPKD831, SUNPKD832 : sext = 1'b1; //Sign extend 
             default: ;
         endcase
     end
@@ -604,6 +604,26 @@ module alu
         simd8_min_result = {simd8_min_res3, simd8_min_res2, simd8_min_res1, simd8_min_res0};
        
     end 
+    
+    // ------------
+    // SIMD Unpack 
+    // ------------
+    
+    logic [31:0]   simd_unpkd_result; // SIMD Unpack 8 bits final result 
+    
+    always_comb begin
+        unique case (fu_data_i.operation)
+          //SIMD 8 bits Unpack
+            SUNPKD810, ZUNPKD810: simd_unpkd_result = {{8{fu_data_i.operand_a[15] & sext}}, fu_data_i.operand_a[15:8], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
+            SUNPKD820, ZUNPKD820: simd_unpkd_result = {{8{fu_data_i.operand_a[23] & sext}}, fu_data_i.operand_a[23:16], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
+            SUNPKD830, ZUNPKD830: simd_unpkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
+            SUNPKD831, ZUNPKD831: simd_unpkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[15] & sext}}, fu_data_i.operand_a[15:8]};
+            SUNPKD832, ZUNPKD832: simd_unpkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[23] & sext}}, fu_data_i.operand_a[23:16]};
+            default: ;
+        endcase                             
+    end 
+    
+    
 
     if (ariane_pkg::BITMANIP) begin : gen_bitmanip
         // Count Population + Count population Word
@@ -697,6 +717,10 @@ module alu
             //SIMD 16 bits Maximum/minimum operations
             SMIN16, UMIN16, SMAX16, UMAX16 :
             result_o = simd16_min_result;
+            
+            //SIMD Unpack 
+            ZUNPKD810, ZUNPKD820, ZUNPKD830, ZUNPKD831, ZUNPKD832, SUNPKD810, SUNPKD820, SUNPKD830, SUNPKD831, SUNPKD832:
+            result_o = simd_unpkd_result;
 
             default: ; // default case to suppress unique warning
         endcase
