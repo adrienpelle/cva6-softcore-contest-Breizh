@@ -653,7 +653,12 @@ package ariane_pkg;
     ZUNPKD820,
     ZUNPKD830,
     ZUNPKD831,
-    ZUNPKD832
+    ZUNPKD832,
+    //SIMD Pack instructions 
+    PKBB16,
+    PKBT16,
+    PKTB16,
+    PKTT16
     
   } fu_op;
 

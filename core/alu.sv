@@ -606,19 +606,24 @@ module alu
     end 
     
     // ------------
-    // SIMD Unpack 
+    // SIMD Pack/Unpack instructions  
     // ------------
     
-    logic [31:0]   simd_unpkd_result; // SIMD Unpack 8 bits final result 
+    logic [31:0]   simd_pkd_result; // SIMD Pack/Unpack final result 
     
     always_comb begin
         unique case (fu_data_i.operation)
           //SIMD 8 bits Unpack
-            SUNPKD810, ZUNPKD810: simd_unpkd_result = {{8{fu_data_i.operand_a[15] & sext}}, fu_data_i.operand_a[15:8], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
-            SUNPKD820, ZUNPKD820: simd_unpkd_result = {{8{fu_data_i.operand_a[23] & sext}}, fu_data_i.operand_a[23:16], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
-            SUNPKD830, ZUNPKD830: simd_unpkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
-            SUNPKD831, ZUNPKD831: simd_unpkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[15] & sext}}, fu_data_i.operand_a[15:8]};
-            SUNPKD832, ZUNPKD832: simd_unpkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[23] & sext}}, fu_data_i.operand_a[23:16]};
+            SUNPKD810, ZUNPKD810: simd_pkd_result = {{8{fu_data_i.operand_a[15] & sext}}, fu_data_i.operand_a[15:8], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
+            SUNPKD820, ZUNPKD820: simd_pkd_result = {{8{fu_data_i.operand_a[23] & sext}}, fu_data_i.operand_a[23:16], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
+            SUNPKD830, ZUNPKD830: simd_pkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[7] & sext}}, fu_data_i.operand_a[7:0]};
+            SUNPKD831, ZUNPKD831: simd_pkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[15] & sext}}, fu_data_i.operand_a[15:8]};
+            SUNPKD832, ZUNPKD832: simd_pkd_result = {{8{fu_data_i.operand_a[31] & sext}}, fu_data_i.operand_a[31:24], {8{fu_data_i.operand_a[23] & sext}}, fu_data_i.operand_a[23:16]};
+          //SIMD 16 bits Pack
+            PKBB16: simd_pkd_result = {fu_data_i.operand_a[15:0],fu_data_i.operand_b[15:0]};
+            PKBT16: simd_pkd_result = {fu_data_i.operand_a[15:0],fu_data_i.operand_b[31:16]};
+            PKTB16: simd_pkd_result = {fu_data_i.operand_a[31:16],fu_data_i.operand_b[15:0]};
+            PKTT16: simd_pkd_result = {fu_data_i.operand_a[31:16],fu_data_i.operand_b[31:16]};
             default: ;
         endcase                             
     end 
@@ -719,8 +724,8 @@ module alu
             result_o = simd16_min_result;
             
             //SIMD Unpack 
-            ZUNPKD810, ZUNPKD820, ZUNPKD830, ZUNPKD831, ZUNPKD832, SUNPKD810, SUNPKD820, SUNPKD830, SUNPKD831, SUNPKD832:
-            result_o = simd_unpkd_result;
+            ZUNPKD810, ZUNPKD820, ZUNPKD830, ZUNPKD831, ZUNPKD832, SUNPKD810, SUNPKD820, SUNPKD830, SUNPKD831, SUNPKD832, PKBB16, PKBT16, PKTB16, PKTT16:
+            result_o = simd_pkd_result;
 
             default: ; // default case to suppress unique warning
         endcase
