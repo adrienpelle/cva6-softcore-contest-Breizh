@@ -658,7 +658,10 @@ package ariane_pkg;
     PKBB16,
     PKBT16,
     PKTB16,
-    PKTT16
+    PKTT16,
+    //Clip 32 bits
+    SCLIP32, 
+    UCLIP32
     
   } fu_op;
 

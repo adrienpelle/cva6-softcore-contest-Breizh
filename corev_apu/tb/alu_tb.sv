@@ -835,7 +835,7 @@ fu_data_i.operation = PKBT16;
 #10;
 if (result_o !== 32'h2e8cff3f) $fatal("Test Case 89 failed!");    
 
-// Test Case 89: PKTB16 operation
+// Test Case 90: PKTB16 operation
 n_test +=1;
 fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
 fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
@@ -843,15 +843,58 @@ fu_data_i.operation = PKTB16;
 #10;
 if (result_o !== 32'h009f9162) $fatal("Test Case 90 failed!");  
 
-// Test Case 90: PKTT16 operation
+// Test Case 91: PKTT16 operation
 n_test +=1;
 fu_data_i.operand_a = {8'b00000000,8'b10011111,8'b00101110,8'b10001100};
 fu_data_i.operand_b = {8'b11111111,8'b00111111,8'b10010001,8'b01100010};
 fu_data_i.operation = PKTT16;
 #10;
-if (result_o !== 32'h009fff3f) $fatal("Test Case 91 failed!");     
+if (result_o !== 32'h009fff3f) $fatal("Test Case 91 failed!"); 
+
+// Test Case 92: SCLIP32 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b10000000,8'b00011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {5'd5};
+fu_data_i.operation = SCLIP32;
+#10;
+if (result_o !== 32'hffffffe0) $fatal("Test Case 92 failed!");    
+
+// Test Case 93: UCLIP32 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b10000000,8'b00011111,8'b00101110,8'b10001100};
+fu_data_i.operand_b = {5'd15};
+fu_data_i.operation = UCLIP32;
+#10;
+if (result_o !== 32'h0) $fatal("Test Case 93 failed!");       
     
-    
+// Test Case 94: SCLIP32 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b11111111,8'b11111111,8'b11111111,8'b11111111};
+fu_data_i.operand_b = {5'b11111};
+fu_data_i.operation = SCLIP32;
+#10;
+if (result_o !== 32'hffffffff) $fatal("Test Case 94 failed!");  
+
+// Test Case 95: UCLIP32 operation
+n_test +=1;
+fu_data_i.operation = UCLIP32;
+#10;
+if (result_o !== 32'h0) $fatal("Test Case 95 failed!"); 
+
+// Test Case 96: SCLIP32 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b00000000,8'b11111111,8'b11111111,8'b11111111};
+fu_data_i.operand_b = {5'd6};
+fu_data_i.operation = SCLIP32;
+#10;
+if (result_o !== 32'h0000003f) $fatal("Test Case 96 failed!");  
+
+// Test Case 97: SCLIP32 operation
+n_test +=1;
+fu_data_i.operand_a = {8'b10000000,8'b00000000,8'b00000000,8'b00000000};
+fu_data_i.operation = SCLIP32;
+#10;
+if (result_o !== 32'hffffffc0) $fatal("Test Case 97 failed!");    
       
  
     // Add more test cases as needed...

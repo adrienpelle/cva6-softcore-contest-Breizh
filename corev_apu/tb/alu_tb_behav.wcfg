@@ -14,13 +14,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="909.291 ns"></ZoomStartTime>
-      <ZoomEndTime time="982.142 ns"></ZoomEndTime>
-      <Cursor1Time time="963.241 ns"></Cursor1Time>
+      <ZoomStartTime time="985.332 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,002.934 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="206"></NameColumnWidth>
-      <ValueColumnWidth column_width="96"></ValueColumnWidth>
+      <ValueColumnWidth column_width="88"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="124" />
    <wvobject type="logic" fp_name="/alu_tb/clk">
@@ -48,11 +48,37 @@
       <obj_property name="ElementShortName">fu_data_i</obj_property>
       <obj_property name="ObjectShortName">fu_data_i</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/alu_tb/fu_data_i.fu">
+         <obj_property name="ElementShortName">.fu[3:0]</obj_property>
+         <obj_property name="ObjectShortName">.fu[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/alu_tb/fu_data_i.operation">
+         <obj_property name="ElementShortName">.operation[8:0]</obj_property>
+         <obj_property name="ObjectShortName">.operation[8:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/alu_tb/fu_data_i.operand_a">
+         <obj_property name="ElementShortName">.operand_a[31:0]</obj_property>
+         <obj_property name="ObjectShortName">.operand_a[31:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/alu_tb/fu_data_i.operand_b">
+         <obj_property name="ElementShortName">.operand_b[31:0]</obj_property>
+         <obj_property name="ObjectShortName">.operand_b[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/alu_tb/fu_data_i.imm">
+         <obj_property name="ElementShortName">.imm[31:0]</obj_property>
+         <obj_property name="ObjectShortName">.imm[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/alu_tb/fu_data_i.trans_id">
+         <obj_property name="ElementShortName">.trans_id[1:0]</obj_property>
+         <obj_property name="ObjectShortName">.trans_id[1:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="array" fp_name="/alu_tb/result_o">
       <obj_property name="ElementShortName">result_o[31:0]</obj_property>
       <obj_property name="ObjectShortName">result_o[31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="divider339" type="divider">
       <obj_property name="label">Unpack</obj_property>

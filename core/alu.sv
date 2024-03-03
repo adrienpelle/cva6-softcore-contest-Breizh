@@ -606,6 +606,40 @@ module alu
     end 
     
     // ------------
+    // Cliping instructions 
+    // ------------
+    logic [31:0]   clip_result; // Clip operation final result 
+    logic          p_ov;
+    logic          n_ov;
+    logic          u_ov;
+    logic [32:0]   limit_clip;
+    logic [32:0]   n_limit_clip;
+    
+    assign limit_clip = {0, 2 **(fu_data_i.operand_b[4:0])};
+    assign n_limit_clip = ~limit_clip + 1;
+    
+    assign p_ov = ($signed({fu_data_i.operand_a[31],fu_data_i.operand_a}) >
+        $signed(limit_clip - 1));
+        
+    assign n_ov = ($signed({fu_data_i.operand_a[31],fu_data_i.operand_a}) <
+        $signed(n_limit_clip));
+        
+    assign u_ov = ($signed({fu_data_i.operand_a[31],fu_data_i.operand_a}) <
+        $signed({33{1'b0}}));
+        
+       
+    always_comb begin
+        unique case (fu_data_i.operation)
+          //Clip 32 bits 
+            SCLIP32: clip_result = p_ov ? limit_clip - 1 : n_ov ? n_limit_clip : fu_data_i.operand_a;
+            UCLIP32: clip_result = p_ov ? limit_clip - 1 : u_ov ? {32{1'b0}} : fu_data_i.operand_a;
+            default: ;
+        endcase                             
+    end 
+    
+        
+   
+    // ------------
     // SIMD Pack/Unpack instructions  
     // ------------
     
@@ -726,6 +760,10 @@ module alu
             //SIMD Unpack 
             ZUNPKD810, ZUNPKD820, ZUNPKD830, ZUNPKD831, ZUNPKD832, SUNPKD810, SUNPKD820, SUNPKD830, SUNPKD831, SUNPKD832, PKBB16, PKBT16, PKTB16, PKTT16:
             result_o = simd_pkd_result;
+            
+            //Clip 32 bits
+            SCLIP32, UCLIP32:
+            result_o = clip_result;
 
             default: ; // default case to suppress unique warning
         endcase
