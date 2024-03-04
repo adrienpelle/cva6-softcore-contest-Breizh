@@ -563,7 +563,80 @@ package ariane_pkg;
     ACCEL_OP_STORE,
     // Zicond instruction
     CZERO_EQZ,
-    CZERO_NEZ
+    CZERO_NEZ,
+    // Packed SIMD instructions
+    // SIMD Adder operations
+    ADD16,
+    SUB16,
+    ADD8,
+    SUB8,
+    RADD8,
+    RSUB8,
+    RADD16,
+    RSUB16,
+    URADD8,
+    URSUB8,
+    URADD16,
+    URSUB16,
+    KADD16,
+    UKADD16,
+    KSUB16,
+    UKSUB16,
+    KADD8,
+    UKADD8,
+    KSUB8,
+    UKSUB8,
+    CRAS16, 
+    RCRAS16, 
+    URCRAS16, 
+    KCRAS16, 
+    UKCRAS16, 
+    CRSA16, 
+    RCRSA16, 
+    URCRSA16, 
+    KCRSA16, 
+    UKCRSA16, 
+    STAS16, 
+    RSTAS16, 
+    URSTAS16, 
+    KSTAS16, 
+    UKSTAS16, 
+    STSA16, 
+    RSTSA16, 
+    URSTSA16, 
+    KSTSA16, 
+    UKSTSA16,
+    // SIMD Shift operations
+    SRA16,
+    SRA16_U, //TODO
+    SRL16,
+    SRL16_U, //TODO
+    SLL16,
+    KSLL16, //TODO
+    KSLRA16,//TODO
+    KSLRA16_U,//TODO
+    SRA8,
+    SRA8_U,//TODO
+    SRL8,
+    SRL8_U,//TODO
+    SLL8,
+    KSLL8,//TODO
+    KSLRA8,//TODO
+    KSLRA8_U,//TODO
+    // SIMD Comparisons operations 
+    CMPEQ16,
+    SCMPLT16,
+    SCMPLE16,
+    UCMPLT16,
+    UCMPLE16,
+    CMPEQ8,
+    SCMPLT8,
+    SCMPLE8,
+    UCMPLT8,
+    UCMPLE8,
+    // SIMD Multiplications
+    SMUL8,
+    UMUL8
   } fu_op;
 
   typedef struct packed {
