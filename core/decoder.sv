@@ -1187,14 +1187,20 @@ module decoder
           instruction_o.rd[4:0] = instr.utype.rd;
         end
         
-        // SIMD Instruction
+        // ----------------------------------
+        // Packed SIMD Instructions
+        // ----------------------------------
+        
         riscv::OpcodeRsrvd3: begin
           instruction_o.fu = ((instr.rtype.funct7 == 7'b101_0100) || (instr.rtype.funct7 == 7'b101_1100)) ? MULT : ALU;
           instruction_o.rs1[4:0] = instr.rtype.rs1;
           instruction_o.rs2[4:0] = instr.rtype.rs2;
           instruction_o.rd[4:0] = instr.rtype.rd;
           unique case ({instr.rtype.funct7, instr.rtype.funct3})
-              // Packed SIMD instructions
+          
+          // Reg-Reg SIMD instructions 
+          
+              // SIMD Adder instructions
               {7'b010_0000, 3'b000} : instruction_o.op = ariane_pkg::ADD16;    // ADD16
               {7'b010_0001, 3'b000} : instruction_o.op = ariane_pkg::SUB16;    // SUB16
               {7'b010_0100, 3'b000} : instruction_o.op = ariane_pkg::ADD8;     // ADD8
@@ -1234,12 +1240,132 @@ module decoder
               {7'b101_1011, 3'b010} : instruction_o.op = ariane_pkg::RSTSA16;  // RSTSA16
               {7'b110_1011, 3'b010} : instruction_o.op = ariane_pkg::URSTSA16; // URSTSA16
               {7'b110_0011, 3'b010} : instruction_o.op = ariane_pkg::KSTSA16;  // KSTSA16
-              {7'b111_0011, 3'b010} : instruction_o.op = ariane_pkg::UKSTSA16; // UKSTSA16
-              //SIMD 8 bits multiplications 
+
+              {7'b111_0011, 3'b010} : instruction_o.op = ariane_pkg::UKSTSA16; // UKSTSA1             
+               // SIMD 8 bits multiplications 
               {7'b101_0100, 3'b000} : instruction_o.op = ariane_pkg::SMUL8; 
               {7'b101_1100, 3'b000} : instruction_o.op = ariane_pkg::UMUL8;
+              // SIMD shift 
+              {7'b010_1000, 3'b000} : instruction_o.op = ariane_pkg::SRA16; 
+              {7'b011_0000, 3'b000} : instruction_o.op = ariane_pkg::SRA16_U; 
+              {7'b010_1001, 3'b000} : instruction_o.op = ariane_pkg::SRL16; 
+              {7'b011_0001, 3'b000} : instruction_o.op = ariane_pkg::SRL16_U; 
+              {7'b010_1010, 3'b000} : instruction_o.op = ariane_pkg::SLL16; 
+              {7'b010_1100, 3'b000} : instruction_o.op = ariane_pkg::SRA8; 
+              {7'b011_0100, 3'b000} : instruction_o.op = ariane_pkg::SRA8_U; 
+              {7'b010_1101, 3'b000} : instruction_o.op = ariane_pkg::SRL8; 
+              {7'b011_0101, 3'b000} : instruction_o.op = ariane_pkg::SRL8_U; 
+              {7'b010_1110, 3'b000} : instruction_o.op = ariane_pkg::SLL8; 
+              // SIMD Comparisons 
+              {7'b010_0110, 3'b000} : instruction_o.op = ariane_pkg::CMPEQ16; 
+              {7'b000_0110, 3'b000} : instruction_o.op = ariane_pkg::SCMPLT16; 
+              {7'b000_1110, 3'b000} : instruction_o.op = ariane_pkg::SCMPLE16; 
+              {7'b001_0110, 3'b000} : instruction_o.op = ariane_pkg::UCMPLT16; 
+              {7'b001_1110, 3'b000} : instruction_o.op = ariane_pkg::UCMPLE16; 
+              {7'b010_0111, 3'b000} : instruction_o.op = ariane_pkg::CMPEQ8; 
+              {7'b000_0111, 3'b000} : instruction_o.op = ariane_pkg::SCMPLT8; 
+              {7'b000_1111, 3'b000} : instruction_o.op = ariane_pkg::SCMPLE8; 
+              {7'b001_0111, 3'b000} : instruction_o.op = ariane_pkg::UCMPLT8; 
+              {7'b001_1111, 3'b000} : instruction_o.op = ariane_pkg::UCMPLE8;
+              //SIMD Miscellaneous instructions 
+              {7'b100_0100, 3'b000} : instruction_o.op = ariane_pkg::SMIN8; 
+              {7'b100_1100, 3'b000} : instruction_o.op = ariane_pkg::UMIN8; 
+              {7'b100_0101, 3'b000} : instruction_o.op = ariane_pkg::SMAX8; 
+              {7'b100_1101, 3'b000} : instruction_o.op = ariane_pkg::UMAX8; 
+              {7'b100_0000, 3'b000} : instruction_o.op = ariane_pkg::SMIN16; 
+              {7'b100_1000, 3'b000} : instruction_o.op = ariane_pkg::UMIN16; 
+              {7'b100_0001, 3'b000} : instruction_o.op = ariane_pkg::SMAX16; 
+              {7'b100_1001, 3'b000} : instruction_o.op = ariane_pkg::UMAX16; 
+              //SIMD Packing instructions
+              {7'b000_0111, 3'b001} : instruction_o.op = ariane_pkg::PKBB16; 
+              {7'b000_1111, 3'b001} : instruction_o.op = ariane_pkg::PKBT16; 
+              {7'b001_0111, 3'b001} : instruction_o.op = ariane_pkg::PKTT16; 
+              {7'b001_1111, 3'b001} : instruction_o.op = ariane_pkg::PKTB16; 
+              //SIMD Unpacking instructions
+              {7'b101_0110, 3'b000} : begin
+                unique case ({instr.rtype.rs2})
+                    5'b01000 : instruction_o.op = ariane_pkg::SUNPKD810; 
+                    5'b01001 : instruction_o.op = ariane_pkg::SUNPKD820; 
+                    5'b01010 : instruction_o.op = ariane_pkg::SUNPKD830; 
+                    5'b01011 : instruction_o.op = ariane_pkg::SUNPKD831; 
+                    5'b10011 : instruction_o.op = ariane_pkg::SUNPKD832;                    
+                    5'b01100 : instruction_o.op = ariane_pkg::ZUNPKD810; 
+                    5'b01101 : instruction_o.op = ariane_pkg::ZUNPKD820; 
+                    5'b01110 : instruction_o.op = ariane_pkg::ZUNPKD830; 
+                    5'b01111 : instruction_o.op = ariane_pkg::ZUNPKD831; 
+                    5'b10111 : instruction_o.op = ariane_pkg::ZUNPKD832; 
+                    default : illegal_instr = 1'b1; // Catch-all for undefined instructions
+                endcase
+              end 
               
-       
+         // Reg-Imm SIMD instructions
+              //SIMD Shift immediate
+              //SRAI16
+              {7'b011_1000, 3'b000} : begin 
+                imm_select = IIMM;
+                unique case ({instr.rtype.rs2[4]})
+                     1'b0 : instruction_o.op = ariane_pkg::SRA16;                
+                     1'b1 : instruction_o.op = ariane_pkg::SRA16_U;                
+                    default : ;
+                endcase 
+              end
+              {7'b111_1010, 3'b000} : begin 
+              imm_select = IIMM;
+              instruction_o.op = ariane_pkg::UCLIP32; 
+              end            
+              //SRLI16
+              {7'b011_1001, 3'b000} : begin 
+                imm_select = IIMM;
+                unique case ({instr.rtype.rs2[4]})
+                     1'b0 : instruction_o.op = ariane_pkg::SRL16;                
+                     1'b1 : instruction_o.op = ariane_pkg::SRL16_U;                
+                    default : ;
+                endcase 
+              end
+              {7'b111_1010, 3'b000} : begin 
+              imm_select = IIMM;
+              instruction_o.op = ariane_pkg::UCLIP32; 
+              end 
+              //SLLI16
+              {7'b011_1010, 3'b000} : begin 
+                imm_select = IIMM;
+                instruction_o.op = ariane_pkg::SLL16;                
+              end
+              //SRAI8
+              {7'b011_1100, 3'b000} : begin 
+                imm_select = IIMM;
+                unique case ({instr.rtype.rs2[4:3]})
+                     2'b00 : instruction_o.op = ariane_pkg::SRA8;                
+                     2'b01 : instruction_o.op = ariane_pkg::SRA8_U;                
+                    default : ;
+                endcase 
+              end       
+              //SRLI8
+              {7'b011_1101, 3'b000} : begin 
+                imm_select = IIMM;
+                unique case ({instr.rtype.rs2[4:3]})
+                     2'b00 : instruction_o.op = ariane_pkg::SRL8;                
+                     2'b01 : instruction_o.op = ariane_pkg::SRL8_U;                
+                    default : ;
+                endcase 
+              end
+             //SLLI8
+              {7'b011_1110, 3'b000} : begin 
+                imm_select = IIMM;
+                instruction_o.op = ariane_pkg::SLL8;                
+              end
+         
+              //Clip 32 bits
+              {7'b111_0010, 3'b000} : begin 
+              imm_select = IIMM;
+              instruction_o.op = ariane_pkg::SCLIP32; 
+              end
+              {7'b111_1010, 3'b000} : begin 
+              imm_select = IIMM;
+              instruction_o.op = ariane_pkg::UCLIP32; 
+              end 
+              
+              
               default : illegal_instr = 1'b1; // Catch-all for undefined instructions
           endcase
         end
