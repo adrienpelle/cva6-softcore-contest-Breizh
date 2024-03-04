@@ -661,7 +661,10 @@ package ariane_pkg;
     PKTT16,
     //Clip 32 bits
     SCLIP32, 
-    UCLIP32
+    UCLIP32,
+    // SIMD Multiplications
+    SMUL8,
+    UMUL8
     
   } fu_op;
 

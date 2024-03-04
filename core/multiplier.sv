@@ -71,6 +71,7 @@ module multiplier
   logic                     mult_valid_q;
   fu_op operator_d, operator_q;
   logic [riscv::XLEN*2-1:0] mult_result_d, mult_result_q;
+  logic [riscv::XLEN*2-1:0] simd_mult_result_d, simd_mult_result_q;
 
   // control registers
   logic sign_a, sign_b;
@@ -81,7 +82,7 @@ module multiplier
   assign mult_trans_id_o = trans_id_q;
   assign mult_ready_o = 1'b1;
 
-  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR});
+  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8});
 
   // Sign Select MUX
   always_comb begin
@@ -89,7 +90,7 @@ module multiplier
     sign_b = 1'b0;
 
     // signed multiplication
-    if (operation_i == MULH) begin
+    if (operation_i == MULH | operation_i == SMUL8) begin
       sign_a = 1'b1;
       sign_b = 1'b1;
       // signed - unsigned multiplication
@@ -109,7 +110,32 @@ module multiplier
   ) * $signed(
       {operand_b_i[riscv::XLEN-1] & sign_b, operand_b_i}
   );
-
+  
+  //SIMD Multiplier 8 bits 
+  // Y[63:48] = A[31:24] * B[31:24] 
+  assign simd_mult_result_d[63:48] = $signed(
+      {operand_a_i[31] & sign_a, operand_a_i[31:24]}
+  ) * $signed(
+      {operand_b_i[31] & sign_b, operand_b_i[31:24]}
+  ); 
+  // Y[47:32] = A[23:16] * B[23:16] 
+  assign simd_mult_result_d[47:32] = $signed(
+      {operand_a_i[23] & sign_a, operand_a_i[23:16]}
+  ) * $signed(
+      {operand_b_i[23] & sign_b, operand_b_i[23:16]}
+  );
+  // Y[31:16] = A[15:8] * B[15:8] 
+  assign simd_mult_result_d[31:16] = $signed(
+      {operand_a_i[15] & sign_a, operand_a_i[15:8]}
+  ) * $signed(
+      {operand_b_i[15] & sign_b, operand_b_i[15:8]}
+  );  
+  // Y[15:0] = A[7:0] * B[7:0] 
+  assign simd_mult_result_d[15:0] = $signed(
+      {operand_a_i[7] & sign_a, operand_a_i[7:0]}
+  ) * $signed(
+      {operand_b_i[7] & sign_b, operand_b_i[7:0]}
+  );
 
   assign operator_d = operation_i;
 
@@ -120,6 +146,7 @@ module multiplier
       CLMUL:               result_o = clmul_q;
       CLMULH:              result_o = clmulr_q >> 1;
       CLMULR:              result_o = clmulr_q;
+      SMUL8, UMUL8 :       result_o = simd_mult_result_q[riscv::XLEN-1:0];
       // MUL performs an XLEN-bit×XLEN-bit multiplication and places the lower XLEN bits in the destination register
       default:             result_o = mult_result_q[riscv::XLEN-1:0];  // including MUL
     endcase
@@ -144,6 +171,7 @@ module multiplier
       trans_id_q    <= '0;
       operator_q    <= MUL;
       mult_result_q <= '0;
+      simd_mult_result_q <= '0;
     end else begin
       // Input silencing
       trans_id_q    <= trans_id_i;
@@ -151,6 +179,7 @@ module multiplier
       mult_valid_q  <= mult_valid;
       operator_q    <= operator_d;
       mult_result_q <= mult_result_d;
+      simd_mult_result_q <= simd_mult_result_d;
     end
   end
 endmodule
