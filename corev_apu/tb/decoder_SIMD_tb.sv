@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module decoder_tb
+module decoder_SIMD_tb
   import ariane_pkg::*;();
   // Inputs
   logic debug_req_i;
@@ -13,11 +13,11 @@ module decoder_tb
   logic [31:0] branch_predict_i;
   logic [31:0] ex_i;
   logic [31:0] irq_ctrl_i;
-  logic [2:0] priv_lvl_i;
+  riscv::priv_lvl_t priv_lvl_i;
   logic debug_mode_i;
-  logic [2:0] fs_i;
+  riscv::xs_t fs_i;
   logic [2:0] frm_i;
-  logic [2:0] vs_i;
+  riscv::xs_t vs_i;
   logic tvm_i;
   logic tw_i;
   logic tsr_i;
@@ -61,11 +61,11 @@ module decoder_tb
     branch_predict_i = 32'b0;
     ex_i = 32'b0;
     irq_ctrl_i = 32'b0;
-    priv_lvl_i = 3'b0;
+    priv_lvl_i = riscv::PRIV_LVL_U;
     debug_mode_i = 0;
-    fs_i = 3'b0;
+    fs_i = riscv::Off;
     frm_i = 3'b0;
-    vs_i = 3'b0;
+    vs_i = riscv::Off;
     tvm_i = 0;
     tw_i = 0;
     tsr_i = 0;
@@ -126,28 +126,28 @@ module decoder_tb
         $display("Fail RSUB16");
     end
     
-    #10; instruction_i = 32'h0211_01F7; // Test URADD8
+    #10; instruction_i = {7'b001_0100, 5'b00000, 5'b00001, 3'b000, 5'b00010, 7'b1110111}; // Test URADD8
     #10; if(instruction_o.op == ariane_pkg::URADD8) begin
         $display("Pass URADD8");
     end else begin
         $display("Fail URADD8");
     end
     
-    #10; instruction_i = 32'h2811_01F7; // Test URSUB8
+    #10; instruction_i = {7'b001_0101, 5'b00000, 5'b00001, 3'b000, 5'b00010, 7'b1110111}; // Test URSUB8
     #10; if(instruction_o.op == ariane_pkg::URSUB8) begin
         $display("Pass URSUB8");
     end else begin
         $display("Fail URSUB8");
     end
     
-    #10; instruction_i = 32'h2A11_01F7; // Test URADD16
+    #10; instruction_i = {7'b001_0000, 5'b00000, 5'b00001, 3'b000, 5'b00010, 7'b1110111}; // Test URADD16
     #10; if(instruction_o.op == ariane_pkg::URADD16) begin
         $display("Pass URADD16");
     end else begin
         $display("Fail URADD16");
     end
     
-    #10; instruction_i = 32'h2011_01F7; // Test URSUB16
+    #10; instruction_i = {7'b001_0001, 5'b00000, 5'b00001, 3'b000, 5'b00010, 7'b1110111}; // Test URSUB16
     #10; if(instruction_o.op == ariane_pkg::URSUB16) begin
         $display("Pass URSUB16");
     end else begin
@@ -348,6 +348,20 @@ module decoder_tb
         $display("Pass UKSTSA16");
     end else begin
         $display("Fail UKSTSA16");
+    end
+    
+        #10; instruction_i = {7'b101_0100, 5'b00000, 5'b00001, 3'b000, 5'b00010, 7'b1110111}; // Test SMUL8
+    #10; if(instruction_o.op == ariane_pkg::SMUL8) begin
+        $display("Pass SMUL8");
+    end else begin
+        $display("Fail SMUL8");
+    end       
+    
+     #10; instruction_i = {7'b101_1100, 5'b00000, 5'b00001, 3'b000, 5'b00010, 7'b1110111}; // Test UMUL8
+    #10; if(instruction_o.op == ariane_pkg::UMUL8) begin
+        $display("Pass UMUL8");
+    end else begin
+        $display("Fail UMUL8");
     end
 
 //    #10;
