@@ -70,6 +70,13 @@ module decoder_SIMD_tb
     tw_i = 0;
     tsr_i = 0;
 
+    #10; instruction_i = 32'hC820_81F7; // Test SMAQA C820_81F7
+    #10;if(instruction_o.op == ariane_pkg::SMAQA) begin
+        $display("Pass Decoder SMAQA.");
+    end else begin
+        $display("Fail Decoder SMAQA.");
+    end
+
     #10; instruction_i = 32'h4011_01F7; // Test ADD16 
     #10; if(instruction_o.op == ariane_pkg::ADD16) begin
         $display("Pass ADD16");

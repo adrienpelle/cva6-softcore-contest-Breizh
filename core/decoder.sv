@@ -1194,7 +1194,7 @@ module decoder
                               (instr.rtype.funct7 == 7'b110_0100)) ? MULT : ALU;
           instruction_o.rs1[4:0] = instr.rtype.rs1;
           instruction_o.rs2[4:0] = instr.rtype.rs2;
-          instruction_o.rd[4:0] = instr.rtype.rd;
+          instruction_o.rd[4:0]  = instr.rtype.rd;
           unique case ({instr.rtype.funct7, instr.rtype.funct3})
               // Packed SIMD instructions
               {7'b010_0000, 3'b000} : instruction_o.op = ariane_pkg::ADD16;    // ADD16
