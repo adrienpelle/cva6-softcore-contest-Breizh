@@ -1304,54 +1304,46 @@ module decoder
          // Reg-Imm SIMD instructions
               //SIMD Shift immediate
               //SRAI16
-              {7'b011_1000, 3'b000} : begin 
-                imm_select = IIMM;
-                unique case ({instr.rtype.rs2[4]})
-                     1'b0 : instruction_o.op = ariane_pkg::SRA16;                
-                     1'b1 : instruction_o.op = ariane_pkg::SRA16_U;                
-                    default : ;
-                endcase 
-              end
-              {7'b111_1010, 3'b000} : begin 
-              imm_select = IIMM;
-              instruction_o.op = ariane_pkg::UCLIP32; 
-              end            
+//              {7'b011_1000, 3'b000} : begin 
+//                imm_select = IIMM;
+//                unique case ({instr.rtype.rs2[4]})
+//                     1'b0 : instruction_o.op = ariane_pkg::SRA16;                
+//                     1'b1 : instruction_o.op = ariane_pkg::SRA16_U;                
+//                    default : ;
+//                endcase 
+//              end         
               //SRLI16
-              {7'b011_1001, 3'b000} : begin 
-                imm_select = IIMM;
-                unique case ({instr.rtype.rs2[4]})
-                     1'b0 : instruction_o.op = ariane_pkg::SRL16;                
-                     1'b1 : instruction_o.op = ariane_pkg::SRL16_U;                
-                    default : ;
-                endcase 
-              end
-              {7'b111_1010, 3'b000} : begin 
-              imm_select = IIMM;
-              instruction_o.op = ariane_pkg::UCLIP32; 
-              end 
+//              {7'b011_1001, 3'b000} : begin 
+//                imm_select = IIMM;
+//                unique case ({instr.rtype.rs2[4]})
+//                     1'b0 : instruction_o.op = ariane_pkg::SRL16;                
+//                     1'b1 : instruction_o.op = ariane_pkg::SRL16_U;                
+//                    default : ;
+//                endcase 
+//              end
               //SLLI16
               {7'b011_1010, 3'b000} : begin 
                 imm_select = IIMM;
                 instruction_o.op = ariane_pkg::SLL16;                
               end
               //SRAI8
-              {7'b011_1100, 3'b000} : begin 
-                imm_select = IIMM;
-                unique case ({instr.rtype.rs2[4:3]})
-                     2'b00 : instruction_o.op = ariane_pkg::SRA8;                
-                     2'b01 : instruction_o.op = ariane_pkg::SRA8_U;                
-                    default : ;
-                endcase 
-              end       
-              //SRLI8
-              {7'b011_1101, 3'b000} : begin 
-                imm_select = IIMM;
-                unique case ({instr.rtype.rs2[4:3]})
-                     2'b00 : instruction_o.op = ariane_pkg::SRL8;                
-                     2'b01 : instruction_o.op = ariane_pkg::SRL8_U;                
-                    default : ;
-                endcase 
-              end
+//              {7'b011_1100, 3'b000} : begin 
+//                imm_select = IIMM;
+//                unique case ({instr.rtype.rs2[4:3]})
+//                     2'b00 : instruction_o.op = ariane_pkg::SRA8;                
+//                     2'b01 : instruction_o.op = ariane_pkg::SRA8_U;                
+//                    default : ;
+//                endcase 
+//              end       
+//              //SRLI8
+//              {7'b011_1101, 3'b000} : begin 
+//                imm_select = IIMM;
+//                unique case ({instr.rtype.rs2[4:3]})
+//                     2'b00 : instruction_o.op = ariane_pkg::SRL8;                
+//                     2'b01 : instruction_o.op = ariane_pkg::SRL8_U;                
+//                    default : ;
+//                endcase 
+//              end
              //SLLI8
               {7'b011_1110, 3'b000} : begin 
                 imm_select = IIMM;
