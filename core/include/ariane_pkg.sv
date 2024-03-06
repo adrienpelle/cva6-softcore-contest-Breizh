@@ -360,7 +360,7 @@ package ariane_pkg;
   // EX Stage
   // ---------------
 
-  typedef enum logic [7:0] {  // basic ALU op
+  typedef enum logic [8:0] {  // basic ALU op
     ADD,
     SUB,
     ADDW,
@@ -634,6 +634,34 @@ package ariane_pkg;
     SCMPLE8,
     UCMPLT8,
     UCMPLE8,
+    //SIMD Miscellaneous instructions
+    SMIN8,
+    UMIN8,
+    SMAX8,
+    UMAX8,
+    SMIN16,
+    UMIN16,
+    SMAX16,
+    UMAX16,
+    //SIMD Unpack intsructions 
+    SUNPKD810,
+    SUNPKD820,
+    SUNPKD830,
+    SUNPKD831,
+    SUNPKD832,
+    ZUNPKD810,
+    ZUNPKD820,
+    ZUNPKD830,
+    ZUNPKD831,
+    ZUNPKD832,
+    //SIMD Pack instructions 
+    PKBB16,
+    PKBT16,
+    PKTB16,
+    PKTT16,
+    //Clip 32 bits
+    SCLIP32, 
+    UCLIP32,
     // SIMD Multiplications
     SMUL8,
     UMUL8,
