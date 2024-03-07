@@ -1,24 +1,24 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <>
+#include <stdint.h>
 
 int main(void)
 {
+    printf("Begin\n");
 
-    // Inline assembly for the add8 operation
-    int a, b, r;
-    r = __rv__add8(a,b);
-   printf("XXXXXX");		
-   printf("result = %x", r); 
-   printf("YYYYYY");
-   //wait end of uart frame
-   volatile int c, d;  
-   for (c = 1; c <= 32767; c++)
-    for (d = 1; d <= 32767; d++)
-     {}
-          
-  return(0);
+    // SMAQA test : CREATE_RVP_INTRINSIC (intXLEN_t, smaqa, intXLEN_t, uintXLEN_t, uintXLEN_t)
+    uint32_t operands[2] = {0x01020304, 0x05060708};
+    int32_t accu = 0x00000009;
+    int smaqa_result;
+
+    asm volatile(
+        "smaqa %[accu], %[a], %[b]\n"
+        : [accu] "+r"(accu)
+        : [a] "r"(operands[0]), [b] "r"(operands[1])
+    );
+
+    smaqa_result = (int)accu;
+
+    printf("SMAQA Result = %d\n", smaqa_result);
+
+    return 0;
 }
-
-
-

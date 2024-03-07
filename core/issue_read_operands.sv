@@ -238,7 +238,7 @@ module issue_read_operands
     if (CVA6Cfg.NrRgprPorts == 3) begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} :
-          issue_instr_i.op == OFFLOAD ? operand_c_regfile : issue_instr_i.result;
+          ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA)) ? operand_c_regfile : issue_instr_i.result;
     end else begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} : issue_instr_i.result;
@@ -440,7 +440,7 @@ module issue_read_operands
   logic [CVA6Cfg.NrCommitPorts-1:0]                  we_pack;
 
   if (CVA6Cfg.NrRgprPorts == 3) begin : gen_rs3
-    assign raddr_pack = {issue_instr_i.result[4:0], issue_instr_i.rs2[4:0], issue_instr_i.rs1[4:0]};
+    assign raddr_pack = {issue_instr_i.rd[4:0], issue_instr_i.rs2[4:0], issue_instr_i.rs1[4:0]};
   end else begin : gen_no_rs3
     assign raddr_pack = {issue_instr_i.rs2[4:0], issue_instr_i.rs1[4:0]};
   end
@@ -580,7 +580,7 @@ module issue_read_operands
 
   //pragma translate_off
   initial begin
-    assert (CVA6Cfg.NrRgprPorts == 2 || (CVA6Cfg.NrRgprPorts == 3 && CVA6Cfg.CvxifEn))
+    assert (CVA6Cfg.NrRgprPorts == 2 || (CVA6Cfg.NrRgprPorts == 3)) //&& CVA6Cfg.CvxifEn))
     else
       $fatal(
           1,

@@ -221,27 +221,27 @@ module alu
 
     // actual adder
     //adder 0 
-    assign add0 = $unsigned(adder_in_a0) + $unsigned(adder_in_b0) + {{8{0}}, (simd_adder_op_b_negate | op_b_negate_down)};
+    assign add0 = $unsigned(adder_in_a0) + $unsigned(adder_in_b0) + {{8{1'b0}}, (simd_adder_op_b_negate | op_b_negate_down)};
     assign c_out0 = add0[8];
     assign u_overflow0 = add0[8]^(simd_adder_op_b_negate | op_b_negate_down);
     assign p_overflow0 = (~fu_data_i.operand_a[7]) & (~fu_data_i.operand_b[7]^(simd_adder_op_b_negate | op_b_negate_down)) & add0[7];
     assign n_overflow0 = fu_data_i.operand_a[7] & (fu_data_i.operand_b[7]^(simd_adder_op_b_negate | op_b_negate_down)) & (~add0[7]);
 
     //adder 1
-    assign add1 = $unsigned(adder_in_a1) + $unsigned(adder_in_b1) + {{8{0}}, ((simd_adder_op_b_negate | op_b_negate_down) & ~vsize)  | (c_out0 & vsize)};
+    assign add1 = $unsigned(adder_in_a1) + $unsigned(adder_in_b1) + {{8{1'b0}}, ((simd_adder_op_b_negate | op_b_negate_down) & ~vsize)  | (c_out0 & vsize)};
     assign c_out1 = add1[8];
     assign u_overflow1 = add1[8]^(simd_adder_op_b_negate | op_b_negate_down);
     assign p_overflow1 = (~fu_data_i.operand_a[15]) & ((~fu_data_i.operand_b[15])^(simd_adder_op_b_negate | op_b_negate_down)) & add1[7];
     assign n_overflow1 = fu_data_i.operand_a[15] & (fu_data_i.operand_b[15]^(simd_adder_op_b_negate | op_b_negate_down)) & (~add1[7]);
 
     //adder 2
-    assign add2 = $unsigned(adder_in_a2) + $unsigned(adder_in_b2) + {{8{0}}, (simd_adder_op_b_negate | op_b_negate_up)};
+    assign add2 = $unsigned(adder_in_a2) + $unsigned(adder_in_b2) + {{8{1'b0}}, (simd_adder_op_b_negate | op_b_negate_up)};
     assign c_out2 = add2[8];
     assign u_overflow2 = add2[8]^(simd_adder_op_b_negate | op_b_negate_up);
     assign p_overflow2 = (~fu_data_i.operand_a[23]) & ((~fu_data_i.operand_b[23])^(simd_adder_op_b_negate | op_b_negate_up)) & add2[7];
     assign n_overflow2 = fu_data_i.operand_a[23] & (fu_data_i.operand_b[23]^(simd_adder_op_b_negate | op_b_negate_up)) & (~add2[7]);
     //adder 3
-    assign add3 = $unsigned(adder_in_a3) + $unsigned(adder_in_b3) + {{8{0}}, ((simd_adder_op_b_negate | op_b_negate_up) & ~vsize) | (c_out2 & vsize)};
+    assign add3 = $unsigned(adder_in_a3) + $unsigned(adder_in_b3) + {{8{1'b0}}, ((simd_adder_op_b_negate | op_b_negate_up) & ~vsize) | (c_out2 & vsize)};
     assign c_out3 = add3[8];
     assign u_overflow3 = add3[8]^(simd_adder_op_b_negate | op_b_negate_up);
     assign p_overflow3 = (~fu_data_i.operand_a[31]) & ((~fu_data_i.operand_b[31])^(simd_adder_op_b_negate | op_b_negate_up)) & add3[7];
@@ -615,7 +615,7 @@ module alu
     logic [32:0]   limit_clip;
     logic [32:0]   n_limit_clip;
     
-    assign limit_clip = {0, 2 **(fu_data_i.operand_b[4:0])};
+    assign limit_clip = {1'b0, 2 **(fu_data_i.operand_b[4:0])};
     assign n_limit_clip = ~limit_clip + 1;
     
     assign p_ov = ($signed({fu_data_i.operand_a[31],fu_data_i.operand_a}) >
