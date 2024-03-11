@@ -1197,6 +1197,7 @@ module decoder
           instruction_o.rs1[4:0] = instr.rtype.rs1;
           instruction_o.rs2[4:0] = instr.rtype.rs2;
           instruction_o.rd[4:0]  = instr.rtype.rd;
+          imm_select             = RS3;
           unique case ({instr.rtype.funct7, instr.rtype.funct3})
           
           // Reg-Reg SIMD instructions 
