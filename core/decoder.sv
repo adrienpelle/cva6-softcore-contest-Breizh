@@ -1187,6 +1187,27 @@ module decoder
           instruction_o.rd[4:0] = instr.utype.rd;
         end
         
+            
+        // ----------------------------------
+        // Custom0 Instructions
+        // ----------------------------------
+    
+        riscv::OpcodeCustom0: begin
+          instruction_o.fu =  (instr.rtype.funct7 == 7'b110_0100) ? MULT : ALU;
+          instruction_o.rs1[4:0] = instr.rtype.rs1;
+          instruction_o.rs2[4:0] = instr.rtype.rs2;
+          instruction_o.rd[4:0]  = instr.rtype.rd;
+          unique case ({instr.rtype.funct7, instr.rtype.funct3})
+          
+          // Reg-Reg SIMD instructions 
+          
+              // SIMD SMAQA Multiply accumulate Rd[31:0] = Rd[31:0] + Rs1[7:0]*Rs2[7:0] + Rs1[15:8]*Rs2[15:8] + Rs1[23:16]*Rs2[23:16] + Rs1[31:24]*Rs2[31:24] 
+              {7'b110_0100, 3'b000} : instruction_o.op = ariane_pkg::SMAQA;    //SMAQA
+              default : illegal_instr = 1'b1; // Catch-all for undefined instructions
+          endcase
+        end
+        
+        
         // ----------------------------------
         // Packed SIMD Instructions
         // ----------------------------------
@@ -1361,9 +1382,12 @@ module decoder
               end 
               
               
+              
               default : illegal_instr = 1'b1; // Catch-all for undefined instructions
           endcase
         end
+        
+        
 
         default: illegal_instr = 1'b1;
       endcase
