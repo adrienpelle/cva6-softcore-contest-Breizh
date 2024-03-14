@@ -43,7 +43,7 @@ BINUTILS_CONFIGURE_OPTS="\
 # GCC
 GCC_DIR=src/gcc
 GCC_REPO=https://github.com/adrienpelle/riscv-gcc
-GCC_COMMIT=riscv-gcc-p-ext
+GCC_COMMIT=riscv-gcc-p-ext-custom
 GCC_CONFIGURE_OPTS="\
 	--prefix=$PREFIX \
 	--target=$TARGET \
