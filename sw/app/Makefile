@@ -59,7 +59,9 @@ bmarks = \
 	testsimd2 \
 	testsimd3 \
 	testsimd4 \
-	custom_test
+	custom_test \
+	mt-matmul \
+	custom-mt-matmul
 #--------------------------------------------------------------------
 # Build rules
 #--------------------------------------------------------------------
