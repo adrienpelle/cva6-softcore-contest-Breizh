@@ -92,10 +92,14 @@ module multiplier
     sign_b = 1'b0;
 
     // signed multiplication
-    if (operation_i == MULH | operation_i == SMUL8| operation_i == SMAQA) begin
+    if (operation_i == MULH | operation_i == SMUL8) begin
       sign_a = 1'b1;
       sign_b = 1'b1;
-      // signed - unsigned multiplication
+    // unsigned - unsigned multiplication  
+    end else if (operation_i == SMAQA) begin
+      sign_a = 1'b0;
+      sign_b = 1'b1;
+    // signed - unsigned multiplication
     end else if (operation_i == MULHSU) begin
       sign_a = 1'b1;
       // unsigned multiplication
@@ -141,15 +145,15 @@ module multiplier
   
   // SIMD SMAQA 8 bits 
   assign simd_smaqa_result_d = $signed(
-      {simd_mult_result_d[63] & sign_a, simd_mult_result_d[63:48]}
+      {simd_mult_result_d[63], simd_mult_result_d[63:48]}
   ) + $signed(
-      {simd_mult_result_d[47] & sign_a, simd_mult_result_d[47:32]}
+      {simd_mult_result_d[47], simd_mult_result_d[47:32]}
   ) + $signed(
-      {simd_mult_result_d[31] & sign_a, simd_mult_result_d[31:16]}
+      {simd_mult_result_d[31], simd_mult_result_d[31:16]}
   ) + $signed(
-      {simd_mult_result_d[15] & sign_a, simd_mult_result_d[15:0]}
+      {simd_mult_result_d[15], simd_mult_result_d[15:0]}
   ) + $signed(
-      {operand_c_i[31] & sign_a, operand_c_i}
+      {operand_c_i[31], operand_c_i}
   );  
   
   assign operator_d = operation_i;

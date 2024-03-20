@@ -61,7 +61,8 @@ bmarks = \
 	testsimd4 \
 	custom_test \
 	mt-matmul \
-	custom-mt-matmul
+	custom-mt-matmul \
+	simd_mnist
 #--------------------------------------------------------------------
 # Build rules
 #--------------------------------------------------------------------

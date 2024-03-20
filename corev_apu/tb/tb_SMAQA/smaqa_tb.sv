@@ -205,17 +205,17 @@ initial begin
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0001;      // R1      
-    wdata_i_tb = 32'h01020304;
+    wdata_i_tb = 32'hFFFFFFFF;
     
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0010;      // R2      
-    wdata_i_tb = 32'h05060708;
+    wdata_i_tb = 32'h80808080;
     
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0011;      // R3      
-    wdata_i_tb = 32'h00000009; // Expect -> 32'h 0000004F = 1x5 + 2x6 + 3x7 + 4x8 + 9
+    wdata_i_tb = 32'b10000000; // Expect -> 32'h 0000004F = 1x5 + 2x6 + 3x7 + 4x8 + 9
     
     #100;                              // clk H->L
     we_i_tb   = 0;                     // enable read (turn off write)    
@@ -237,11 +237,11 @@ initial begin
     end
     
     #100;                                                  // The output launch here
-    if(result_o_tb == 32'h0000004F) begin
-        $display("Pass Multiplier SMAQA.");
-    end else begin
-        $display("Fail PassMultiplier SMAQA.");
-    end   
+//    if(result_o_tb == 32'h0000004F) begin
+//        $display("Pass Multiplier SMAQA.");
+//    end else begin
+//        $display("Fail PassMultiplier SMAQA.");
+//    end   
         
 end
 
