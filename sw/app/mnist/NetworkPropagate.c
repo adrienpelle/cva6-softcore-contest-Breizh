@@ -9,6 +9,10 @@
 #include "fc1.h"
 #include "fc2.h"
 
+//#define BENCHMARK
+#ifdef BENCHMARK
+#include "benchmark.h"
+#endif
 
 static DATA_T mem[MEMORY_SIZE];
 

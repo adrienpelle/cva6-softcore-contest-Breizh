@@ -11,6 +11,11 @@
 
 #include "rvp_intrinsic.h"
 
+//#define BENCHMARK
+#ifdef BENCHMARK
+#include "benchmark.h"
+#endif
+
 
 static DATA_T mem[MEMORY_SIZE];
 
@@ -469,7 +474,7 @@ static void fccellPropagateUDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                macsOnRange(
+                SIMDmacsOnRange(
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);
@@ -553,7 +558,7 @@ static void fccellPropagateDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                macsOnRange(
+                macsOnRange(                                      //Unaligned mem access leads to segfault with SIMDmacsOnRange
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);
