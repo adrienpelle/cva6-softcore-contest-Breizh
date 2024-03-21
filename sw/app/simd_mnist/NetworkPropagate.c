@@ -37,22 +37,40 @@ static int clamp(int v, int lo, int hi) {
 }
 
 
-static void SIMDmacsOnRange(const UDATA_T* __restrict inputs,
+static void SIMD32macsOnRange(const UDATA_T* __restrict inputs,
                         const WDATA_T* __restrict weights,
                         SUM_T* __restrict weightedSum,
                         int nb_iterations)
 {
-        int32_t* inputs_ptr = inputs;
-        int32_t* weights_ptr = weights;
-        SUM_T sum = 0;
+        uint8x4_t* inputs_ptr = inputs;
+        int8x4_t* weights_ptr = weights;
         for (int iter = 0; iter < nb_iterations/4; ++iter) {
             asm volatile(
             "smaqa %[result], %[a], %[b]\n"
-            : [result] "+r"(sum)
+            : [result] "+r"(*weightedSum)
             : [a] "r"(inputs_ptr[iter]), [b] "r"(weights_ptr[iter])
             ); 
         }
-        *weightedSum += sum;
+}
+
+static void SIMD16macsOnRange(const UDATA_T* __restrict inputs,   //Doesn't work for some reason
+                        const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+    SUM_T sum = *weightedSum;
+    int16_t* inputs_ptr = inputs;
+    int16_t* weights_ptr = weights;
+    int32_t in8x4; 
+    int32_t w8x4;
+    in8x4 = __rv_pkbb16(inputs_ptr[0], inputs_ptr[1]);
+    w8x4 = __rv_pkbb16(weights_ptr[0], weights_ptr[1]);
+    asm volatile(
+        "smaqa %[result], %[a], %[b]\n"
+        : [result] "+r"(sum)
+        : [a] "r"(in8x4), [b] "r"(w8x4)
+        ); 
+    *weightedSum = sum;
 }
 
 static void testSIMDmacsOnRange(const UDATA_T* __restrict inputs,
@@ -63,33 +81,38 @@ static void testSIMDmacsOnRange(const UDATA_T* __restrict inputs,
     //printf("Inputs_addr= %x\n", inputs);
     SUM_T weightedSumGolden = *weightedSum;
     SUM_T sum = 0;
-    int32_t* inputs_ptr = inputs;
-    int32_t* weights_ptr = weights;
+    int16_t* inputs_ptr = inputs;
+    int16_t* weights_ptr = weights;
+    int32_t in8x4; 
+    int32_t w8x4;
         for (int iter = 0; iter < nb_iterations; ++iter) {
         //printf("iter= %d\n", iter);
         weightedSumGolden += inputs[iter] * weights[iter];
-         if(iter == 3){
+        } 
             SUM_T sumBefore = sum;
+            in8x4 = __rv_pkbb16(inputs_ptr[0], inputs_ptr[1]);
+            w8x4 = __rv_pkbb16(weights_ptr[0], weights_ptr[1]);
              asm volatile(
             "smaqa %[result], %[a], %[b]\n"
             : [result] "+r"(sum)
-            : [a] "r"(inputs_ptr[0]), [b] "r"(0)
+            : [a] "r"(in8x4), [b] "r"(w8x4)
             ); 
             *weightedSum += sum;
-            /* if(weightedSumGolden != *weightedSum){
+            if(weightedSumGolden != *weightedSum){
+                int iter = 3;
                 printf("in0 = %d, in1=%d, in2=%d, in3=%d\n", inputs[iter-3], inputs[iter-2], inputs[iter-1], inputs[iter]);
-                printf("SMAQAin = %x\n", inputs_ptr[0]);
+                printf("SMAQAin = %x\n", in8x4);
                 printf("w0 = %d, w1=%d, w2=%d, w3=%d\n", weights[iter-3], weights[iter-2], weights[iter-1], weights[iter]);
-                printf("SMAQAw = %x\n", weights_ptr[0]);
+                printf("SMAQAw = %x\n", w8x4);
                 printf("Golden Result  = %d\n", weightedSumGolden );
                 printf("Real Result before = %d\n", sumBefore);
                 printf("Real Result  = %d\n", *weightedSum);
                 return;
             }else{
                 printf("Test Passed\n");
-            } */
-        } 
-    } 
+            }
+         
+  
      
 }
 
@@ -231,7 +254,7 @@ static void SIMDconvcellPropagate1(
                             && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
-                            SIMDmacsOnRange(
+                            macsOnRange(
                             inputs + iOffset, 
                             weights + wOffset, 
                             &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
@@ -272,7 +295,7 @@ static void SIMDconvcellPropagate1(
     }
 }
 
-static void convcellPropagate1(
+static void SIMDconvcellPropagate2(
     const UDATA_T* __restrict inputs,
     UDATA_T* __restrict outputs,
     const BDATA_T* __restrict biasses,
@@ -374,14 +397,10 @@ static void convcellPropagate1(
                             && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
-                     
-                     macsOnRange(
+                            SIMD32macsOnRange(
                             inputs + iOffset, 
                             weights + wOffset, 
                             &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
-                        
-        
-
                     }
                     else {
                         for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
@@ -474,7 +493,7 @@ static void fccellPropagateUDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                SIMDmacsOnRange(
+                SIMD32macsOnRange(
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);
@@ -558,7 +577,7 @@ static void fccellPropagateDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                macsOnRange(                                      //Unaligned mem access leads to segfault with SIMDmacsOnRange
+                macsOnRange(                                      //Unaligned mem access leads to segfault with SIMD32macsOnRange
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);
@@ -646,7 +665,7 @@ void propagate(const UDATA_T* inputs, Target_T* outputs, UDATA_T* maxPropagate_v
     const Tick_T start_conv1 = tick();
 #endif
 
-    convcellPropagate1(inputs , conv1_output, conv1_biases, conv1_weights, 8,
+    SIMDconvcellPropagate1(inputs , conv1_output, conv1_biases, conv1_weights, 8,
     CONV1_NB_CHANNELS, CONV1_CHANNELS_HEIGHT, CONV1_CHANNELS_WIDTH, CONV1_NB_OUTPUTS, CONV1_OUTPUTS_HEIGHT, 
     CONV1_OUTPUTS_WIDTH, CONV1_PADDING_Y, CONV1_PADDING_X, CONV1_STRIDE_Y, CONV1_STRIDE_X, CONV1_KERNEL_HEIGHT, 
     CONV1_KERNEL_WIDTH, CONV1_ACTIVATION, ENV_MEM_CONT_OFFSET, ENV_MEM_CONT_SIZE, ENV_MEM_WRAP_OFFSET, 
@@ -676,7 +695,7 @@ void propagate(const UDATA_T* inputs, Target_T* outputs, UDATA_T* maxPropagate_v
     const Tick_T start_conv2 = tick();
 #endif
 
-    SIMDconvcellPropagate1(conv1_output , conv2_output, conv2_biases, conv2_weights, 8,
+    SIMDconvcellPropagate2(conv1_output , conv2_output, conv2_biases, conv2_weights, 8,
     CONV2_NB_CHANNELS, CONV2_CHANNELS_HEIGHT, CONV2_CHANNELS_WIDTH, 
     CONV2_NB_OUTPUTS, CONV2_OUTPUTS_HEIGHT, CONV2_OUTPUTS_WIDTH, 
     CONV2_PADDING_Y, CONV2_PADDING_X, CONV2_STRIDE_Y, CONV2_STRIDE_X, 
