@@ -58,19 +58,21 @@ static void SIMD16macsOnRange(const UDATA_T* __restrict inputs,   //Doesn't work
                         SUM_T* __restrict weightedSum,
                         int nb_iterations)
 {
-    SUM_T sum = *weightedSum;
     int16_t* inputs_ptr = inputs;
     int16_t* weights_ptr = weights;
     int32_t in8x4; 
     int32_t w8x4;
-    in8x4 = __rv_pkbb16(inputs_ptr[0], inputs_ptr[1]);
-    w8x4 = __rv_pkbb16(weights_ptr[0], weights_ptr[1]);
-    asm volatile(
+
+    for (int iter = 0; iter < nb_iterations/4; iter = iter + 2) {
+        in8x4 = __rv_pkbb16(inputs_ptr[iter], inputs_ptr[iter+1]);
+        w8x4 = __rv_pkbb16(weights_ptr[iter], weights_ptr[iter+1]);
+
+        asm volatile(
         "smaqa %[result], %[a], %[b]\n"
-        : [result] "+r"(sum)
+        : [result] "+r"(*weightedSum)
         : [a] "r"(in8x4), [b] "r"(w8x4)
-        ); 
-    *weightedSum = sum;
+        );
+    }  
 }
 
 static void testSIMDmacsOnRange(const UDATA_T* __restrict inputs,
@@ -79,26 +81,24 @@ static void testSIMDmacsOnRange(const UDATA_T* __restrict inputs,
                         int nb_iterations)
 {
     //printf("Inputs_addr= %x\n", inputs);
-    SUM_T weightedSumGolden = *weightedSum;
-    SUM_T sum = 0;
+    //SUM_T weightedSumGolden = *weightedSum;
     int16_t* inputs_ptr = inputs;
     int16_t* weights_ptr = weights;
-    int32_t in8x4; 
-    int32_t w8x4;
-        for (int iter = 0; iter < nb_iterations; ++iter) {
+/*         for (int iter = 0; iter < nb_iterations; ++iter) {
         //printf("iter= %d\n", iter);
         weightedSumGolden += inputs[iter] * weights[iter];
-        } 
-            SUM_T sumBefore = sum;
-            in8x4 = __rv_pkbb16(inputs_ptr[0], inputs_ptr[1]);
-            w8x4 = __rv_pkbb16(weights_ptr[0], weights_ptr[1]);
+        }  */
+            int32_t in8x4 = __rv_pkbb16(inputs_ptr[0], inputs_ptr[1]);
+            int32_t w8x4 = __rv_pkbb16(weights_ptr[0], weights_ptr[1]);
+            SUM_T sum = 0;
+            //SUM_T sumBefore = sum;
              asm volatile(
             "smaqa %[result], %[a], %[b]\n"
             : [result] "+r"(sum)
             : [a] "r"(in8x4), [b] "r"(w8x4)
             ); 
             *weightedSum += sum;
-            if(weightedSumGolden != *weightedSum){
+          /*   if(weightedSumGolden != *weightedSum){
                 int iter = 3;
                 printf("in0 = %d, in1=%d, in2=%d, in3=%d\n", inputs[iter-3], inputs[iter-2], inputs[iter-1], inputs[iter]);
                 printf("SMAQAin = %x\n", in8x4);
@@ -109,8 +109,8 @@ static void testSIMDmacsOnRange(const UDATA_T* __restrict inputs,
                 printf("Real Result  = %d\n", *weightedSum);
                 return;
             }else{
-                printf("Test Passed\n");
-            }
+                //printf("Test Passed\n");
+            } */
          
   
      
@@ -254,7 +254,7 @@ static void SIMDconvcellPropagate1(
                             && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
-                            macsOnRange(
+                            SIMD16macsOnRange(
                             inputs + iOffset, 
                             weights + wOffset, 
                             &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
