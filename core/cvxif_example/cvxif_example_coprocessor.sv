@@ -44,6 +44,12 @@ module cvxif_example_coprocessor
   logic               x_result_valid_o;
   logic               x_result_ready_i;
   x_result_t          x_result_o;
+  //SMAQA Signals 
+  riscv::xlen_t                     operand_a_i;
+  riscv::xlen_t                     operand_b_i;
+  riscv::xlen_t                     operand_c_i;
+  logic [riscv::XLEN*2-1:0] simd_mult_result_d;
+  logic [riscv::XLEN:0] simd_smaqa_result_d;
 
   assign x_compressed_valid_i            = cvxif_req_i.x_compressed_valid;
   assign x_compressed_req_i              = cvxif_req_i.x_compressed_req;
@@ -99,6 +105,46 @@ module cvxif_example_coprocessor
                                        // so we can't receive anything else
   assign req_i.req = x_issue_req_i;
   assign req_i.resp = x_issue_resp_o;
+    
+  // SIMD Multiplier 8 bits 
+  // Y[63:48] = A[31:24] * B[31:24] 
+  assign simd_mult_result_d[63:48] = $signed(
+      {req_o.req.rs[0][31] & 1'b0, req_o.req.rs[0][31:24]}
+  ) * $signed(
+      {req_o.req.rs[1][31] & 1'b1, req_o.req.rs[1][31:24]}
+  ); 
+  // Y[47:32] = A[23:16] * B[23:16] 
+  assign simd_mult_result_d[47:32] = $signed(
+      {req_o.req.rs[0][23] & 1'b0, req_o.req.rs[0][23:16]}
+  ) * $signed(
+      {req_o.req.rs[1][23] & 1'b1, req_o.req.rs[1][23:16]}
+  );
+  // Y[31:16] = A[15:8] * B[15:8] 
+  assign simd_mult_result_d[31:16] = $signed(
+      {req_o.req.rs[0][15] & 1'b0, req_o.req.rs[0][15:8]}
+  ) * $signed(
+      {req_o.req.rs[1][15] & 1'b1, req_o.req.rs[1][15:8]}
+  );  
+  // Y[15:0] = A[7:0] * B[7:0] 
+  assign simd_mult_result_d[15:0] = $signed(
+      {req_o.req.rs[0][7] & 1'b0, req_o.req.rs[0][7:0]}
+  ) * $signed(
+      {req_o.req.rs[1][7] & 1'b1, req_o.req.rs[1][7:0]}
+  );
+  
+  // SIMD SMAQA 8 bits 
+  assign simd_smaqa_result_d = $signed(
+      {simd_mult_result_d[63], simd_mult_result_d[63:48]}
+  ) + $signed(
+      {simd_mult_result_d[47], simd_mult_result_d[47:32]}
+  ) + $signed(
+      {simd_mult_result_d[31], simd_mult_result_d[31:16]}
+  ) + $signed(
+      {simd_mult_result_d[15], simd_mult_result_d[15:0]}
+  ) + $signed(
+      {req_o.req.rs[2][31], req_o.req.rs[2]}
+  ); 
+  
 
   always_ff @(posedge clk_i or negedge rst_ni) begin : regs
     if (!rst_ni) begin
@@ -143,7 +189,7 @@ module cvxif_example_coprocessor
   );
 
   always_comb begin
-    x_result_o.data    = req_o.req.rs[0] + req_o.req.rs[1] + (X_NUM_RS == 3 ? req_o.req.rs[2] : 0);
+    x_result_o.data    = simd_smaqa_result_d;
     x_result_valid_o   = (c == x_result_o.data[3:0]) && ~fifo_empty ? 1 : 0;
     x_result_o.id      = req_o.req.id;
     x_result_o.rd      = req_o.req.instr[11:7];

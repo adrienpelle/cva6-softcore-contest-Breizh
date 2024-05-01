@@ -72,7 +72,7 @@ package ariane_pkg;
   localparam REG_ADDR_SIZE = 5;
 
   // Read ports for general purpose register files
-  localparam NR_RGPR_PORTS = 2;
+  localparam NR_RGPR_PORTS = 3;
 
   // static debug hartinfo
   // debug causes
