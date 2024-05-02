@@ -75,6 +75,37 @@ static void SIMD16macsOnRange(const UDATA_T* __restrict inputs,   //Doesn't work
     }  
 }
 
+static void SIMD16macsOnRangeFC2(const UDATA_T* __restrict inputs,   //Doesn't work for some reason
+                        const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+    int16_t* inputs_ptr = inputs;
+    int16_t* weights_ptr = weights;
+    int32_t in8x4; 
+    int32_t w8x4;
+
+    for (int iter = 0; iter < (nb_iterations)/4 + 4; iter = iter + 2) {
+        in8x4 = __rv_pkbb16(inputs_ptr[iter], inputs_ptr[iter+1]);
+        w8x4 = __rv_pkbb16(weights_ptr[iter], weights_ptr[iter+1]);
+
+        asm volatile(
+        "smaqa %[result], %[a], %[b]\n"
+        : [result] "+r"(*weightedSum)
+        : [a] "r"(in8x4), [b] "r"(w8x4)
+        );
+    }
+    // in8x4 = __rv_pkbb16(inputs_ptr[nb_iterations- 1], 0);
+    // w8x4 = __rv_pkbb16(weights_ptr[nb_iterations- 1], 0);
+    // asm volatile(
+    //     "smaqa %[result], %[a], %[b]\n"
+    //     : [result] "+r"(*weightedSum)
+    //     : [a] "r"(in8x4), [b] "r"(w8x4)
+    //     );  
+}
+
+
+
 static void testSIMDmacsOnRange(const UDATA_T* __restrict inputs,
                         const WDATA_T* __restrict weights,
                         SUM_T* __restrict weightedSum,
@@ -254,10 +285,19 @@ static void SIMDconvcellPropagate1(
                             && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
+                        if (iOffset % 24 == 0) {
+                            //printf("ioffset = %d\n", iOffset);
+                            SIMD32macsOnRange(
+                            inputs + iOffset, 
+                            weights + wOffset, 
+                            &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                            
+                        }else{
                             SIMD16macsOnRange(
                             inputs + iOffset, 
                             weights + wOffset, 
                             &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                        }
                     }
                     else {
                         for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
