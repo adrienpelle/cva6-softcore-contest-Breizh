@@ -36,6 +36,29 @@ static int clamp(int v, int lo, int hi) {
     }
 }
 
+static void SIMD64macsOnRange(const UDATA_T* __restrict inputs,
+                        const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+        uint8x4_t* inputs_ptr = inputs;
+        int8x4_t* weights_ptr = weights;
+        for (int iter = 0; iter < nb_iterations/4; ++iter) {
+        asm volatile(
+        "lw a1, 0(%[inputs_ptr])\n"  // Load input from memory into $a1
+        "lw a3, 0(%[weights_ptr])\n" // Load weight from memory into $a3
+        "lw a2, 0(%[inputs_ptr])\n"  // Load input from memory into $a2
+        "lw a4, 0(%[weights_ptr])\n" // Load weight from memory into $a4
+        "smaqa %[result], a1, a3\n" // Perform the operation with $a1 and $a3
+        //"smaqa %[result], a2, a4\n" // Perform the operation with $a2 and $a4
+        : [result] "+r"(*weightedSum) // Output operand
+        : [inputs_ptr] "r"(&inputs_ptr[iter]), [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+        : "a1", "a2", "a3", "a4" // Clobbered registers
+    );
+    }
+
+}
+
 
 static void SIMD32macsOnRange(const UDATA_T* __restrict inputs,
                         const WDATA_T* __restrict weights,
@@ -45,11 +68,19 @@ static void SIMD32macsOnRange(const UDATA_T* __restrict inputs,
         uint8x4_t* inputs_ptr = inputs;
         int8x4_t* weights_ptr = weights;
         for (int iter = 0; iter < nb_iterations/4; ++iter) {
-            asm volatile(
-            "smaqa %[result], %[a], %[b]\n"
-            : [result] "+r"(*weightedSum)
-            : [a] "r"(inputs_ptr[iter]), [b] "r"(weights_ptr[iter])
-            ); 
+            // asm volatile(
+            // "smaqa %[result], %[a], %[b]\n"
+            // : [result] "+r"(*weightedSum)
+            // : [a] "r"(inputs_ptr[iter]), [b] "r"(weights_ptr[iter])
+            // ); 
+                asm volatile(
+                "lw s6, 0(%[inputs_ptr])\n"  // Load input from memory into $a1
+                "lw s7, 0(%[weights_ptr])\n" // Load weight from memory into $a2
+                "smaqa %[result], s6, s7\n" // Perform the operation with $a1 and $a3
+                : [result] "+r"(*weightedSum) // Output operand
+                : [inputs_ptr] "r"(&inputs_ptr[iter]), [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+                : "s6", "s7" // Clobbered registers
+                );
         }
 }
 
@@ -59,18 +90,18 @@ static void SIMD16macsOnRange(const UDATA_T* __restrict inputs,   //Doesn't work
                         int nb_iterations)
 {
     int16_t* inputs_ptr = inputs;
-    int16_t* weights_ptr = weights;
+    int32_t* weights_ptr = weights;
     int32_t in8x4; 
-    int32_t w8x4;
+    //int32_t w8x4;
 
     for (int iter = 0; iter < nb_iterations/4; iter = iter + 2) {
-        in8x4 = __rv_pkbb16(inputs_ptr[iter], inputs_ptr[iter+1]);
-        w8x4 = __rv_pkbb16(weights_ptr[iter], weights_ptr[iter+1]);
+        in8x4 = __rv_pkbb16(inputs_ptr[iter+1], inputs_ptr[iter]);
+        //w8x4 = __rv_pkbb16(weights_ptr[iter+1], weights_ptr[iter]);
 
         asm volatile(
         "smaqa %[result], %[a], %[b]\n"
         : [result] "+r"(*weightedSum)
-        : [a] "r"(in8x4), [b] "r"(w8x4)
+        : [a] "r"(in8x4), [b] "r"(weights_ptr[iter])
         );
     }  
 }
