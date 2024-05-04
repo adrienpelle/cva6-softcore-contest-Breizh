@@ -84,7 +84,7 @@ module multiplier
   assign mult_trans_id_o = trans_id_q;
   assign mult_ready_o = 1'b1;
 
-  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA});
+  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA, SMAQA64});
 
   // Sign Select MUX
   always_comb begin
@@ -96,7 +96,7 @@ module multiplier
       sign_a = 1'b1;
       sign_b = 1'b1;
     // unsigned - unsigned multiplication  
-    end else if (operation_i == SMAQA) begin
+    end else if (operation_i == SMAQA | operation_i == SMAQA64) begin
       sign_a = 1'b0;
       sign_b = 1'b1;
     // signed - unsigned multiplication
@@ -166,7 +166,7 @@ module multiplier
       CLMULH:              result_o = clmulr_q >> 1;
       CLMULR:              result_o = clmulr_q;
       SMUL8, UMUL8 :       result_o = simd_mult_result_q[riscv::XLEN-1:0];
-      SMAQA:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
+      SMAQA, SMAQA64:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
       // MUL performs an XLEN-bit×XLEN-bit multiplication and places the lower XLEN bits in the destination register
       
       default:             result_o = mult_result_q[riscv::XLEN-1:0];  // including MUL

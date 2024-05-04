@@ -31,7 +31,7 @@ module smaqa_tb
 
 // ##############################################################
 //#                                                             #
-            localparam NrRgprPorts = 3; // 3 reading ports      #
+            localparam NrRgprPorts = 5; // 3 reading ports      #
 //#                                                             #
 // ##############################################################
 
@@ -205,17 +205,17 @@ initial begin
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0001;      // R1      
-    wdata_i_tb = 32'hFFFFFFFF;
+    wdata_i_tb = 32'h01020304;
     
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0010;      // R2      
-    wdata_i_tb = 32'h80808080;
+    wdata_i_tb = 32'h05060708;
     
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0011;      // R3      
-    wdata_i_tb = 32'b10000000; // Expect -> 32'h 0000004F = 1x5 + 2x6 + 3x7 + 4x8 + 9
+    wdata_i_tb = 32'h00000009; // Expect -> 32'h 0000004F = 1x5 + 2x6 + 3x7 + 4x8 + 9
     
     #100;                              // clk H->L
     we_i_tb   = 0;                     // enable read (turn off write)    

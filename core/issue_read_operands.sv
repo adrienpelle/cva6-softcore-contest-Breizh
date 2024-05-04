@@ -45,6 +45,8 @@ module issue_read_operands
     input fu_t [2**REG_ADDR_SIZE-1:0] rd_clobber_fpr_i,
     // To FU, just single issue for now
     output fu_data_t fu_data_o,
+    output riscv::xlen_t  operand_d,
+    output riscv::xlen_t  operand_e,
     output riscv::xlen_t rs1_forwarding_o,  // unregistered version of fu_data_o.operanda
     output riscv::xlen_t rs2_forwarding_o,  // unregistered version of fu_data_o.operandb
     output logic [riscv::VLEN-1:0] pc_o,
@@ -85,10 +87,10 @@ module issue_read_operands
 );
   logic stall;
   logic fu_busy;  // functional unit is busy
-  riscv::xlen_t operand_a_regfile, operand_b_regfile;  // operands coming from regfile
+  riscv::xlen_t operand_a_regfile, operand_b_regfile, operand_d_regfile, operand_e_regfile;  // operands coming from regfile
   rs3_len_t operand_c_regfile, operand_c_fpr, operand_c_gpr;  // third operand from fp regfile or gp regfile if NR_RGPR_PORTS == 3
   // output flipflop (ID <-> EX)
-  riscv::xlen_t operand_a_n, operand_a_q, operand_b_n, operand_b_q, imm_n, imm_q, imm_forward_rs3;
+  riscv::xlen_t operand_a_n, operand_a_q, operand_b_n, operand_b_q, imm_n, imm_q, imm_forward_rs3, operand_d_n, operand_d_q, operand_e_n, operand_e_q;
 
   logic        alu_valid_q;
   logic        mult_valid_q;
@@ -119,6 +121,10 @@ module issue_read_operands
 
   assign fu_data_o.operand_a = operand_a_q;
   assign fu_data_o.operand_b = operand_b_q;
+  // rs1 + 1 and rs2 + 1 operands
+  assign operand_d = operand_d_q;
+  assign operand_e = operand_e_q;
+  
   assign fu_data_o.fu        = fu_q;
   assign fu_data_o.operation = operator_q;
   assign fu_data_o.trans_id  = trans_id_q;
@@ -238,7 +244,13 @@ module issue_read_operands
     if (CVA6Cfg.NrRgprPorts == 3) begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} :
-          ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA)) ? operand_c_regfile : issue_instr_i.result;
+          ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA) | (issue_instr_i.op == SMAQA64)) ? operand_c_regfile : issue_instr_i.result;
+    end else if (CVA6Cfg.NrRgprPorts == 5) begin
+        imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
+              {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} :
+              ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA) | (issue_instr_i.op == SMAQA64)) ? operand_c_regfile : issue_instr_i.result;
+        operand_d_n = operand_d_regfile;
+        operand_e_n = operand_e_regfile;
     end else begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} : issue_instr_i.result;
@@ -439,7 +451,9 @@ module issue_read_operands
   logic [CVA6Cfg.NrCommitPorts-1:0][riscv::XLEN-1:0] wdata_pack;
   logic [CVA6Cfg.NrCommitPorts-1:0]                  we_pack;
 
-  if (CVA6Cfg.NrRgprPorts == 3) begin : gen_rs3
+  if (CVA6Cfg.NrRgprPorts == 5) begin : gen_rs5
+    assign raddr_pack = {issue_instr_i.rs2[4:0] + 1,issue_instr_i.rs1[4:0] + 1, issue_instr_i.rd[4:0], issue_instr_i.rs2[4:0], issue_instr_i.rs1[4:0]};
+  end else if (CVA6Cfg.NrRgprPorts == 3) begin : gen_rs3
     assign raddr_pack = {issue_instr_i.rd[4:0], issue_instr_i.rs2[4:0], issue_instr_i.rs1[4:0]};
   end else begin : gen_no_rs3
     assign raddr_pack = {issue_instr_i.rs2[4:0], issue_instr_i.rs1[4:0]};
@@ -535,7 +549,12 @@ module issue_read_operands
     end
   endgenerate
 
-  if (CVA6Cfg.NrRgprPorts == 3) begin : gen_operand_c
+  if (CVA6Cfg.NrRgprPorts == 5) begin : gen_operand_e
+    assign operand_c_fpr = {{riscv::XLEN-CVA6Cfg.FLen{1'b0}}, fprdata[2]};
+    assign operand_c_gpr = rdata[2];
+    assign operand_d_regfile = rdata[3];
+    assign operand_e_regfile = rdata[4];
+  end else if (CVA6Cfg.NrRgprPorts == 3) begin : gen_operand_c
     assign operand_c_fpr = {{riscv::XLEN-CVA6Cfg.FLen{1'b0}}, fprdata[2]};
     assign operand_c_gpr = rdata[2];
   end else begin
@@ -548,7 +567,7 @@ module issue_read_operands
   assign operand_b_regfile = (CVA6Cfg.FpPresent && is_rs2_fpr(
       issue_instr_i.op
   )) ? {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, fprdata[1]} : rdata[1];
-  assign operand_c_regfile = (CVA6Cfg.NrRgprPorts == 3) ? ((CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ? operand_c_fpr : operand_c_gpr) : operand_c_fpr;
+  assign operand_c_regfile = (CVA6Cfg.NrRgprPorts > 2) ? ((CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ? operand_c_fpr : operand_c_gpr) : operand_c_fpr;
 
 
   // ----------------------
@@ -558,6 +577,8 @@ module issue_read_operands
     if (!rst_ni) begin
       operand_a_q           <= '{default: 0};
       operand_b_q           <= '{default: 0};
+      operand_d_q           <= '{default: 0};
+      operand_e_q           <= '{default: 0};
       imm_q                 <= '0;
       fu_q                  <= NONE;
       operator_q            <= ADD;
@@ -568,6 +589,8 @@ module issue_read_operands
     end else begin
       operand_a_q           <= operand_a_n;
       operand_b_q           <= operand_b_n;
+      operand_d_q           <= operand_d_n;
+      operand_e_q           <= operand_e_n;
       imm_q                 <= imm_n;
       fu_q                  <= fu_n;
       operator_q            <= operator_n;
@@ -580,7 +603,7 @@ module issue_read_operands
 
   //pragma translate_off
   initial begin
-    assert (CVA6Cfg.NrRgprPorts == 2 || (CVA6Cfg.NrRgprPorts == 3)) //&& CVA6Cfg.CvxifEn))
+    assert (CVA6Cfg.NrRgprPorts == 2 || (CVA6Cfg.NrRgprPorts == 3) || (CVA6Cfg.NrRgprPorts == 5)) //&& CVA6Cfg.CvxifEn))
     else
       $fatal(
           1,

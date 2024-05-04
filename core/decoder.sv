@@ -1203,7 +1203,7 @@ module decoder
           // Reg-Reg SIMD instructions 
           
               // SIMD SMAQA Multiply accumulate Rd[31:0] = Rd[31:0] + Rs1[7:0]*Rs2[7:0] + Rs1[15:8]*Rs2[15:8] + Rs1[23:16]*Rs2[23:16] + Rs1[31:24]*Rs2[31:24] 
-              {7'b110_0100, 3'b000} : instruction_o.op = ariane_pkg::SMAQA;    //SMAQA
+              {7'b110_0100, 3'b000} : instruction_o.op = ariane_pkg::SMAQA64;    //SMAQA64
               default : illegal_instr = 1'b1; // Catch-all for undefined instructions
           endcase
         end

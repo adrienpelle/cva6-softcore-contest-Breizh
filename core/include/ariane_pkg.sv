@@ -665,7 +665,9 @@ package ariane_pkg;
     // SIMD Multiplications
     SMUL8,
     UMUL8,
-    SMAQA
+    SMAQA,
+    //Custom SMAQA 
+    SMAQA64
     
   } fu_op;
 
