@@ -28,6 +28,8 @@ module multiplier
     input  riscv::xlen_t                     operand_a_i,
     input  riscv::xlen_t                     operand_b_i,
     input  riscv::xlen_t                     operand_c_i,       // the third operand for SMAQA
+    input  riscv::xlen_t                     operand_d_i,       // fourth operand for SMAQA64 (rs1 + 1)
+    input  riscv::xlen_t                     operand_e_i,       // fifth operand for SMAQA64 (rs2 + 1)
     output riscv::xlen_t                     result_o,
     output logic                             mult_valid_o,
     output logic                             mult_ready_o,
@@ -73,7 +75,9 @@ module multiplier
   fu_op operator_d, operator_q;
   logic [riscv::XLEN*2-1:0] mult_result_d, mult_result_q;
   logic [riscv::XLEN*2-1:0] simd_mult_result_d, simd_mult_result_q;
+  logic [riscv::XLEN*2-1:0] simd_mult_result_2;
   logic [riscv::XLEN:0] simd_smaqa_result_d, simd_smaqa_result_q;
+  logic [riscv::XLEN:0] simd_smaqa64_result_d, simd_smaqa64_result_q;
 
   // control registers
   logic sign_a, sign_b;
@@ -156,6 +160,47 @@ module multiplier
       {operand_c_i[31], operand_c_i}
   );  
   
+  // SMAQA 64 rs4 rs5
+  
+  // SIMD Multiplier 8 bits 
+  // Y[63:48] = D[31:24] * E[31:24] 
+  assign simd_mult_result_2[63:48] = $signed(
+      {operand_d_i[31] & sign_a, operand_d_i[31:24]}
+  ) * $signed(
+      {operand_e_i[31] & sign_b, operand_e_i[31:24]}
+  ); 
+  // Y[47:32] = D[23:16] * E[23:16] 
+  assign simd_mult_result_2[47:32] = $signed(
+      {operand_d_i[23] & sign_a, operand_d_i[23:16]}
+  ) * $signed(
+      {operand_e_i[23] & sign_b, operand_e_i[23:16]}
+  );
+  // Y[31:16] = D[15:8] * E[15:8] 
+  assign simd_mult_result_2[31:16] = $signed(
+      {operand_d_i[15] & sign_a, operand_d_i[15:8]}
+  ) * $signed(
+      {operand_e_i[15] & sign_b, operand_e_i[15:8]}
+  );  
+  // Y[15:0] = D[7:0] * E[7:0] 
+  assign simd_mult_result_2[15:0] = $signed(
+      {operand_d_i[7] & sign_a, operand_d_i[7:0]}
+  ) * $signed(
+      {operand_e_i[7] & sign_b, operand_e_i[7:0]}
+  );
+  
+  // SIMD SMAQA64 
+  assign simd_smaqa64_result_d = $signed(
+      {simd_mult_result_2[63], simd_mult_result_2[63:48]}
+  ) + $signed(
+      {simd_mult_result_2[47], simd_mult_result_2[47:32]}
+  ) + $signed(
+      {simd_mult_result_2[31], simd_mult_result_2[31:16]}
+  ) + $signed(
+      {simd_mult_result_2[15], simd_mult_result_2[15:0]}
+  ) + $signed(
+      {simd_smaqa_result_d[31], simd_smaqa_result_d}
+  ); 
+  
   assign operator_d = operation_i;
 
   always_comb begin : p_selmux
@@ -166,7 +211,9 @@ module multiplier
       CLMULH:              result_o = clmulr_q >> 1;
       CLMULR:              result_o = clmulr_q;
       SMUL8, UMUL8 :       result_o = simd_mult_result_q[riscv::XLEN-1:0];
-      SMAQA, SMAQA64:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
+      SMAQA:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
+      SMAQA64:             result_o = simd_smaqa64_result_q[riscv::XLEN-1:0];
+                                
       // MUL performs an XLEN-bit×XLEN-bit multiplication and places the lower XLEN bits in the destination register
       
       default:             result_o = mult_result_q[riscv::XLEN-1:0];  // including MUL
@@ -202,6 +249,7 @@ module multiplier
       mult_result_q <= mult_result_d;
       simd_mult_result_q <= simd_mult_result_d;
       simd_smaqa_result_q <= simd_smaqa_result_d;
+      simd_smaqa64_result_q <= simd_smaqa64_result_d;
     end
   end
 endmodule

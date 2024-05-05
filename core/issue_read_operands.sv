@@ -40,6 +40,12 @@ module issue_read_operands
     output logic [REG_ADDR_SIZE-1:0] rs3_o,
     input rs3_len_t rs3_i,
     input logic rs3_valid_i,
+    output logic [REG_ADDR_SIZE-1:0] rs4_o,
+    input riscv::xlen_t rs4_i,
+    input logic rs4_valid_i,
+    output logic [REG_ADDR_SIZE-1:0] rs5_o,
+    input riscv::xlen_t rs5_i,
+    input logic rs5_valid_i,
     // get clobber input
     input fu_t [2**REG_ADDR_SIZE-1:0] rd_clobber_gpr_i,
     input fu_t [2**REG_ADDR_SIZE-1:0] rd_clobber_fpr_i,
@@ -108,7 +114,7 @@ module issue_read_operands
   fu_t fu_n, fu_q;  // functional unit to use
 
   // forwarding signals
-  logic forward_rs1, forward_rs2, forward_rs3;
+  logic forward_rs1, forward_rs2, forward_rs3, forward_rs4, forward_rs5;
 
   // original instruction stored in tval
   riscv::instruction_t orig_instr;
@@ -170,11 +176,15 @@ module issue_read_operands
     // operand forwarding signals
     forward_rs1 = 1'b0;
     forward_rs2 = 1'b0;
-    forward_rs3 = 1'b0;  // FPR only
+    forward_rs3 = 1'b0;  // FPR and SMAQA only, 
+    forward_rs4 = 1'b0;  // SMAQA only
+    forward_rs5 = 1'b0;  // SMAQA only
     // poll the scoreboard for those values
     rs1_o = issue_instr_i.rs1;
     rs2_o = issue_instr_i.rs2;
     rs3_o = issue_instr_i.result[REG_ADDR_SIZE-1:0];  // rs3 is encoded in imm field
+    rs4_o = issue_instr_i.rs1 + 1;
+    rs5_o = issue_instr_i.rs2 + 1;
 
     // 0. check that we are not using the zimm type in RS1
     //    as this is an immediate we do not have to wait on anything here
@@ -216,7 +226,7 @@ module issue_read_operands
     if ((CVA6Cfg.FpPresent && is_imm_fpr(
             issue_instr_i.op
         )) ? rd_clobber_fpr_i[issue_instr_i.result[REG_ADDR_SIZE-1:0]] != NONE :
-            issue_instr_i.op == OFFLOAD && CVA6Cfg.NrRgprPorts == 3 ?
+            (issue_instr_i.op == OFFLOAD | issue_instr_i.op == SMAQA | issue_instr_i.op == SMAQA64) && CVA6Cfg.NrRgprPorts > 2 ?
             rd_clobber_gpr_i[issue_instr_i.result[REG_ADDR_SIZE-1:0]] != NONE : 0) begin
       // if the operand is available, forward it. CSRs don't write to/from FPR so no need to check
       if (rs3_valid_i) begin
@@ -225,10 +235,46 @@ module issue_read_operands
         stall = 1'b1;
       end
     end
+    
+    // Only check clobbered gpr for SMAQA64 instruction
+    if ((CVA6Cfg.FpPresent && is_rs2_fpr(
+            issue_instr_i.op
+        )) ? rd_clobber_fpr_i[issue_instr_i.rs1 + 1] != NONE :
+            (issue_instr_i.op == SMAQA64) && CVA6Cfg.NrRgprPorts > 2 ?
+            rd_clobber_gpr_i[issue_instr_i.rs1 + 1] != NONE : 0) begin
+      // if the operand is available, forward it. CSRs don't write to/from FPR so no need to check
+      if (rs4_valid_i && (CVA6Cfg.FpPresent && is_rs2_fpr(
+              issue_instr_i.op
+          ) ? 1'b1 : ((rd_clobber_gpr_i[issue_instr_i.rs1 + 1] != CSR) ||
+                      (issue_instr_i.op == SFENCE_VMA)))) begin
+        forward_rs4 = 1'b1;
+      end else begin  // the operand is not available -> stall
+        stall = 1'b1;
+      end
+    end
+    
+    // Only check clobbered gpr for SMAQA64 instruction
+    if ((CVA6Cfg.FpPresent && is_rs2_fpr(
+            issue_instr_i.op
+        )) ? rd_clobber_fpr_i[issue_instr_i.rs2 + 1] != NONE :
+            (issue_instr_i.op == SMAQA64) && CVA6Cfg.NrRgprPorts > 2 ?
+            rd_clobber_gpr_i[issue_instr_i.rs2 + 1] != NONE : 0) begin
+      // if the operand is available, forward it. CSRs don't write to/from FPR so no need to check
+      if (rs5_valid_i && (CVA6Cfg.FpPresent && is_rs2_fpr(
+              issue_instr_i.op
+          ) ? 1'b1 : ((rd_clobber_gpr_i[issue_instr_i.rs2 + 1] != CSR) ||
+                      (issue_instr_i.op == SFENCE_VMA)))) begin
+        forward_rs5 = 1'b1;
+      end else begin  // the operand is not available -> stall
+        stall = 1'b1;
+      end
+    end
+      
+    
   end
 
   // third operand from fp regfile or gp regfile if NR_RGPR_PORTS == 3
-  if (CVA6Cfg.NrRgprPorts == 3) begin : gen_gp_rs3
+  if (CVA6Cfg.NrRgprPorts > 2) begin : gen_gp_rs3
       assign imm_forward_rs3 = rs3_i;
   end else begin : gen_fp_rs3
       assign imm_forward_rs3 = {{riscv::XLEN-CVA6Cfg.FLen{1'b0}}, rs3_i};
@@ -239,18 +285,14 @@ module issue_read_operands
     // default is regfiles (gpr or fpr)
     operand_a_n = operand_a_regfile;
     operand_b_n = operand_b_regfile;
+    operand_d_n = operand_d_regfile;
+    operand_e_n = operand_e_regfile;
     // immediates are the third operands in the store case
     // for FP operations, the imm field can also be the third operand from the regfile
-    if (CVA6Cfg.NrRgprPorts == 3) begin
+    if (CVA6Cfg.NrRgprPorts > 2) begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} :
           ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA) | (issue_instr_i.op == SMAQA64)) ? operand_c_regfile : issue_instr_i.result;
-    end else if (CVA6Cfg.NrRgprPorts == 5) begin
-        imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
-              {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} :
-              ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA) | (issue_instr_i.op == SMAQA64)) ? operand_c_regfile : issue_instr_i.result;
-        operand_d_n = operand_d_regfile;
-        operand_e_n = operand_e_regfile;
     end else begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} : issue_instr_i.result;
@@ -270,6 +312,16 @@ module issue_read_operands
     if (forward_rs3) begin
       imm_n = imm_forward_rs3;
     end
+    
+    if (forward_rs4) begin
+      operand_d_n = rs4_i;
+    end
+    
+    if (forward_rs5) begin
+      operand_e_n = rs5_i;
+    end
+    
+    
 
     // use the PC as operand a
     if (issue_instr_i.use_pc) begin
@@ -549,12 +601,7 @@ module issue_read_operands
     end
   endgenerate
 
-  if (CVA6Cfg.NrRgprPorts == 5) begin : gen_operand_e
-    assign operand_c_fpr = {{riscv::XLEN-CVA6Cfg.FLen{1'b0}}, fprdata[2]};
-    assign operand_c_gpr = rdata[2];
-    assign operand_d_regfile = rdata[3];
-    assign operand_e_regfile = rdata[4];
-  end else if (CVA6Cfg.NrRgprPorts == 3) begin : gen_operand_c
+  if (CVA6Cfg.NrRgprPorts > 2) begin : gen_operand_c
     assign operand_c_fpr = {{riscv::XLEN-CVA6Cfg.FLen{1'b0}}, fprdata[2]};
     assign operand_c_gpr = rdata[2];
   end else begin
@@ -568,7 +615,9 @@ module issue_read_operands
       issue_instr_i.op
   )) ? {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, fprdata[1]} : rdata[1];
   assign operand_c_regfile = (CVA6Cfg.NrRgprPorts > 2) ? ((CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ? operand_c_fpr : operand_c_gpr) : operand_c_fpr;
-
+    
+  assign operand_d_regfile = rdata[3];    
+  assign operand_e_regfile = rdata[4];
 
   // ----------------------
   // Registers (ID <-> EX)

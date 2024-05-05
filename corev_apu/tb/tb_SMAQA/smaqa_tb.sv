@@ -97,6 +97,8 @@ module smaqa_tb
     riscv::xlen_t                     operand_a_i_tb;       // 32 bits data a
     riscv::xlen_t                     operand_b_i_tb;       // 32 bits data b
     riscv::xlen_t                     operand_c_i_tb;       // the third operand for SMAQA
+    riscv::xlen_t                     operand_d_i_tb;
+    riscv::xlen_t                     operand_e_i_tb;      
     riscv::xlen_t                     result_o_tb;                   // 32 bits out data
     logic                             mult_valid_o_tb;               // see 1
     logic                             mult_ready_o_tb;               // see 1
@@ -104,8 +106,8 @@ module smaqa_tb
   
     // wire for regfile
     // read port
-    logic [2:0][4:0]  raddr_i_tb;
-    logic [2:0][31:0] rdata_o_tb;
+    logic [NrRgprPorts - 1:0][4:0]  raddr_i_tb;
+    logic [NrRgprPorts - 1:0][31:0] rdata_o_tb;
     // write port
     logic [4:0]       waddr_i_tb;
     logic [31:0]      wdata_i_tb;
@@ -127,7 +129,9 @@ module smaqa_tb
     .operation_i(operation_i_tb),
     .operand_a_i(operand_a_i_tb),
     .operand_b_i(operand_b_i_tb),
-    .operand_c_i(operand_c_i_tb),             // the third operand for SMAQA
+    .operand_c_i(operand_c_i_tb),
+    .operand_d_i(operand_d_i_tb),
+    .operand_e_i(operand_e_i_tb),               // the third operand for SMAQA
     .result_o(result_o_tb),
     .mult_valid_o(mult_valid_o_tb),
     .mult_ready_o(mult_ready_o_tb),
@@ -183,10 +187,14 @@ module smaqa_tb
     assign operand_a_i_tb = rdata_o_tb[0];
     assign operand_b_i_tb = rdata_o_tb[1];
     assign operand_c_i_tb = rdata_o_tb[2];
+    assign operand_d_i_tb = rdata_o_tb[3];
+    assign operand_e_i_tb = rdata_o_tb[4];
     
     assign raddr_i_tb[0]  = instruction_o_tb.rs1;
     assign raddr_i_tb[1]  = instruction_o_tb.rs2;
     assign raddr_i_tb[2]  = instruction_o_tb.rd;
+    assign raddr_i_tb[3]  = instruction_o_tb.rs1 + 1;
+    assign raddr_i_tb[4]  = instruction_o_tb.rs2 + 1;
 
 // Clock generator T=100ns -> f = 10Mhz
 always begin
@@ -204,25 +212,39 @@ initial begin
     
     #100;                      // clk H->L
     // write port
-    waddr_i_tb = 4'b0001;      // R1      
+    waddr_i_tb = 4'b0001;      // R1 (IN 1)     
     wdata_i_tb = 32'h01020304;
     
     #100;                      // clk H->L
     // write port
-    waddr_i_tb = 4'b0010;      // R2      
-    wdata_i_tb = 32'h05060708;
+    waddr_i_tb = 4'b0010;      // R2 (IN 2)     
+//    wdata_i_tb = 32'h01020304;
+    wdata_i_tb = 32'h0;
     
     #100;                      // clk H->L
     // write port
     waddr_i_tb = 4'b0011;      // R3      
     wdata_i_tb = 32'h00000009; // Expect -> 32'h 0000004F = 1x5 + 2x6 + 3x7 + 4x8 + 9
     
+    #100;                      // clk H->L
+    // write port
+    waddr_i_tb = 4'b0100;      // R4 (W 1)
+    wdata_i_tb = 32'h05060708;
+    
+    #100;                      // clk H->L
+    // write port
+    waddr_i_tb = 4'b0101;      // R5  (W 2)     
+    //wdata_i_tb = 32'h05060708;
+    wdata_i_tb = 32'h0;
+    
     #100;                              // clk H->L
     we_i_tb   = 0;                     // enable read (turn off write)    
-    instruction_i_tb = 32'hC820_81F7;   // smaqa: R1 + R2 -> R3
+    //instruction_i_tb = 32'hC820_81F7;   // smaqa: R1 + R2 -> R3
+    instruction_i_tb = 32'b1100100_00100_00001_000_00011_0001011;
+
     
     #20;
-    if(instruction_o_tb.op == ariane_pkg::SMAQA) begin
+    if(instruction_o_tb.op == ariane_pkg::SMAQA | instruction_o_tb.op == ariane_pkg::SMAQA64) begin
         $display("Pass Decoder SMAQA.");
     end else begin
         $display("Fail Decoder SMAQA.");

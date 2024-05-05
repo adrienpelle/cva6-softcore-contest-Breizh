@@ -43,13 +43,13 @@ static void SIMD64macsOnRange(const UDATA_T* __restrict inputs,
 {
         uint8x4_t* inputs_ptr = inputs;
         int8x4_t* weights_ptr = weights;
-        for (int iter = 0; iter < nb_iterations/4; ++iter) {
+        for (int iter = 0; iter < nb_iterations/4; iter = iter + 2) {
         asm volatile(
         "lw a1, 0(%[inputs_ptr])\n"  // Load input from memory into $a1
         "lw a3, 0(%[weights_ptr])\n" // Load weight from memory into $a3
-        "lw a2, 0(%[inputs_ptr])\n"  // Load input from memory into $a2
-        "lw a4, 0(%[weights_ptr])\n" // Load weight from memory into $a4
-        "smaqa %[result], a1, a3\n" // Perform the operation with $a1 and $a3
+        "lw a2, 4(%[inputs_ptr])\n"  // Load input from memory into $a2
+        "lw a4, 4(%[weights_ptr])\n" // Load weight from memory into $a4
+        "cstm_smaqa %[result], a1, a3\n" // Perform the operation with $a1 and $a3
         //"smaqa %[result], a2, a4\n" // Perform the operation with $a2 and $a4
         : [result] "+r"(*weightedSum) // Output operand
         : [inputs_ptr] "r"(&inputs_ptr[iter]), [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
@@ -468,7 +468,7 @@ static void SIMDconvcellPropagate2(
                             && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
-                            SIMD32macsOnRange(
+                            SIMD64macsOnRange(
                             inputs + iOffset, 
                             weights + wOffset, 
                             &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
@@ -564,7 +564,7 @@ static void fccellPropagateUDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                SIMD32macsOnRange(
+                SIMD64macsOnRange(
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);

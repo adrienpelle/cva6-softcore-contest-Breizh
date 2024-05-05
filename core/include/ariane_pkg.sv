@@ -72,7 +72,7 @@ package ariane_pkg;
   localparam REG_ADDR_SIZE = 5;
 
   // Read ports for general purpose register files
-  localparam NR_RGPR_PORTS = 3;
+  localparam NR_RGPR_PORTS = 5;
 
   // static debug hartinfo
   // debug causes
@@ -736,6 +736,7 @@ package ariane_pkg;
       default: return 1'b0;  // all other ops
     endcase
   endfunction
+  
 
   // function used in instr_trace svh
   // is_rd_fpr function is kept to allow cva6 compilation with instr_trace feature
