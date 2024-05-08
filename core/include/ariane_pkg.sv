@@ -667,7 +667,13 @@ package ariane_pkg;
     UMUL8,
     SMAQA,
     //Custom SMAQA 
-    SMAQA64
+    SMAQA64,
+    SMAQA128,
+    SMAQA320,
+    //Custom Load
+    L64,
+    L128,
+    L320
     
   } fu_op;
 

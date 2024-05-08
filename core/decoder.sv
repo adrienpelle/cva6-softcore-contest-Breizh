@@ -1191,9 +1191,11 @@ module decoder
         // ----------------------------------
         // Custom0 Instructions
         // ----------------------------------
-    
+        
+        // Custom Multiply Accumulate SIMD operations
+        
         riscv::OpcodeCustom0: begin
-          instruction_o.fu =  (instr.rtype.funct7 == 7'b110_0100) ? MULT : ALU;
+          instruction_o.fu = MULT;
           instruction_o.rs1[4:0] = instr.rtype.rs1;
           instruction_o.rs2[4:0] = instr.rtype.rs2;
           instruction_o.rd[4:0]  = instr.rtype.rd;
@@ -1202,9 +1204,35 @@ module decoder
           
           // Reg-Reg SIMD instructions 
           
-              // SIMD SMAQA Multiply accumulate Rd[31:0] = Rd[31:0] + Rs1[7:0]*Rs2[7:0] + Rs1[15:8]*Rs2[15:8] + Rs1[23:16]*Rs2[23:16] + Rs1[31:24]*Rs2[31:24] 
+              // SIMD 64 bits SMAQA Multiply accumulate 8 * 8bits elements processing  
               {7'b110_0100, 3'b000} : instruction_o.op = ariane_pkg::SMAQA64;    //SMAQA64
+              // SIMD 128 bits SMAQA Multiply accumulate 16 * 8bits elements processing  
+              {7'b110_0101, 3'b000} : instruction_o.op = ariane_pkg::SMAQA128;    //SMAQA128
+              // SIMD 320 bits SMAQA Multiply accumulate 40 * 8bits elements processing  
+              {7'b110_0110, 3'b000} : instruction_o.op = ariane_pkg::SMAQA320;    //SMAQA320  
               default : illegal_instr = 1'b1; // Catch-all for undefined instructions
+          endcase
+        end
+        
+        
+        // ----------------------------------
+        // Custom1 Instructions
+        // ----------------------------------
+        
+        // Custom Load operations 
+        
+        riscv::OpcodeCustom1: begin
+          instruction_o.fu = LOAD;
+          imm_select = IIMM;
+          instruction_o.rs1[4:0] = instr.itype.rs1;
+          instruction_o.rd[4:0] = instr.itype.rd;
+          // determine load size and signed type
+          unique case (instr.itype.funct3)
+            3'b001: instruction_o.op = ariane_pkg::L64; //LOAD 64 bits : A[31:0] -> rd, A[63:32] -> rd + 1, 
+            3'b010: instruction_o.op = ariane_pkg::L128; //LOAD 128 bits : A[31:0] -> rd, A[63:32] -> rd + 1, ... , A[127:96] -> rd + 3
+            3'b011: instruction_o.op = ariane_pkg::L320; //LOAD 320 bits : A[31:0] -> rd, A[63:32] -> rd + 1, ... , A[319:288] -> rd + 9
+            //3'b000: instruction_o.op = ariane_pkg::OFFLOAD; // Coprocessor instruction 
+            default: illegal_instr = 1'b1;
           endcase
         end
         

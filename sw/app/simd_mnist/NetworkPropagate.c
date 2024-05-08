@@ -49,8 +49,7 @@ static void SIMD64macsOnRange(const UDATA_T* __restrict inputs,
         "lw a3, 0(%[weights_ptr])\n" // Load weight from memory into $a3
         "lw a2, 4(%[inputs_ptr])\n"  // Load input from memory into $a2
         "lw a4, 4(%[weights_ptr])\n" // Load weight from memory into $a4
-        "cstm_smaqa %[result], a1, a3\n" // Perform the operation with $a1 and $a3
-        //"smaqa %[result], a2, a4\n" // Perform the operation with $a2 and $a4
+        "smaqa64 %[result], a1, a3\n" // Perform the operation with $a1 and $a3
         : [result] "+r"(*weightedSum) // Output operand
         : [inputs_ptr] "r"(&inputs_ptr[iter]), [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
         : "a1", "a2", "a3", "a4" // Clobbered registers
