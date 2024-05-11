@@ -88,7 +88,7 @@ module multiplier
   assign mult_trans_id_o = trans_id_q;
   assign mult_ready_o = 1'b1;
 
-  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA, SMAQA64});
+  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA, SMAQA64, SMAQA128, SMAQA320});
 
   // Sign Select MUX
   always_comb begin
@@ -100,7 +100,7 @@ module multiplier
       sign_a = 1'b1;
       sign_b = 1'b1;
     // unsigned - unsigned multiplication  
-    end else if (operation_i == SMAQA | operation_i == SMAQA64) begin
+    end else if (operation_i == SMAQA | operation_i == SMAQA64 | operation_i == SMAQA128 | operation_i == SMAQA320) begin
       sign_a = 1'b0;
       sign_b = 1'b1;
     // signed - unsigned multiplication
@@ -199,7 +199,159 @@ module multiplier
       {simd_mult_result_2[15], simd_mult_result_2[15:0]}
   ) + $signed(
       {simd_smaqa_result_d[31], simd_smaqa_result_d}
+  );
+  
+  
+  //SMAQA128
+  
+  logic [riscv::XLEN*2-1:0] smaqa128_mult1_result, smaqa128_mult2_result, smaqa128_mult3_result, smaqa128_mult4_result;
+  logic [riscv::XLEN:0] simd_smaqa128_result_q, simd_smaqa128_result_d;
+  logic [31:0] inputs_buf_q[128:0];
+  logic [6:0]  buf_pointer, buf_pointer_in;
+  
+  // SIMD Multiplier 8 bits 
+  // Y[63:48] = A[31:24] * B[31:24] 
+  assign smaqa128_mult1_result[63:48] = $signed(
+      {inputs_buf_q[buf_pointer][31] & sign_a, inputs_buf_q[buf_pointer][31:24]}
+  ) * $signed(
+      {operand_a_i[31] & sign_b, operand_a_i[31:24]}
   ); 
+  // Y[47:32] = A[23:16] * B[23:16] 
+  assign smaqa128_mult1_result[47:32] = $signed(
+      {inputs_buf_q[buf_pointer][23] & sign_a, inputs_buf_q[buf_pointer][23:16]}
+  ) * $signed(
+      {operand_a_i[23] & sign_b, operand_a_i[23:16]}
+  );
+  // Y[31:16] = A[15:8] * B[15:8] 
+  assign smaqa128_mult1_result[31:16] = $signed(
+      {inputs_buf_q[buf_pointer][15] & sign_a, inputs_buf_q[buf_pointer][15:8]}
+  ) * $signed(
+      {operand_a_i[15] & sign_b, operand_a_i[15:8]}
+  );  
+  // Y[15:0] = A[7:0] * B[7:0] 
+  assign smaqa128_mult1_result[15:0] = $signed(
+      {inputs_buf_q[buf_pointer][7] & sign_a, inputs_buf_q[buf_pointer][7:0]}
+  ) * $signed(
+      {operand_a_i[7] & sign_b, operand_a_i[7:0]}
+  );
+  
+    // SIMD Multiplier 8 bits 
+  // Y[63:48] = A[31:24] * B[31:24] 
+  assign smaqa128_mult2_result[63:48] = $signed(
+      {inputs_buf_q[buf_pointer + 1][31] & sign_a, inputs_buf_q[buf_pointer + 1][31:24]}
+  ) * $signed(
+      {operand_d_i[31] & sign_b, operand_d_i[31:24]}
+  ); 
+  // Y[47:32] = A[23:16] * B[23:16] 
+  assign smaqa128_mult2_result[47:32] = $signed(
+      {inputs_buf_q[buf_pointer + 1][23] & sign_a, inputs_buf_q[buf_pointer + 1][23:16]}
+  ) * $signed(
+      {operand_d_i[23] & sign_b, operand_d_i[23:16]}
+  );
+  // Y[31:16] = A[15:8] * B[15:8] 
+  assign smaqa128_mult2_result[31:16] = $signed(
+      {inputs_buf_q[buf_pointer + 1][15] & sign_a, inputs_buf_q[buf_pointer + 1][15:8]}
+  ) * $signed(
+      {operand_d_i[15] & sign_b, operand_d_i[15:8]}
+  );  
+  // Y[15:0] = A[7:0] * B[7:0] 
+  assign smaqa128_mult2_result[15:0] = $signed(
+      {inputs_buf_q[buf_pointer + 1][7] & sign_a, inputs_buf_q[buf_pointer + 1][7:0]}
+  ) * $signed(
+      {operand_d_i[7] & sign_b, operand_d_i[7:0]}
+  );
+  
+  // SIMD Multiplier 8 bits 
+  // Y[63:48] = A[31:24] * B[31:24] 
+  assign smaqa128_mult3_result[63:48] = $signed(
+      {inputs_buf_q[buf_pointer + 2][31] & sign_a, inputs_buf_q[buf_pointer + 2][31:24]}
+  ) * $signed(
+      {operand_b_i[31] & sign_b, operand_b_i[31:24]}
+  ); 
+  // Y[47:32] = A[23:16] * B[23:16] 
+  assign smaqa128_mult3_result[47:32] = $signed(
+      {inputs_buf_q[buf_pointer + 2][23] & sign_a, inputs_buf_q[buf_pointer + 2][23:16]}
+  ) * $signed(
+      {operand_b_i[23] & sign_b, operand_b_i[23:16]}
+  );
+  // Y[31:16] = A[15:8] * B[15:8] 
+  assign smaqa128_mult3_result[31:16] = $signed(
+      {inputs_buf_q[buf_pointer + 2][15] & sign_a, inputs_buf_q[buf_pointer + 2][15:8]}
+  ) * $signed(
+      {operand_b_i[15] & sign_b, operand_b_i[15:8]}
+  );  
+  // Y[15:0] = A[7:0] * B[7:0] 
+  assign smaqa128_mult3_result[15:0] = $signed(
+      {inputs_buf_q[buf_pointer + 2][7] & sign_a, inputs_buf_q[buf_pointer + 2][7:0]}
+  ) * $signed(
+      {operand_b_i[7] & sign_b, operand_b_i[7:0]}
+  );
+  
+    // SIMD Multiplier 8 bits 
+  // Y[63:48] = A[31:24] * B[31:24] 
+  assign smaqa128_mult4_result[63:48] = $signed(
+      {inputs_buf_q[buf_pointer + 3][31] & sign_a, inputs_buf_q[buf_pointer + 3][31:24]}
+  ) * $signed(
+      {operand_e_i[31] & sign_b, operand_e_i[31:24]}
+  ); 
+  // Y[47:32] = A[23:16] * B[23:16] 
+  assign smaqa128_mult4_result[47:32] = $signed(
+      {inputs_buf_q[buf_pointer + 3][23] & sign_a, inputs_buf_q[buf_pointer + 3][23:16]}
+  ) * $signed(
+      {operand_e_i[23] & sign_b, operand_e_i[23:16]}
+  );
+  // Y[31:16] = A[15:8] * B[15:8] 
+  assign smaqa128_mult4_result[31:16] = $signed(
+      {inputs_buf_q[buf_pointer + 3][15] & sign_a, inputs_buf_q[buf_pointer + 3][15:8]}
+  ) * $signed(
+      {operand_e_i[15] & sign_b, operand_e_i[15:8]}
+  );  
+  // Y[15:0] = A[7:0] * B[7:0] 
+  assign smaqa128_mult4_result[15:0] = $signed(
+      {inputs_buf_q[buf_pointer + 3][7] & sign_a, inputs_buf_q[buf_pointer + 3][7:0]}
+  ) * $signed(
+      {operand_e_i[7] & sign_b, operand_e_i[7:0]}
+  );
+    
+  // SIMD SMAQA 8 bits 
+  assign simd_smaqa128_result_d = $signed(
+      {smaqa128_mult1_result[63], smaqa128_mult1_result[63:48]}
+  ) + $signed(
+      {smaqa128_mult1_result[47], smaqa128_mult1_result[47:32]}
+  ) + $signed(
+      {smaqa128_mult1_result[31], smaqa128_mult1_result[31:16]}
+  ) + $signed(
+      {smaqa128_mult1_result[15], smaqa128_mult1_result[15:0]}
+  ) + $signed(
+      {smaqa128_mult2_result[63], smaqa128_mult2_result[63:48]}
+  ) + $signed(
+      {smaqa128_mult2_result[47], smaqa128_mult2_result[47:32]}
+  ) + $signed(
+      {smaqa128_mult2_result[31], smaqa128_mult2_result[31:16]}
+  ) + $signed(
+      {smaqa128_mult2_result[15], smaqa128_mult2_result[15:0]}
+  ) + $signed(
+      {smaqa128_mult3_result[63], smaqa128_mult3_result[63:48]}
+  ) + $signed(
+      {smaqa128_mult3_result[47], smaqa128_mult3_result[47:32]}
+  ) + $signed(
+      {smaqa128_mult3_result[31], smaqa128_mult3_result[31:16]}
+  ) + $signed(
+      {smaqa128_mult3_result[15], smaqa128_mult3_result[15:0]}
+  ) + $signed(
+      {smaqa128_mult4_result[63], smaqa128_mult4_result[63:48]}
+  ) + $signed(
+      {smaqa128_mult4_result[47], smaqa128_mult4_result[47:32]}
+  ) + $signed(
+      {smaqa128_mult4_result[31], smaqa128_mult4_result[31:16]}
+  ) + $signed(
+      {smaqa128_mult4_result[15], smaqa128_mult4_result[15:0]}
+  ) + $signed(
+      {operand_c_i[31], operand_c_i}
+  );  
+  
+  
+   
   
   assign operator_d = operation_i;
 
@@ -213,12 +365,42 @@ module multiplier
       SMUL8, UMUL8 :       result_o = simd_mult_result_q[riscv::XLEN-1:0];
       SMAQA:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
       SMAQA64:             result_o = simd_smaqa64_result_q[riscv::XLEN-1:0];
+      SMAQA128:            result_o = simd_smaqa128_result_q[riscv::XLEN-1:0];
                                 
       // MUL performs an XLEN-bit×XLEN-bit multiplication and places the lower XLEN bits in the destination register
       
       default:             result_o = mult_result_q[riscv::XLEN-1:0];  // including MUL
     endcase
   end
+  
+    // SMAQA BUFFER
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+      if (~rst_ni) begin
+        for (int i = 0; i < 128; i++) begin
+            inputs_buf_q[i]  <= '0;
+        end
+        buf_pointer <= '0;
+        buf_pointer_in <= '0;
+        
+      end else if (operator_q == SMAQA64) begin
+        inputs_buf_q[buf_pointer_in]  <= operand_a_i;
+        inputs_buf_q[buf_pointer_in + 1]  <= operand_d_i;
+        buf_pointer_in <= buf_pointer_in + 2;
+      end else if (operator_q == SMAQA128) begin
+          if (buf_pointer == buf_pointer_in) begin
+            buf_pointer <= '0; 
+          end else
+            buf_pointer <= buf_pointer + 4;
+            
+      end else if (operator_q == SMAQA320) begin
+        buf_pointer <= '0;
+        buf_pointer_in <= '0; 
+      end else begin
+       
+      end
+    end
+  
+  
   if (ariane_pkg::BITMANIP) begin
     always_ff @(posedge clk_i or negedge rst_ni) begin
       if (~rst_ni) begin
@@ -250,6 +432,7 @@ module multiplier
       simd_mult_result_q <= simd_mult_result_d;
       simd_smaqa_result_q <= simd_smaqa_result_d;
       simd_smaqa64_result_q <= simd_smaqa64_result_d;
+      simd_smaqa128_result_q <= simd_smaqa128_result_d;
     end
   end
 endmodule

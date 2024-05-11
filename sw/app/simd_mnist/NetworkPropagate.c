@@ -36,6 +36,35 @@ static int clamp(int v, int lo, int hi) {
     }
 }
 
+
+static void reset_macsOnRange(){
+    asm volatile(
+        "smaqa320 zero, zero, zero\n"
+    );
+}
+
+static void SIMD128macsOnRange(const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+        int8x4_t* weights_ptr = weights;
+        for (int iter = 0; iter < nb_iterations/4; iter = iter + 4) {
+        asm volatile(
+        "lw a1, 0(%[weights_ptr])\n"  // Load input from memory into $a1
+        "lw a2, 4(%[weights_ptr])\n" // Load weight from memory into $a3
+        "lw a3, 8(%[weights_ptr])\n"  // Load input from memory into $a2
+        "lw a4, 12(%[weights_ptr])\n" // Load weight from memory into $a4
+        "smaqa128 %[result], a1, a3\n" // Perform the operation with $a1 and $a3
+        : [result] "+r"(*weightedSum) // Output operand
+        : [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+        : "a1", "a2", "a3", "a4" // Clobbered registers
+    );
+    }
+
+}
+
+
+
 static void SIMD64macsOnRange(const UDATA_T* __restrict inputs,
                         const WDATA_T* __restrict weights,
                         SUM_T* __restrict weightedSum,
@@ -407,7 +436,7 @@ static void SIMDconvcellPropagate2(
         const int iy = (oy * STRIDE_Y) - PADDING_Y;
 
         for (int ox = 0; ox < OUTPUTS_WIDTH; ++ox) {
-            for (int output = 0; output < NB_OUTPUTS; ++output) {
+            for (int output = 0; output < 1; ++output) {
                 // moved to inner loop for collapsing -->
                 const int sxMin = (PADDING_X == 0) ? 0
                     : max(PADDING_X - (ox * STRIDE_X), 0);
@@ -504,6 +533,104 @@ static void SIMDconvcellPropagate2(
                 outputs[oOffset + output]
                     = sat(weightedSum, output, ACTIVATION, rescaling);
             }
+
+            for (int output = 0; output < NB_OUTPUTS; ++output) {
+                                // moved to inner loop for collapsing -->
+                const int sxMin = (PADDING_X == 0) ? 0
+                    : max(PADDING_X - (ox * STRIDE_X), 0);
+                const int sxMax = (PADDING_X == 0
+                        && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
+                            ? KERNEL_WIDTH
+                    : clamp(CHANNELS_WIDTH + PADDING_X - (ox * STRIDE_X), 
+                            0, KERNEL_WIDTH);
+                const int ix = (ox * STRIDE_X) - PADDING_X;
+
+                const int oPos = (ox + OUTPUTS_WIDTH * oy);
+                int oOffset = OUTPUT_MEM_STRIDE * oPos;
+
+                if (OUTPUT_MEM_WRAP_SIZE > 0 && oOffset >= OUTPUT_MEM_CONT_SIZE) {
+                    oOffset += OUTPUT_MEM_WRAP_OFFSET - OUTPUT_MEM_CONT_OFFSET
+                                - OUTPUT_MEM_CONT_SIZE;
+                }
+                // <--
+
+                SUM_T weightedSum = biasses[output];
+
+                for (int sy = 0; sy < KERNEL_HEIGHT; ++sy) {
+                    if ((PADDING_Y != 0
+                            || OUTPUTS_HEIGHT != OUTPUTS_HEIGHT_NOPAD)
+                        && sy >= syMax - syMin)
+                    {
+                        break;
+                    }
+
+                    const int iPos = ((sxMin + ix)
+                                        + CHANNELS_WIDTH * (iy + syMin + sy));
+                    int iOffset = INPUT_MEM_STRIDE * iPos;
+
+                    // Wrapping cannot occur in the middle of a line, except if
+                    // there is only one line (1D)!
+                    bool wrapInRange = false;
+
+                    if (INPUT_MEM_WRAP_SIZE > 0
+                        && iOffset >= INPUT_MEM_CONT_SIZE)
+                    {
+                        iOffset += INPUT_MEM_WRAP_OFFSET - INPUT_MEM_CONT_OFFSET
+                                    - INPUT_MEM_CONT_SIZE;
+                    }
+                    else if (INPUT_MEM_WRAP_SIZE > 0 && KERNEL_WIDTH > 1
+                        && CHANNELS_HEIGHT == 1 // single line (1D)!
+                        && iOffset + KERNEL_WIDTH * NB_CHANNELS
+                            > INPUT_MEM_CONT_SIZE)
+                    {
+                        wrapInRange = true;
+                    }
+
+                    const int wOffset = NB_CHANNELS * (sxMin
+                        + KERNEL_WIDTH * (syMin + sy + KERNEL_HEIGHT * output));
+
+                    if (!wrapInRange && (NB_CHANNELS == INPUT_MEM_STRIDE
+                        && ((PADDING_X == 0
+                            && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
+                                || sxMax - sxMin == KERNEL_WIDTH)))
+                    {
+                            SIMD128macsOnRange(
+                            weights + wOffset, 
+                            &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                    }
+                    else {
+                        for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
+                            if ((PADDING_X != 0
+                                    || OUTPUTS_WIDTH != OUTPUTS_WIDTH_NOPAD)
+                                && sx >= sxMax - sxMin)
+                            {
+                                break;
+                            }
+
+                            int iOffsetInRange = iOffset
+                                + sx * INPUT_MEM_STRIDE;
+
+                            if (wrapInRange
+                                && iOffsetInRange >= INPUT_MEM_CONT_SIZE)
+                            {
+                                iOffsetInRange += INPUT_MEM_WRAP_OFFSET
+                                            - INPUT_MEM_CONT_OFFSET
+                                            - INPUT_MEM_CONT_SIZE;
+                            }
+
+                            macsOnRange(
+                                // same input line so no wrapping can occur
+                                inputs + iOffsetInRange, 
+                                weights + wOffset + sx * NB_CHANNELS, 
+                                &weightedSum,NB_CHANNELS);
+                        }
+                    }
+                }
+
+                outputs[oOffset + output]
+                    = sat(weightedSum, output, ACTIVATION, rescaling);
+            }
+            //reset_macsOnRange();
         }
     }
 }
