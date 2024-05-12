@@ -319,7 +319,7 @@ module multiplier
     
   // SIMD SMAQA 8 bits 
   assign simd_smaqa128_result_q = $signed(
-      {smaqa128_mult1_result_q[63], smaqa128_mult1_result_q_q[63:48]}
+      {smaqa128_mult1_result_q[63], smaqa128_mult1_result_q[63:48]}
   ) + $signed(
       {smaqa128_mult1_result_q[47], smaqa128_mult1_result_q[47:32]}
   ) + $signed(
