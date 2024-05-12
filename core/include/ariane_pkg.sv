@@ -670,6 +670,7 @@ package ariane_pkg;
     SMAQA64,
     SMAQA128,
     SMAQA320,
+    RSTSMAQA,
     //Custom Load
     L64,
     L128,

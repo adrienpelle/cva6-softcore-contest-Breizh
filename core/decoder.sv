@@ -1214,6 +1214,22 @@ module decoder
           endcase
         end
         
+        riscv::OpcodeCustom2: begin
+          instruction_o.fu = MULT;
+          instruction_o.rs1[4:0] = instr.rtype.rs1;
+          instruction_o.rs2[4:0] = instr.rtype.rs2;
+          instruction_o.rd[4:0]  = instr.rtype.rd;
+          imm_select             = RS3;
+          unique case ({instr.rtype.funct7, instr.rtype.funct3})
+          
+          // Reg-Reg SIMD instructions 
+          
+              // Reset SMAQA result buffer  
+              {7'b000_0000, 3'b000} : instruction_o.op = ariane_pkg::RSTSMAQA;    //SMAQA64
+              default : illegal_instr = 1'b1; // Catch-all for undefined instructions
+          endcase
+        end
+        
         
         // ----------------------------------
         // Custom1 Instructions

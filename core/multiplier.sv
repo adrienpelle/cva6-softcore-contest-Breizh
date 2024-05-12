@@ -88,7 +88,7 @@ module multiplier
   assign mult_trans_id_o = trans_id_q;
   assign mult_ready_o = 1'b1;
 
-  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA, SMAQA64, SMAQA128, SMAQA320});
+  assign mult_valid      = mult_valid_i && (operation_i inside {MUL, MULH, MULHU, MULHSU, MULW, CLMUL, CLMULH, CLMULR, SMUL8, UMUL8, SMAQA, SMAQA64, SMAQA128, SMAQA320, RSTSMAQA});
 
   // Sign Select MUX
   always_comb begin
@@ -349,10 +349,10 @@ module multiplier
   ) + $signed(
       {smaqa128_mult4_result_d[31], smaqa128_mult4_result_d[31:16]}
   ) + $signed(
-      {smaqa128_mult4_result_d[15], smaqa128_mult4_result_d[15:0]}
-  ) + $signed(
-      {operand_c_i[31], operand_c_i}
-  );  
+      {smaqa128_mult4_result_d[15], smaqa128_mult4_result_d[15:0]});
+//  ) + $signed(
+//      {operand_c_i[31], operand_c_i}
+//  );  
   
   
    
@@ -369,7 +369,7 @@ module multiplier
       SMUL8, UMUL8 :       result_o = simd_mult_result_q[riscv::XLEN-1:0];
       SMAQA:               result_o = simd_smaqa_result_q[riscv::XLEN-1:0];
       SMAQA64:             result_o = simd_smaqa64_result_q[riscv::XLEN-1:0];
-      SMAQA128:            result_o = simd_smaqa128_result_q[riscv::XLEN-1:0];
+      SMAQA320:            result_o = simd_smaqa128_result_q[riscv::XLEN-1:0];
                                 
       // MUL performs an XLEN-bit×XLEN-bit multiplication and places the lower XLEN bits in the destination register
       
@@ -385,6 +385,7 @@ module multiplier
         end
         buf_pointer <= '0;
         buf_pointer_in <= '0;
+        simd_smaqa128_result_q <= '0;
         
       end else if (operator_d == SMAQA64) begin
         inputs_buf_q[buf_pointer_in]  <= operand_a_i;
@@ -394,16 +395,19 @@ module multiplier
           if (buf_pointer == buf_pointer_in) begin
             buf_pointer <= '0; 
           end else
-            buf_pointer <= buf_pointer + 4;
-            
+            simd_smaqa128_result_q <= simd_smaqa128_result_q + simd_smaqa128_result_d;
+            buf_pointer <= buf_pointer + 4;         
       end else if (operator_d == SMAQA320) begin
+            
+      end else if (operator_d == RSTSMAQA) begin
         buf_pointer <= '0;
-        buf_pointer_in <= '0; 
+        buf_pointer_in <= '0;
+        simd_smaqa128_result_q <= '0; 
         for (int i = 0; i < 128; i++) begin
             inputs_buf_q[i]  <= '0;
         end 
       end else begin
-       
+    
       end
     end
   
@@ -440,12 +444,10 @@ module multiplier
       simd_mult_result_q <= simd_mult_result_d;
       simd_smaqa_result_q <= simd_smaqa_result_d;
       simd_smaqa64_result_q <= simd_smaqa64_result_d;
-      simd_smaqa128_result_q <= simd_smaqa128_result_d;
       //smaqa128_mult1_result_q <= smaqa128_mult1_result_d;
       //smaqa128_mult2_result_q <= smaqa128_mult2_result_d;
       //smaqa128_mult3_result_q <= smaqa128_mult3_result_d;
       //smaqa128_mult4_result_q <= smaqa128_mult4_result_d;
-      operand_c_q <= operand_c_i;
     end
   end
 endmodule
