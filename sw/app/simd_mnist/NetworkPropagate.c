@@ -39,12 +39,21 @@ static int clamp(int v, int lo, int hi) {
 
 static void reset_macsOnRange(){
     asm volatile(
-        "smaqa320 zero, zero, zero\n"
+        "custom2 zero, zero, zero\n"
     );
 }
 
+static void getMacsOnRangResult(SUM_T* __restrict weightedSum){
+    SUM_T result;
+    asm volatile(
+        "smaqa320 %[result], zero, zero\n" // Perform the operation with $a1 and $a3
+        : [result] "=r"(result) // Output operand
+        : 
+    );
+    *weightedSum += result;
+}
+
 static void SIMD128macsOnRange(const WDATA_T* __restrict weights,
-                        SUM_T* __restrict weightedSum,
                         int nb_iterations)
 {
         int8x4_t* weights_ptr = weights;
@@ -54,8 +63,8 @@ static void SIMD128macsOnRange(const WDATA_T* __restrict weights,
         "lw a3, 8(%[weights_ptr])\n" // Load weight from memory into $a3
         "lw a2, 4(%[weights_ptr])\n"  // Load input from memory into $a2
         "lw a4, 12(%[weights_ptr])\n" // Load weight from memory into $a4
-        "smaqa128 %[result], a1, a3\n" // Perform the operation with $a1 and $a3
-        : [result] "+r"(*weightedSum) // Output operand
+        "smaqa128 a5, a1, a3\n" // Perform the operation with $a1 and $a3
+        :  // Output operand
         :[weights_ptr] "r"(&weights_ptr[iter]) // Input operands
         : "a1", "a2", "a3", "a4" // Clobbered registers
     );
@@ -595,8 +604,7 @@ static void SIMDconvcellPropagate2(
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
                             SIMD128macsOnRange(
-                            weights + wOffset, 
-                            &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                            weights + wOffset,KERNEL_WIDTH * NB_CHANNELS);
                     }
                     else {
                         for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
@@ -627,6 +635,8 @@ static void SIMDconvcellPropagate2(
                     }
                 }
 
+                getMacsOnRangResult(&weightedSum);
+                printf("WeightedSum=%d",weightedSum);
                 outputs[oOffset + output]
                     = sat(weightedSum, output, ACTIVATION, rescaling);
             }
