@@ -48,14 +48,16 @@ static void SIMD128macsOnRange(const WDATA_T* __restrict weights,
                         int nb_iterations)
 {
         int8x4_t* weights_ptr = weights;
-        for (int iter = 0; iter < nb_iterations/4; iter = iter + 2) {
+        for (int iter = 0; iter < nb_iterations/4; iter = iter + 4) {
         asm volatile(
-        "lw s2, 4(%[weights_ptr])\n" // Load weight from memory into $a3
         "lw a1, 0(%[weights_ptr])\n"  // Load input from memory into $a1
-        "smaqa128 %[result], a1, s2\n" // Perform the operation with $a1 and $a3
+        "lw a3, 8(%[weights_ptr])\n" // Load weight from memory into $a3
+        "lw a2, 4(%[weights_ptr])\n"  // Load input from memory into $a2
+        "lw a4, 12(%[weights_ptr])\n" // Load weight from memory into $a4
+        "smaqa128 %[result], a1, a3\n" // Perform the operation with $a1 and $a3
         : [result] "+r"(*weightedSum) // Output operand
-        : [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
-        : "a1", "a7" // Clobbered registers
+        :[weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+        : "a1", "a2", "a3", "a4" // Clobbered registers
     );
     }
 
