@@ -393,12 +393,14 @@ module multiplier
         buf_pointer_in <= buf_pointer_in + 2;
       end else if (operator_d == SMAQA128) begin
           if (buf_pointer == buf_pointer_in) begin
-            buf_pointer <= '0; 
+            buf_pointer <= '0;
+            simd_smaqa128_result_q <= simd_smaqa128_result_q + simd_smaqa128_result_d; 
           end else
             simd_smaqa128_result_q <= simd_smaqa128_result_q + simd_smaqa128_result_d;
             buf_pointer <= buf_pointer + 4;         
-      end else if (operator_d == SMAQA320) begin
-            
+      end else if (operator_q == SMAQA320) begin
+            simd_smaqa128_result_q <= '0;
+            buf_pointer <= '0;
       end else if (operator_d == RSTSMAQA) begin
         buf_pointer <= '0;
         buf_pointer_in <= '0;
