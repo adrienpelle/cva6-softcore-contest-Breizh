@@ -318,14 +318,14 @@ module multiplier
   );
     
   // SIMD SMAQA 8 bits 
-  assign simd_smaqa128_result_q = $signed(
-      {smaqa128_mult1_result_q[63], smaqa128_mult1_result_q[63:48]}
+  assign simd_smaqa128_result_d = $signed(
+      {smaqa128_mult1_result_d[63], smaqa128_mult1_result_d[63:48]}
   ) + $signed(
-      {smaqa128_mult1_result_q[47], smaqa128_mult1_result_q[47:32]}
+      {smaqa128_mult1_result_d[47], smaqa128_mult1_result_d[47:32]}
   ) + $signed(
-      {smaqa128_mult1_result_q[31], smaqa128_mult1_result_q[31:16]}
+      {smaqa128_mult1_result_d[31], smaqa128_mult1_result_d[31:16]}
   ) + $signed(
-      {smaqa128_mult1_result_q[15], smaqa128_mult1_result_q[15:0]}
+      {smaqa128_mult1_result_d[15], smaqa128_mult1_result_d[15:0]}
   ) + $signed(
       {smaqa128_mult2_result_d[63], smaqa128_mult2_result_d[63:48]}
   ) + $signed(
@@ -335,13 +335,13 @@ module multiplier
   ) + $signed(
       {smaqa128_mult2_result_d[15], smaqa128_mult2_result_d[15:0]}
   ) + $signed(
-      {smaqa128_mult3_result_q[63], smaqa128_mult3_result_q[63:48]}
+      {smaqa128_mult3_result_d[63], smaqa128_mult3_result_d[63:48]}
   ) + $signed(
-      {smaqa128_mult3_result_q[47], smaqa128_mult3_result_q[47:32]}
+      {smaqa128_mult3_result_d[47], smaqa128_mult3_result_d[47:32]}
   ) + $signed(
-      {smaqa128_mult3_result_q[31], smaqa128_mult3_result_q[31:16]}
+      {smaqa128_mult3_result_d[31], smaqa128_mult3_result_d[31:16]}
   ) + $signed(
-      {smaqa128_mult3_result_q[15], smaqa128_mult3_result_q[15:0]}
+      {smaqa128_mult3_result_d[15], smaqa128_mult3_result_d[15:0]}
   ) + $signed(
       {smaqa128_mult4_result_d[63], smaqa128_mult4_result_d[63:48]}
   ) + $signed(
@@ -351,7 +351,7 @@ module multiplier
   ) + $signed(
       {smaqa128_mult4_result_d[15], smaqa128_mult4_result_d[15:0]}
   ) + $signed(
-      {operand_c_q[31], operand_c_q}
+      {operand_c_i[31], operand_c_i}
   );  
   
   
@@ -440,9 +440,11 @@ module multiplier
       simd_mult_result_q <= simd_mult_result_d;
       simd_smaqa_result_q <= simd_smaqa_result_d;
       simd_smaqa64_result_q <= simd_smaqa64_result_d;
-      //simd_smaqa128_result_q <= simd_smaqa128_result_d;
-      smaqa128_mult1_result_q <= smaqa128_mult1_result_d;
-      smaqa128_mult3_result_q <= smaqa128_mult3_result_d;
+      simd_smaqa128_result_q <= simd_smaqa128_result_d;
+      //smaqa128_mult1_result_q <= smaqa128_mult1_result_d;
+      //smaqa128_mult2_result_q <= smaqa128_mult2_result_d;
+      //smaqa128_mult3_result_q <= smaqa128_mult3_result_d;
+      //smaqa128_mult4_result_q <= smaqa128_mult4_result_d;
       operand_c_q <= operand_c_i;
     end
   end
