@@ -382,17 +382,17 @@ module multiplier
         buf_pointer <= '0;
         buf_pointer_in <= '0;
         
-      end else if (operator_q == SMAQA64) begin
+      end else if (operator_d == SMAQA64) begin
         inputs_buf_q[buf_pointer_in]  <= operand_a_i;
         inputs_buf_q[buf_pointer_in + 1]  <= operand_d_i;
         buf_pointer_in <= buf_pointer_in + 2;
-      end else if (operator_q == SMAQA128) begin
+      end else if (operator_d == SMAQA128) begin
           if (buf_pointer == buf_pointer_in) begin
             buf_pointer <= '0; 
           end else
             buf_pointer <= buf_pointer + 2;
             
-      end else if (operator_q == SMAQA320) begin
+      end else if (operator_d == SMAQA320) begin
         buf_pointer <= '0;
         buf_pointer_in <= '0; 
       end else begin
