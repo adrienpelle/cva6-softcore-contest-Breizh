@@ -636,7 +636,7 @@ static void SIMDconvcellPropagate2(
                 }
 
                 getMacsOnRangResult(&weightedSum);
-                //printf("WeightedSum=%d",weightedSum);
+                //printf("WeightedSum=%d\n",weightedSum);
                 outputs[oOffset + output]
                     = sat(weightedSum, output, ACTIVATION, rescaling);
             }
@@ -673,7 +673,7 @@ static void fccellPropagateUDATA_T(
     // static_assert(OUTPUTS_WIDTH == 1, "Outputs width should be 1");
     // static_assert(OUTPUT_MEM_WRAP_SIZE == 0, "Output wrapping not supported");
 
-    for (int och = 0; och < NB_OUTPUTS; och++) {
+    for (int och = 0; och < 1; och++) {
         SUM_T weightedSum = biasses[och];
 
         for (int iy = 0; iy < CHANNELS_HEIGHT; ++iy) {
@@ -723,10 +723,65 @@ static void fccellPropagateUDATA_T(
                         &weightedSum, NB_CHANNELS);
                 }
             }
-        }
-
+        }   
         outputs[och] = sat(weightedSum, och, ACTIVATION, rescaling);
     }
+
+    for (int och = 0; och < NB_OUTPUTS; och++) {
+        SUM_T weightedSum = biasses[och];
+
+        for (int iy = 0; iy < CHANNELS_HEIGHT; ++iy) {
+            const int iPos = (CHANNELS_WIDTH * iy);
+            int iOffset = INPUT_MEM_STRIDE * iPos;
+
+            // Wrapping cannot occur in the middle of a line, except if
+            // there is only one line (1D)!
+            bool wrapInRange = false;
+
+            if (INPUT_MEM_WRAP_SIZE > 0 && iOffset >= INPUT_MEM_CONT_SIZE) {
+                iOffset += INPUT_MEM_WRAP_OFFSET - INPUT_MEM_CONT_OFFSET
+                            - INPUT_MEM_CONT_SIZE;
+            }
+            else if (INPUT_MEM_WRAP_SIZE > 0 && CHANNELS_WIDTH > 1
+                && CHANNELS_HEIGHT == 1 // single line (1D)!
+                && iOffset + CHANNELS_WIDTH * NB_CHANNELS
+                    > INPUT_MEM_CONT_SIZE)
+            {
+                wrapInRange = true;
+            }
+
+            const int wOffset = NB_CHANNELS * CHANNELS_WIDTH
+                                    * (iy + CHANNELS_HEIGHT * och);
+
+            if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
+                SIMD128macsOnRange(
+                    weights + wOffset, NB_CHANNELS * CHANNELS_WIDTH);
+            }
+            else {
+                for (int ix = 0; ix < CHANNELS_WIDTH; ++ix) {
+                    int iOffsetInRange = iOffset + ix * INPUT_MEM_STRIDE;
+
+                    if (wrapInRange
+                        && iOffsetInRange >= INPUT_MEM_CONT_SIZE)
+                    {
+                        iOffsetInRange += INPUT_MEM_WRAP_OFFSET
+                                    - INPUT_MEM_CONT_OFFSET
+                                    - INPUT_MEM_CONT_SIZE;
+                    }
+
+                    macsOnRange(
+                        inputs + iOffsetInRange, 
+                        weights + wOffset + ix * NB_CHANNELS, 
+                        &weightedSum, NB_CHANNELS);
+                }
+            }
+        }
+        getMacsOnRangResult(&weightedSum);
+        if(och > 0){
+            outputs[och] = sat(weightedSum, och, ACTIVATION, rescaling);
+        }
+    }
+    reset_macsOnRange();
 }
 
 static void fccellPropagateDATA_T(
