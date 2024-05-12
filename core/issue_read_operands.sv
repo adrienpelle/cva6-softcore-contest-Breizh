@@ -240,7 +240,7 @@ module issue_read_operands
     if ((CVA6Cfg.FpPresent && is_rs2_fpr(
             issue_instr_i.op
         )) ? rd_clobber_fpr_i[issue_instr_i.rs1 + 1] != NONE :
-            (issue_instr_i.op == SMAQA64) && CVA6Cfg.NrRgprPorts > 2 ?
+            (issue_instr_i.op == SMAQA64 | issue_instr_i.op == SMAQA128) && CVA6Cfg.NrRgprPorts > 2 ?
             rd_clobber_gpr_i[issue_instr_i.rs1 + 1] != NONE : 0) begin
       // if the operand is available, forward it. CSRs don't write to/from FPR so no need to check
       if (rs4_valid_i && (CVA6Cfg.FpPresent && is_rs2_fpr(
@@ -257,7 +257,7 @@ module issue_read_operands
     if ((CVA6Cfg.FpPresent && is_rs2_fpr(
             issue_instr_i.op
         )) ? rd_clobber_fpr_i[issue_instr_i.rs2 + 1] != NONE :
-            (issue_instr_i.op == SMAQA64) && CVA6Cfg.NrRgprPorts > 2 ?
+            (issue_instr_i.op == SMAQA64 | issue_instr_i.op == SMAQA128) && CVA6Cfg.NrRgprPorts > 2 ?
             rd_clobber_gpr_i[issue_instr_i.rs2 + 1] != NONE : 0) begin
       // if the operand is available, forward it. CSRs don't write to/from FPR so no need to check
       if (rs5_valid_i && (CVA6Cfg.FpPresent && is_rs2_fpr(
@@ -292,7 +292,7 @@ module issue_read_operands
     if (CVA6Cfg.NrRgprPorts > 2) begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} :
-          ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA) | (issue_instr_i.op == SMAQA64)) ? operand_c_regfile : issue_instr_i.result;
+          ((issue_instr_i.op == OFFLOAD) | (issue_instr_i.op == SMAQA) | (issue_instr_i.op == SMAQA64) | (issue_instr_i.op == SMAQA128)) ? operand_c_regfile : issue_instr_i.result;
     end else begin
       imm_n = (CVA6Cfg.FpPresent && is_imm_fpr(issue_instr_i.op)) ?
           {{riscv::XLEN - CVA6Cfg.FLen{1'b0}}, operand_c_regfile} : issue_instr_i.result;

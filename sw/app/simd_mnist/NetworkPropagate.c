@@ -636,7 +636,7 @@ static void SIMDconvcellPropagate2(
                 }
 
                 getMacsOnRangResult(&weightedSum);
-                printf("WeightedSum=%d",weightedSum);
+                //printf("WeightedSum=%d",weightedSum);
                 outputs[oOffset + output]
                     = sat(weightedSum, output, ACTIVATION, rescaling);
             }
