@@ -4,7 +4,7 @@
 #include "util.h"
 #include <stddef.h>
 
-#pragma GCC optimize ("unroll-loops")
+//#pragma GCC optimize ("unroll-loops")
 
 void matmul(const size_t coreid, const size_t ncores, const size_t lda,  const data_t A[], const data_t B[], data_t C[])
 {

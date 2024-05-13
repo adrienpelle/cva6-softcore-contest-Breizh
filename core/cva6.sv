@@ -161,7 +161,7 @@ module cva6
   localparam bit EnableAccelerator = CVA6Cfg.RVV;  // Currently only used by V extension (Ara)
   localparam int unsigned NrWbPorts = (CVA6Cfg.CvxifEn || EnableAccelerator) ? 5 : 4;
 
-  localparam NrRgprPorts = 2;
+  localparam NrRgprPorts = 5;
 
   localparam config_pkg::cva6_cfg_t CVA6ExtendCfg = {
     CVA6Cfg.NrCommitPorts,
@@ -257,6 +257,8 @@ module cva6
   logic [riscv::VLEN-1:0] rs2_forwarding_id_ex;  // unregistered version of fu_data_o.operandb
 
   fu_data_t fu_data_id_ex;
+  riscv::xlen_t             operand_d_id_ex;
+  riscv::xlen_t             operand_e_id_ex;
   logic [riscv::VLEN-1:0] pc_id_ex;
   logic is_compressed_instr_id_ex;
   // fixed latency units
@@ -591,6 +593,8 @@ module cva6
       .rs1_forwarding_o      (rs1_forwarding_id_ex),
       .rs2_forwarding_o      (rs2_forwarding_id_ex),
       .fu_data_o             (fu_data_id_ex),
+      .operand_d             (operand_d_id_ex),
+      .operand_e             (operand_e_id_ex),
       .pc_o                  (pc_id_ex),
       .is_compressed_instr_o (is_compressed_instr_id_ex),
       // fixed latency unit ready
@@ -658,6 +662,8 @@ module cva6
       .rs1_forwarding_i     (rs1_forwarding_id_ex),
       .rs2_forwarding_i     (rs2_forwarding_id_ex),
       .fu_data_i            (fu_data_id_ex),
+      .operand_d             (operand_d_id_ex),
+      .operand_e             (operand_e_id_ex),
       .pc_i                 (pc_id_ex),
       .is_compressed_instr_i(is_compressed_instr_id_ex),
       // fixed latency units

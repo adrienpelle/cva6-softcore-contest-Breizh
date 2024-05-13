@@ -72,7 +72,7 @@ package ariane_pkg;
   localparam REG_ADDR_SIZE = 5;
 
   // Read ports for general purpose register files
-  localparam NR_RGPR_PORTS = 2;
+  localparam NR_RGPR_PORTS = 5;
 
   // static debug hartinfo
   // debug causes
@@ -360,7 +360,7 @@ package ariane_pkg;
   // EX Stage
   // ---------------
 
-  typedef enum logic [7:0] {  // basic ALU op
+  typedef enum logic [8:0] {  // basic ALU op
     ADD,
     SUB,
     ADDW,
@@ -563,7 +563,119 @@ package ariane_pkg;
     ACCEL_OP_STORE,
     // Zicond instruction
     CZERO_EQZ,
-    CZERO_NEZ
+    CZERO_NEZ,
+    // Packed SIMD instructions
+    // SIMD Adder operations
+    ADD16,
+    SUB16,
+    ADD8,
+    SUB8,
+    RADD8,
+    RSUB8,
+    RADD16,
+    RSUB16,
+    URADD8,
+    URSUB8,
+    URADD16,
+    URSUB16,
+    KADD16,
+    UKADD16,
+    KSUB16,
+    UKSUB16,
+    KADD8,
+    UKADD8,
+    KSUB8,
+    UKSUB8,
+    CRAS16, 
+    RCRAS16, 
+    URCRAS16, 
+    KCRAS16, 
+    UKCRAS16, 
+    CRSA16, 
+    RCRSA16, 
+    URCRSA16, 
+    KCRSA16, 
+    UKCRSA16, 
+    STAS16, 
+    RSTAS16, 
+    URSTAS16, 
+    KSTAS16, 
+    UKSTAS16, 
+    STSA16, 
+    RSTSA16, 
+    URSTSA16, 
+    KSTSA16, 
+    UKSTSA16,
+    // SIMD Shift operations
+    SRA16,
+    SRA16_U, //TODO
+    SRL16,
+    SRL16_U, //TODO
+    SLL16,
+    KSLL16, //TODO
+    KSLRA16,//TODO
+    KSLRA16_U,//TODO
+    SRA8,
+    SRA8_U,//TODO
+    SRL8,
+    SRL8_U,//TODO
+    SLL8,
+    KSLL8,//TODO
+    KSLRA8,//TODO
+    KSLRA8_U,//TODO
+    // SIMD Comparisons operations 
+    CMPEQ16,
+    SCMPLT16,
+    SCMPLE16,
+    UCMPLT16,
+    UCMPLE16,
+    CMPEQ8,
+    SCMPLT8,
+    SCMPLE8,
+    UCMPLT8,
+    UCMPLE8,
+    //SIMD Miscellaneous instructions
+    SMIN8,
+    UMIN8,
+    SMAX8,
+    UMAX8,
+    SMIN16,
+    UMIN16,
+    SMAX16,
+    UMAX16,
+    //SIMD Unpack intsructions 
+    SUNPKD810,
+    SUNPKD820,
+    SUNPKD830,
+    SUNPKD831,
+    SUNPKD832,
+    ZUNPKD810,
+    ZUNPKD820,
+    ZUNPKD830,
+    ZUNPKD831,
+    ZUNPKD832,
+    //SIMD Pack instructions 
+    PKBB16,
+    PKBT16,
+    PKTB16,
+    PKTT16,
+    //Clip 32 bits
+    SCLIP32, 
+    UCLIP32,
+    // SIMD Multiplications
+    SMUL8,
+    UMUL8,
+    SMAQA,
+    //Custom SMAQA 
+    SMAQA64,
+    SMAQA128,
+    SMAQA320,
+    RSTSMAQA,
+    //Custom Load
+    L64,
+    L128,
+    L320
+    
   } fu_op;
 
   typedef struct packed {
@@ -631,6 +743,7 @@ package ariane_pkg;
       default: return 1'b0;  // all other ops
     endcase
   endfunction
+  
 
   // function used in instr_trace svh
   // is_rd_fpr function is kept to allow cva6 compilation with instr_trace feature

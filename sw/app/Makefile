@@ -54,7 +54,8 @@ bmarks = \
 	dhrystone \
 	spmv \
 	pmp \
-	mnist
+	mnist \
+	mnist_golden \
 
 #--------------------------------------------------------------------
 # Build rules
@@ -87,12 +88,12 @@ INCS += -I$(src_dir)/../bsp/config \
 	
 FLAGS_STR:="$(RISCV_CFLAGS)  $(RISCV_LDFLAGS) "
 
-CFLAGS ?=-march=rv32im_zicsr -mabi=ilp32 -DPREALLOCATE=1 -fvisibility=hidden -DSTDIO_THRU_UART -O3 -mcmodel=medany   -static  -Wall -pedantic 
+CFLAGS ?=-march=rv32im_zicsr_zpn -mabi=ilp32 -DPREALLOCATE=1 -fvisibility=hidden -DSTDIO_THRU_UART -O3 -mcmodel=medany   -static  -Wall -pedantic #-save-temps
 
 RISCV_CFLAGS :=-DPERFORMANCE_RUN=1 \
 		-DITERATIONS=3 \
 		-DFLAGS_STR=\"$(FLAGS_STR)\" \
-		-march=rv32im_zicsr -mabi=ilp32 -DPREALLOCATE=1 -fvisibility=hidden -DSTDIO_THRU_UART -O3 -mcmodel=medany   -static  -Wall -pedantic 
+		-march=rv32im_zicsr_zpn -mabi=ilp32 -DPREALLOCATE=1 -fvisibility=hidden -DSTDIO_THRU_UART -O3 -mcmodel=medany   -static  -Wall -pedantic #-save-temps
 
 RISCV_LDFLAGS=-L./ -lcva6 -static -nostartfiles -T $(src_dir)/../bsp/config/link.ld
 

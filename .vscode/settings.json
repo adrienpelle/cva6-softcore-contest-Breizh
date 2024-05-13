@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "string.h": "c",
+        "functional": "c",
+        "benchmark.h": "c",
+        "random": "c"
+    }
+}

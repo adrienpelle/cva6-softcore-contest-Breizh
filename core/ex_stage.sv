@@ -28,6 +28,8 @@ module ex_stage
     input logic [riscv::VLEN-1:0] rs1_forwarding_i,
     input logic [riscv::VLEN-1:0] rs2_forwarding_i,
     input fu_data_t fu_data_i,
+    input riscv::xlen_t  operand_d,
+    input riscv::xlen_t  operand_e,
     input logic [riscv::VLEN-1:0] pc_i,  // PC of current instruction
     input logic is_compressed_instr_i,  // we need to know if this was a compressed instruction
                                         // in order to calculate the next PC on a mis-predict
@@ -244,8 +246,11 @@ module ex_stage
 
   // 4. Multiplication (Sequential)
   fu_data_t mult_data;
+  riscv::xlen_t mult_operand_d, mult_operand_e;
   // input silencing of multiplier
   assign mult_data = mult_valid_i ? fu_data_i : '0;
+  assign mult_operand_d = mult_valid_i ? operand_d : '0;
+  assign mult_operand_e = mult_valid_i ? operand_e : '0;
 
   mult #(
       .CVA6Cfg(CVA6Cfg)
@@ -255,6 +260,8 @@ module ex_stage
       .flush_i,
       .mult_valid_i,
       .fu_data_i      (mult_data),
+      .operand_d      (mult_operand_d),
+      .operand_e      (mult_operand_e),
       .result_o       (mult_result),
       .mult_valid_o   (mult_valid),
       .mult_ready_o   (mult_ready),

@@ -9,8 +9,17 @@
 #include "fc1.h"
 #include "fc2.h"
 
+#include "rvp_intrinsic.h" // Used for the RISC-V "P" extension SIMD intrinsics
+
+// Uncomment to enable benchmarking
+//#define BENCHMARK
+#ifdef BENCHMARK
+#include "benchmark.h"
+#endif
+
 
 static DATA_T mem[MEMORY_SIZE];
+
 
 static int max(int lhs, int rhs) {
         return (lhs >= rhs)?lhs:rhs;
@@ -27,6 +36,138 @@ static int clamp(int v, int lo, int hi) {
         return v;
     }
 }
+
+// reset_macsOnRange() : Reset the accumulator for the SIMD128macsOnRange() function
+static void reset_macsOnRange(){
+    asm volatile(
+        "custom2 zero, zero, zero\n" // Clear inputs buffer 
+    );
+}
+
+// getMacsOnRangResult() : Get the value of the accumulator for the SIMD128macsOnRange() function and add it to the weightedSum
+// Notice that the name of the instruction is "smaqa320", but should be "smaqaresult" for example.
+static void getMacsOnRangResult(SUM_T* __restrict weightedSum){
+    SUM_T result;
+    asm volatile(
+        "smaqa320 %[result], zero, zero\n" // result = value of the accumulator
+        : [result] "=r"(result) // Output operand
+        : 
+    );
+    *weightedSum += result;
+}
+
+// SIMD128macsOnRange() : Perform a SIMD 128-bit MAC operation on a range of inputs and weights
+// Inputs: Stored in the inputs buffer, implemented in the multiplier of CVA6. The inputs buffer is filled with the input operands of SMAQA64
+// Weights: Operands of the MAC operation : smaqa128 a5, a1, a3 
+//                                         - a1: rs1 register (weights_ptr[iter])
+//                                         - a3: rs2 register (weights_ptr[iter+2])
+//                                         - a5: rd register  (result)
+//                                         - a2: rs1 + 1 register (weights_ptr[iter+1])
+//                                         - a4: rs2 + 1 register (weights_ptr[iter+3])
+// nb_iterations: Number of iterations
+//Since we have 5 Register file reading ports, we can use 4 operands, in this case 4 weights at a time
+static void SIMD128macsOnRange(const WDATA_T* __restrict weights,
+                        int nb_iterations)
+{
+        int8x4_t* weights_ptr = weights;
+        for (int iter = 0; iter < nb_iterations/4; iter = iter + 4) {
+        asm volatile(
+        "lw a1, 0(%[weights_ptr])\n"  // Load weight[0] from memory into rs1 register
+        "lw a3, 8(%[weights_ptr])\n" // Load weight[2] from memory into rs2 register
+        "lw a2, 4(%[weights_ptr])\n"  // Load weight[1] from memory into rs1 + 1 register
+        "lw a4, 12(%[weights_ptr])\n" // Load weight[3] from memory into rs2 + 1 register
+        "smaqa128 a5, a1, a3\n" // SMAQA128 operation with rs1,rs2,rs1+1,rs2+1 as operands (rs1+1 and rs2+1 are adressed in hardware)
+        :  // No output operand (the result is stored in the accumulator)
+        :[weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+        : "a1", "a2", "a3", "a4" // Clobbered registers
+    );
+    }
+
+}
+
+
+// SIMD64macsOnRange() : Perform a SIMD 64-bit MAC operation on a range of inputs and weights
+// Inputs: Operands rs1 and rs1 + 1 of the SMAQA64 instruction
+// Weights: Operands rs2 and rs2 + 1 of the SMAQA64 instruction :
+//                                          smaqa64 %[result], a1, a3
+//                                         - %[result]: rd register is used to store the result and as operand. 
+//                                         - a1: rs1 register (inputs_ptr[iter])
+//                                         - a3: rs2 register (weights_ptr[iter])
+//                                         - a2: rs1 + 1 register (inputs_ptr[iter+1])
+//                                         - a4: rs2 + 1 register (weights_ptr[iter+1])
+// nb_iterations: Number of iterations
+static void SIMD64macsOnRange(const UDATA_T* __restrict inputs,
+                        const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+        uint8x4_t* inputs_ptr = inputs;
+        int8x4_t* weights_ptr = weights;
+        for (int iter = 0; iter < nb_iterations/4; iter = iter + 2) { //Nb_iterations is divided by 4 because 4 inputs are processed at each iteration
+        asm volatile(
+        "lw a1, 0(%[inputs_ptr])\n"  // Load input from memory into $a1
+        "lw a3, 0(%[weights_ptr])\n" // Load weight from memory into $a3
+        "lw a2, 4(%[inputs_ptr])\n"  // Load input from memory into $a2
+        "lw a4, 4(%[weights_ptr])\n" // Load weight from memory into $a4
+        "smaqa64 %[result], a1, a3\n" // Perform the operation with $a1 and $a3
+        : [result] "+r"(*weightedSum) // Output operand
+        : [inputs_ptr] "r"(&inputs_ptr[iter]), [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+        : "a1", "a2", "a3", "a4" // Clobbered registers
+    );
+    }
+
+}
+
+// SIMD32macsOnRange() : Perform a SIMD 32-bit MAC operation on a range of inputs and weights
+// Inputs: Operands rs1 of the SMAQA64 instruction
+// Weights: Operands rs2 of the SMAQA64 instruction :
+//                                          smaqa %[result], a1, a3
+//                                         - %[result]: rd register is used to store the result and as operand.
+//                                         - s6: rs1 register (inputs_ptr[iter])
+//                                         - s7: rs2 register (weights_ptr[iter])
+// nb_iterations: Number of iterations 
+static void SIMD32macsOnRange(const UDATA_T* __restrict inputs,
+                        const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+        uint8x4_t* inputs_ptr = inputs;
+        int8x4_t* weights_ptr = weights;
+        for (int iter = 0; iter < nb_iterations/4; ++iter) { //Nb_iterations is divided by 4 because 4 inputs are processed at each iteration
+                asm volatile(
+                "lw s6, 0(%[inputs_ptr])\n"  // Load input from memory into $a1
+                "lw s7, 0(%[weights_ptr])\n" // Load weight from memory into $a2
+                "smaqa %[result], s6, s7\n" // Perform the operation with $a1 and $a3
+                : [result] "+r"(*weightedSum) // Output operand
+                : [inputs_ptr] "r"(&inputs_ptr[iter]), [weights_ptr] "r"(&weights_ptr[iter]) // Input operands
+                : "s6", "s7" // Clobbered registers
+                );
+        }
+}
+
+// SIMD32macsOnRangePack() : Perform a SIMD 32-bit MAC operation on a range of inputs and weights with packed inputs
+static void SIMD32macsOnRangePack(const UDATA_T* __restrict inputs,   //Doesn't work for some reason
+                        const WDATA_T* __restrict weights,
+                        SUM_T* __restrict weightedSum,
+                        int nb_iterations)
+{
+    int16_t* inputs_ptr = inputs;
+    int32_t* weights_ptr = weights;
+    int32_t in8x4; 
+    //int32_t w8x4;
+
+    for (int iter = 0; iter < nb_iterations/4; iter = iter + 2) {
+        in8x4 = __rv_pkbb16(inputs_ptr[iter+1], inputs_ptr[iter]);
+        //w8x4 = __rv_pkbb16(weights_ptr[iter+1], weights_ptr[iter]);
+
+        asm volatile(
+        "smaqa %[result], %[a], %[b]\n"
+        : [result] "+r"(*weightedSum)
+        : [a] "r"(in8x4), [b] "r"(weights_ptr[iter])
+        );
+    }  
+}
+
 
 static void macsOnRange(const UDATA_T* __restrict inputs,
                         const WDATA_T* __restrict weights,
@@ -63,8 +204,8 @@ static UDATA_T sat(SUM_T weightedSum, int output,
 
     return saturate(weightedSum>>shift, NB_BITS);
 }
-
-static void convcellPropagate1(
+// SIMDconvcellPropagate1() : Perform the convcellPropagate1() function with SIMD instructions, dedicated to CONV1 layer
+static void SIMDconvcellPropagate1( 
     const UDATA_T* __restrict inputs,
     UDATA_T* __restrict outputs,
     const BDATA_T* __restrict biasses,
@@ -166,10 +307,20 @@ static void convcellPropagate1(
                             && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
                                 || sxMax - sxMin == KERNEL_WIDTH)))
                     {
-                        macsOnRange(
+                        if (iOffset % 24 == 0) { //This condition is used to avoid unaligned memory access
+                        //The SIMD32macsOnRange performs a 32-bit MAC operation on a range of inputs and weights, dividing by 4 the number of iterations
+                            SIMD32macsOnRange(
                             inputs + iOffset, 
                             weights + wOffset, 
                             &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                            
+                        }else{
+                        //The SIMD32macsOnRangePack performs a 32-bit MAC operation on a range of inputs and weights with packed inputs
+                            SIMD32macsOnRangePack(
+                            inputs + iOffset, 
+                            weights + wOffset, 
+                            &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                        }
                     }
                     else {
                         for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
@@ -207,6 +358,256 @@ static void convcellPropagate1(
     }
 }
 
+// SIMDconvcellPropagate2() : Perform the convcellPropagate2() function with SIMD instructions, dedicated to CONV2 layer
+static void SIMDconvcellPropagate2(
+    const UDATA_T* __restrict inputs,
+    UDATA_T* __restrict outputs,
+    const BDATA_T* __restrict biasses,
+    const WDATA_T* __restrict weights,
+    int rescaling,
+    int NB_CHANNELS, 
+    int CHANNELS_HEIGHT, int CHANNELS_WIDTH,
+    int NB_OUTPUTS,
+    int OUTPUTS_HEIGHT, int OUTPUTS_WIDTH,
+    int PADDING_Y, int PADDING_X,
+    int STRIDE_Y, int STRIDE_X,
+    int KERNEL_HEIGHT, int KERNEL_WIDTH,
+    ActivationFunction_T ACTIVATION,
+    // Memory mapping: inputs
+    int INPUT_MEM_CONT_OFFSET,
+    int INPUT_MEM_CONT_SIZE,
+    int INPUT_MEM_WRAP_OFFSET,
+    int INPUT_MEM_WRAP_SIZE,
+    int INPUT_MEM_STRIDE,
+    // Memory mapping: outputs
+    int OUTPUT_MEM_CONT_OFFSET,
+    int OUTPUT_MEM_CONT_SIZE,
+    int OUTPUT_MEM_WRAP_OFFSET,
+    int OUTPUT_MEM_WRAP_SIZE,
+    int OUTPUT_MEM_STRIDE)
+{
+    int OUTPUTS_HEIGHT_NOPAD
+        = (CHANNELS_HEIGHT - KERNEL_HEIGHT + STRIDE_Y) / STRIDE_Y;
+    int OUTPUTS_WIDTH_NOPAD
+        = (CHANNELS_WIDTH - KERNEL_WIDTH + STRIDE_X) / STRIDE_X;
+
+    for (int oy = 0; oy < OUTPUTS_HEIGHT; ++oy) {
+        const int syMin = (PADDING_Y == 0) ? 0
+            : max(PADDING_Y - (oy * STRIDE_Y), 0);
+        const int syMax = (PADDING_Y == 0
+                && OUTPUTS_HEIGHT == OUTPUTS_HEIGHT_NOPAD) ? KERNEL_HEIGHT
+            : clamp(CHANNELS_HEIGHT + PADDING_Y - (oy * STRIDE_Y), 
+                    0, KERNEL_HEIGHT);
+        const int iy = (oy * STRIDE_Y) - PADDING_Y;
+
+        for (int ox = 0; ox < OUTPUTS_WIDTH; ++ox) {
+            for (int output = 0; output < 1; ++output) { //First output : load the inputs into the buffer
+                // moved to inner loop for collapsing -->
+                const int sxMin = (PADDING_X == 0) ? 0
+                    : max(PADDING_X - (ox * STRIDE_X), 0);
+                const int sxMax = (PADDING_X == 0
+                        && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
+                            ? KERNEL_WIDTH
+                    : clamp(CHANNELS_WIDTH + PADDING_X - (ox * STRIDE_X), 
+                            0, KERNEL_WIDTH);
+                const int ix = (ox * STRIDE_X) - PADDING_X;
+
+                const int oPos = (ox + OUTPUTS_WIDTH * oy);
+                int oOffset = OUTPUT_MEM_STRIDE * oPos;
+
+                if (OUTPUT_MEM_WRAP_SIZE > 0 && oOffset >= OUTPUT_MEM_CONT_SIZE) {
+                    oOffset += OUTPUT_MEM_WRAP_OFFSET - OUTPUT_MEM_CONT_OFFSET
+                                - OUTPUT_MEM_CONT_SIZE;
+                }
+                // <--
+
+                SUM_T weightedSum = biasses[output];
+
+                for (int sy = 0; sy < KERNEL_HEIGHT; ++sy) {
+                    if ((PADDING_Y != 0
+                            || OUTPUTS_HEIGHT != OUTPUTS_HEIGHT_NOPAD)
+                        && sy >= syMax - syMin)
+                    {
+                        break;
+                    }
+
+                    const int iPos = ((sxMin + ix)
+                                        + CHANNELS_WIDTH * (iy + syMin + sy));
+                    int iOffset = INPUT_MEM_STRIDE * iPos;
+
+                    // Wrapping cannot occur in the middle of a line, except if
+                    // there is only one line (1D)!
+                    bool wrapInRange = false;
+
+                    if (INPUT_MEM_WRAP_SIZE > 0
+                        && iOffset >= INPUT_MEM_CONT_SIZE)
+                    {
+                        iOffset += INPUT_MEM_WRAP_OFFSET - INPUT_MEM_CONT_OFFSET
+                                    - INPUT_MEM_CONT_SIZE;
+                    }
+                    else if (INPUT_MEM_WRAP_SIZE > 0 && KERNEL_WIDTH > 1
+                        && CHANNELS_HEIGHT == 1 // single line (1D)!
+                        && iOffset + KERNEL_WIDTH * NB_CHANNELS
+                            > INPUT_MEM_CONT_SIZE)
+                    {
+                        wrapInRange = true;
+                    }
+
+                    const int wOffset = NB_CHANNELS * (sxMin
+                        + KERNEL_WIDTH * (syMin + sy + KERNEL_HEIGHT * output));
+
+                    if (!wrapInRange && (NB_CHANNELS == INPUT_MEM_STRIDE
+                        && ((PADDING_X == 0
+                            && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
+                                || sxMax - sxMin == KERNEL_WIDTH)))
+                    {
+                        //The SIMD64macsOnRange performs a 64-bit MAC operation on a range of inputs and weights, dividing by 8 the number of iterations
+                        //SIMD16macsOnRange also stores the inputs in the buffer, to be used in th SIMD128macsOnRange function
+                        //That is why the SIMD64macsOnRange is used only for the first output, in order to store the inputs in the buffer, and the SIMD128macsOnRange is used for the other outputs
+                            SIMD64macsOnRange(
+                            inputs + iOffset, 
+                            weights + wOffset, 
+                            &weightedSum,KERNEL_WIDTH * NB_CHANNELS);
+                    }
+                    else {
+                        for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
+                            if ((PADDING_X != 0
+                                    || OUTPUTS_WIDTH != OUTPUTS_WIDTH_NOPAD)
+                                && sx >= sxMax - sxMin)
+                            {
+                                break;
+                            }
+
+                            int iOffsetInRange = iOffset
+                                + sx * INPUT_MEM_STRIDE;
+
+                            if (wrapInRange
+                                && iOffsetInRange >= INPUT_MEM_CONT_SIZE)
+                            {
+                                iOffsetInRange += INPUT_MEM_WRAP_OFFSET
+                                            - INPUT_MEM_CONT_OFFSET
+                                            - INPUT_MEM_CONT_SIZE;
+                            }
+
+                            macsOnRange(
+                                // same input line so no wrapping can occur
+                                inputs + iOffsetInRange, 
+                                weights + wOffset + sx * NB_CHANNELS, 
+                                &weightedSum,NB_CHANNELS);
+                        }
+                    }
+                }
+
+                outputs[oOffset + output]
+                    = sat(weightedSum, output, ACTIVATION, rescaling);
+            }
+
+            for (int output = 0; output < NB_OUTPUTS; ++output) { //Other outputs : use the inputs stored in the buffer
+                // moved to inner loop for collapsing -->
+                const int sxMin = (PADDING_X == 0) ? 0
+                    : max(PADDING_X - (ox * STRIDE_X), 0);
+                const int sxMax = (PADDING_X == 0
+                        && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
+                            ? KERNEL_WIDTH
+                    : clamp(CHANNELS_WIDTH + PADDING_X - (ox * STRIDE_X), 
+                            0, KERNEL_WIDTH);
+                const int ix = (ox * STRIDE_X) - PADDING_X;
+
+                const int oPos = (ox + OUTPUTS_WIDTH * oy);
+                int oOffset = OUTPUT_MEM_STRIDE * oPos;
+
+                if (OUTPUT_MEM_WRAP_SIZE > 0 && oOffset >= OUTPUT_MEM_CONT_SIZE) {
+                    oOffset += OUTPUT_MEM_WRAP_OFFSET - OUTPUT_MEM_CONT_OFFSET
+                                - OUTPUT_MEM_CONT_SIZE;
+                }
+                // <--
+
+                SUM_T weightedSum = biasses[output];
+
+                for (int sy = 0; sy < KERNEL_HEIGHT; ++sy) {
+                    if ((PADDING_Y != 0
+                            || OUTPUTS_HEIGHT != OUTPUTS_HEIGHT_NOPAD)
+                        && sy >= syMax - syMin)
+                    {
+                        break;
+                    }
+
+                    const int iPos = ((sxMin + ix)
+                                        + CHANNELS_WIDTH * (iy + syMin + sy));
+                    int iOffset = INPUT_MEM_STRIDE * iPos;
+
+                    // Wrapping cannot occur in the middle of a line, except if
+                    // there is only one line (1D)!
+                    bool wrapInRange = false;
+
+                    if (INPUT_MEM_WRAP_SIZE > 0
+                        && iOffset >= INPUT_MEM_CONT_SIZE)
+                    {
+                        iOffset += INPUT_MEM_WRAP_OFFSET - INPUT_MEM_CONT_OFFSET
+                                    - INPUT_MEM_CONT_SIZE;
+                    }
+                    else if (INPUT_MEM_WRAP_SIZE > 0 && KERNEL_WIDTH > 1
+                        && CHANNELS_HEIGHT == 1 // single line (1D)!
+                        && iOffset + KERNEL_WIDTH * NB_CHANNELS
+                            > INPUT_MEM_CONT_SIZE)
+                    {
+                        wrapInRange = true;
+                    }
+
+                    const int wOffset = NB_CHANNELS * (sxMin
+                        + KERNEL_WIDTH * (syMin + sy + KERNEL_HEIGHT * output));
+
+                    if (!wrapInRange && (NB_CHANNELS == INPUT_MEM_STRIDE
+                        && ((PADDING_X == 0
+                            && OUTPUTS_WIDTH == OUTPUTS_WIDTH_NOPAD)
+                                || sxMax - sxMin == KERNEL_WIDTH)))
+                    {
+                            //The SIMD128macsOnRange performs a 128-bit MAC operation on a range of inputs and weights
+                            //Inputs have been already stored in a dedicated buffer, during the first output processing with the SIMD64macsOnRange function
+                            //That is why the SIMD128macsOnRange is used for the other outputs, and only takes the weights in argument.
+                            //Since we have 5 Register file reading ports, we can use 4 operands, in this case 4 weights at a time 
+                            SIMD128macsOnRange(
+                            weights + wOffset,KERNEL_WIDTH * NB_CHANNELS);
+                    }
+                    else {
+                        for (int sx = 0; sx < KERNEL_WIDTH; ++sx) {
+                            if ((PADDING_X != 0
+                                    || OUTPUTS_WIDTH != OUTPUTS_WIDTH_NOPAD)
+                                && sx >= sxMax - sxMin)
+                            {
+                                break;
+                            }
+
+                            int iOffsetInRange = iOffset
+                                + sx * INPUT_MEM_STRIDE;
+
+                            if (wrapInRange
+                                && iOffsetInRange >= INPUT_MEM_CONT_SIZE)
+                            {
+                                iOffsetInRange += INPUT_MEM_WRAP_OFFSET
+                                            - INPUT_MEM_CONT_OFFSET
+                                            - INPUT_MEM_CONT_SIZE;
+                            }
+
+                            macsOnRange(
+                                // same input line so no wrapping can occur
+                                inputs + iOffsetInRange, 
+                                weights + wOffset + sx * NB_CHANNELS, 
+                                &weightedSum,NB_CHANNELS);
+                        }
+                    }
+                }
+
+                getMacsOnRangResult(&weightedSum); //Get the value of the accumulator for the SIMD128macsOnRange() function and add it to the weightedSum
+                outputs[oOffset + output]
+                    = sat(weightedSum, output, ACTIVATION, rescaling);
+            }
+            reset_macsOnRange(); //Reset the accumulator for the SIMD128macsOnRange() function
+        }
+    }
+}
+
+// fccellPropagateUDATA_T() : Perform the fccellPropagate() function with UDATA_T data type, dedicated to FC1 layer
 static void fccellPropagateUDATA_T(
     const UDATA_T* __restrict inputs,
     UDATA_T* __restrict outputs,
@@ -235,7 +636,7 @@ static void fccellPropagateUDATA_T(
     // static_assert(OUTPUTS_WIDTH == 1, "Outputs width should be 1");
     // static_assert(OUTPUT_MEM_WRAP_SIZE == 0, "Output wrapping not supported");
 
-    for (int och = 0; och < NB_OUTPUTS; och++) {
+    for (int och = 0; och < 1; och++) { //First output : load the inputs into the buffer
         SUM_T weightedSum = biasses[och];
 
         for (int iy = 0; iy < CHANNELS_HEIGHT; ++iy) {
@@ -262,7 +663,10 @@ static void fccellPropagateUDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                macsOnRange(
+                ///The SIMD64macsOnRange performs a 64-bit MAC operation on a range of inputs and weights, dividing by 8 the number of iterations
+                //SIMD16macsOnRange also stores the inputs in the buffer, to be used in th SIMD128macsOnRange function
+                //That is why the SIMD64macsOnRange is used only for the first output, in order to store the inputs in the buffer, and the SIMD128macsOnRange is used for the other outputs
+                SIMD64macsOnRange(
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);
@@ -285,12 +689,71 @@ static void fccellPropagateUDATA_T(
                         &weightedSum, NB_CHANNELS);
                 }
             }
-        }
-
+        }   
         outputs[och] = sat(weightedSum, och, ACTIVATION, rescaling);
     }
+
+    for (int och = 0; och < NB_OUTPUTS; och++) { //Other outputs : use the inputs stored in the buffer
+        SUM_T weightedSum = biasses[och];
+
+        for (int iy = 0; iy < CHANNELS_HEIGHT; ++iy) {
+            const int iPos = (CHANNELS_WIDTH * iy);
+            int iOffset = INPUT_MEM_STRIDE * iPos;
+
+            // Wrapping cannot occur in the middle of a line, except if
+            // there is only one line (1D)!
+            bool wrapInRange = false;
+
+            if (INPUT_MEM_WRAP_SIZE > 0 && iOffset >= INPUT_MEM_CONT_SIZE) {
+                iOffset += INPUT_MEM_WRAP_OFFSET - INPUT_MEM_CONT_OFFSET
+                            - INPUT_MEM_CONT_SIZE;
+            }
+            else if (INPUT_MEM_WRAP_SIZE > 0 && CHANNELS_WIDTH > 1
+                && CHANNELS_HEIGHT == 1 // single line (1D)!
+                && iOffset + CHANNELS_WIDTH * NB_CHANNELS
+                    > INPUT_MEM_CONT_SIZE)
+            {
+                wrapInRange = true;
+            }
+
+            const int wOffset = NB_CHANNELS * CHANNELS_WIDTH
+                                    * (iy + CHANNELS_HEIGHT * och);
+
+            if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
+                //The SIMD128macsOnRange performs a 128-bit MAC operation on a range of inputs and weights
+                //Inputs have been already stored in a dedicated buffer, during the first output processing with the SIMD64macsOnRange function
+                //That is why the SIMD128macsOnRange is used for the other outputs, and only takes the weights in argument.
+                SIMD128macsOnRange(
+                    weights + wOffset, NB_CHANNELS * CHANNELS_WIDTH);
+            }
+            else {
+                for (int ix = 0; ix < CHANNELS_WIDTH; ++ix) {
+                    int iOffsetInRange = iOffset + ix * INPUT_MEM_STRIDE;
+
+                    if (wrapInRange
+                        && iOffsetInRange >= INPUT_MEM_CONT_SIZE)
+                    {
+                        iOffsetInRange += INPUT_MEM_WRAP_OFFSET
+                                    - INPUT_MEM_CONT_OFFSET
+                                    - INPUT_MEM_CONT_SIZE;
+                    }
+
+                    macsOnRange(
+                        inputs + iOffsetInRange, 
+                        weights + wOffset + ix * NB_CHANNELS, 
+                        &weightedSum, NB_CHANNELS);
+                }
+            }
+        }
+        getMacsOnRangResult(&weightedSum); //Get the value of the accumulator for the SIMD128macsOnRange() function and add it to the weightedSum
+        if(och > 0){ //This condition is used to avoid the saturation of the first output, which has already been processed
+            outputs[och] = sat(weightedSum, och, ACTIVATION, rescaling);
+        }
+    }
+    reset_macsOnRange(); //Reset the accumulator for the SIMD128macsOnRange() function
 }
 
+// fccellPropagateDATA_T() : Perform the fccellPropagate() function with DATA_T data type, dedicated to FC2 layer
 static void fccellPropagateDATA_T(
     const UDATA_T* __restrict inputs,
     DATA_T* __restrict outputs,
@@ -346,7 +809,7 @@ static void fccellPropagateDATA_T(
                                     * (iy + CHANNELS_HEIGHT * och);
 
             if (!wrapInRange && INPUT_MEM_STRIDE == NB_CHANNELS) {
-                macsOnRange(
+                macsOnRange(                                      //Unaligned mem access leads to segfault with SIMD32macsOnRange
                     inputs + iOffset, 
                     weights + wOffset, 
                     &weightedSum, NB_CHANNELS * CHANNELS_WIDTH);
@@ -434,7 +897,7 @@ void propagate(const UDATA_T* inputs, Target_T* outputs, UDATA_T* maxPropagate_v
     const Tick_T start_conv1 = tick();
 #endif
 
-    convcellPropagate1(inputs , conv1_output, conv1_biases, conv1_weights, 8,
+    SIMDconvcellPropagate1(inputs , conv1_output, conv1_biases, conv1_weights, 8,
     CONV1_NB_CHANNELS, CONV1_CHANNELS_HEIGHT, CONV1_CHANNELS_WIDTH, CONV1_NB_OUTPUTS, CONV1_OUTPUTS_HEIGHT, 
     CONV1_OUTPUTS_WIDTH, CONV1_PADDING_Y, CONV1_PADDING_X, CONV1_STRIDE_Y, CONV1_STRIDE_X, CONV1_KERNEL_HEIGHT, 
     CONV1_KERNEL_WIDTH, CONV1_ACTIVATION, ENV_MEM_CONT_OFFSET, ENV_MEM_CONT_SIZE, ENV_MEM_WRAP_OFFSET, 
@@ -464,7 +927,7 @@ void propagate(const UDATA_T* inputs, Target_T* outputs, UDATA_T* maxPropagate_v
     const Tick_T start_conv2 = tick();
 #endif
 
-    convcellPropagate1(conv1_output , conv2_output, conv2_biases, conv2_weights, 8,
+    SIMDconvcellPropagate2(conv1_output , conv2_output, conv2_biases, conv2_weights, 8,
     CONV2_NB_CHANNELS, CONV2_CHANNELS_HEIGHT, CONV2_CHANNELS_WIDTH, 
     CONV2_NB_OUTPUTS, CONV2_OUTPUTS_HEIGHT, CONV2_OUTPUTS_WIDTH, 
     CONV2_PADDING_Y, CONV2_PADDING_X, CONV2_STRIDE_Y, CONV2_STRIDE_X, 
