@@ -1,0 +1,149 @@
+/*
+
+Xilinx Vivado v2021.1 (64-bit) [Major: 2021, Minor: 1]
+SW Build: 3247384 on Thu Jun 10 19:36:07 MDT 2021
+IP Build: 3246043 on Fri Jun 11 00:30:35 MDT 2021
+
+Process ID (PID): 21188
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Fri May 10 18:02:42 CEST 2024
+Time zone: 	Central European Standard Time (Europe/Paris)
+
+OS: Ubuntu
+OS Version: 6.5.0-28-generic
+OS Architecture: amd64
+Available processors (cores): 4
+
+Display: 0
+Screen size: 1920x1080
+Screen resolution (DPI): 100
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+
+Java version: 	11.0.2 64-bit
+Java home: 	/home/adrien/tools/Xilinx/Vivado/2021.1/tps/lnx64/jre11.0.2
+Java executable: 	/home/adrien/tools/Xilinx/Vivado/2021.1/tps/lnx64/jre11.0.2/bin/java
+Java initial memory (-Xms): 	256 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	adrien
+User home directory: /home/adrien
+User working directory: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/adrien/tools/Xilinx/Vivado
+HDI_APPROOT: /home/adrien/tools/Xilinx/Vivado/2021.1
+RDI_DATADIR: /home/adrien/tools/Xilinx/Vivado/2021.1/data
+RDI_BINDIR: /home/adrien/tools/Xilinx/Vivado/2021.1/bin
+
+Vivado preferences file: /home/adrien/.Xilinx/Vivado/2021.1/vivado.xml
+Vivado preferences directory: /home/adrien/.Xilinx/Vivado/2021.1/
+Vivado layouts directory: /home/adrien/.Xilinx/Vivado/2021.1/data/layouts
+PlanAhead jar file: 	/home/adrien/tools/Xilinx/Vivado/2021.1/lib/classes/planAhead.jar
+Vivado log file: 	/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/vivado.log
+Vivado journal file: 	/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-21188-adrien-OptiPlex-5050
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/adrien/tools/Xilinx/Vivado/2021.1/ids_lite/ISE
+XILINX_DSP: /home/adrien/tools/Xilinx/Vivado/2021.1/ids_lite/ISE
+XILINX_HLS: /home/adrien/tools/Xilinx/Vitis_HLS/2021.1
+XILINX_PLANAHEAD: /home/adrien/tools/Xilinx/Vivado/2021.1
+XILINX_SDK: /home/adrien/tools/Xilinx/Vitis/2021.1
+XILINX_VITIS: /home/adrien/tools/Xilinx/Vitis/2021.1
+XILINX_VIVADO: /home/adrien/tools/Xilinx/Vivado/2021.1
+XILINX_VIVADO_HLS: /home/adrien/tools/Xilinx/Vivado/2021.1
+
+
+GUI allocated memory:	428 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 1,923 MB
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: INFO: [Common 17-1460] Use of init.tcl in /home/adrien/.Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl  
+// Tcl Message: Sourcing tcl script '/home/adrien/.Xilinx/Vivado/init.tcl' 
+// Tcl Message: start_gui 
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+selectList(PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS, "/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr", 0); // r
+// bz (cs):  Open Project : addNotify
+// Opening Vivado Project: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr. Version: Vivado v2021.1 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FLOW_ADDED
+// Tcl Message: open_project /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: MSGMGR_REFRESH_MSG
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,750 MB. GUI used memory: 72 MB. Current time: 5/10/24, 6:02:43 PM CEST
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 117 MB (+120228kb) [00:00:10]
+// [Engine Memory]: 1,786 MB (+1721207kb) [00:00:10]
+// [GUI Memory]: 127 MB (+4269kb) [00:00:11]
+// [GUI Memory]: 143 MB (+9995kb) [00:00:12]
+// WARNING: HEventQueue.dispatchEvent() is taking  3929 ms.
+// Tcl Message: open_project /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/adrien/tools/Xilinx/Vivado/2021.1/data/ip'. 
+// Tcl Message: INFO: [IP_Flow 19-3899] Cannot get the environment domain name variable for the component vendor name. Setting the vendor name to 'user.org'. 
+// Tcl Message: open_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:07 . Memory (MB): peak = 7547.215 ; gain = 80.199 ; free physical = 6845 ; free virtual = 14678 
+// [Engine Memory]: 1,899 MB (+24750kb) [00:00:15]
+// Project name: cva6_fpga; location: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga; part: xc7z020clg400-1
+dismissDialog("Open Project"); // bz
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; write_bitstream Complete! ; 0.7267271280288696 ; 0.0 ; 0.04728706181049347 ; 0.0 ; 0.0 ; 0.27320629358291626 ; 0 ; 23940 ; 15280 ; 66.5 ; 0 ; 4 ; Fri May 10 17:56:47 CEST 2024 ; 00:04:29 ; Vivado Implementation Defaults* (Vivado Implementation 2021) ; Vivado Implementation Default Reports (Vivado Implementation 2021) ; xc7z020clg400-1 ;  ; Default settings for Implementation.", 1, "100", 3, false); // az
+// PAPropertyPanels.initPanels (impl_1) elapsed time: 0.6s
+// WARNING: HEventQueue.dispatchEvent() is taking  1072 ms.
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; write_bitstream Complete! ; 0.7267271280288696 ; 0.0 ; 0.04728706181049347 ; 0.0 ; 0.0 ; 0.27320629358291626 ; 0 ; 23940 ; 15280 ; 66.5 ; 0 ; 4 ; Fri May 10 17:56:47 CEST 2024 ; 00:04:29 ; Vivado Implementation Defaults* (Vivado Implementation 2021) ; Vivado Implementation Default Reports (Vivado Implementation 2021) ; xc7z020clg400-1 ;  ; Default settings for Implementation.", 1, "100", 3, false); // az
+// [GUI Memory]: 158 MB (+8290kb) [00:00:19]
+// [Engine Memory]: 2,037 MB (+45114kb) [00:00:19]
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// HMemoryUtils.trashcanNow. Engine heap size: 2,055 MB. GUI used memory: 109 MB. Current time: 5/10/24, 6:03:03 PM CEST
+// [GUI Memory]: 167 MB (+945kb) [00:10:29]
+// HMemoryUtils.trashcanNow. Engine heap size: 2,043 MB. GUI used memory: 106 MB. Current time: 5/10/24, 6:33:03 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,005 MB. GUI used memory: 95 MB. Current time: 5/10/24, 7:03:03 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 7:33:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 8:03:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 8:33:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 9:03:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 9:33:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 10:03:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 10:33:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,002 MB. GUI used memory: 95 MB. Current time: 5/10/24, 11:03:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,003 MB. GUI used memory: 95 MB. Current time: 5/10/24, 11:33:04 PM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,003 MB. GUI used memory: 95 MB. Current time: 5/11/24, 12:03:04 AM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,003 MB. GUI used memory: 95 MB. Current time: 5/11/24, 12:33:05 AM CEST
+// HMemoryUtils.trashcanNow. Engine heap size: 2,003 MB. GUI used memory: 95 MB. Current time: 5/11/24, 1:03:05 AM CEST

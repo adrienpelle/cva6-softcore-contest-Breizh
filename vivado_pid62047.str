@@ -1,0 +1,1646 @@
+/*
+
+Xilinx Vivado v2021.1 (64-bit) [Major: 2021, Minor: 1]
+SW Build: 3247384 on Thu Jun 10 19:36:07 MDT 2021
+IP Build: 3246043 on Fri Jun 11 00:30:35 MDT 2021
+
+Process ID (PID): 62047
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Sat May 11 22:42:30 CEST 2024
+Time zone: 	Central European Standard Time (Europe/Paris)
+
+OS: Ubuntu
+OS Version: 6.5.0-28-generic
+OS Architecture: amd64
+Available processors (cores): 4
+
+Display: 0
+Screen size: 1920x1080
+Screen resolution (DPI): 100
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+
+Java version: 	11.0.2 64-bit
+Java home: 	/home/adrien/tools/Xilinx/Vivado/2021.1/tps/lnx64/jre11.0.2
+Java executable: 	/home/adrien/tools/Xilinx/Vivado/2021.1/tps/lnx64/jre11.0.2/bin/java
+Java initial memory (-Xms): 	256 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	adrien
+User home directory: /home/adrien
+User working directory: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/adrien/tools/Xilinx/Vivado
+HDI_APPROOT: /home/adrien/tools/Xilinx/Vivado/2021.1
+RDI_DATADIR: /home/adrien/tools/Xilinx/Vivado/2021.1/data
+RDI_BINDIR: /home/adrien/tools/Xilinx/Vivado/2021.1/bin
+
+Vivado preferences file: /home/adrien/.Xilinx/Vivado/2021.1/vivado.xml
+Vivado preferences directory: /home/adrien/.Xilinx/Vivado/2021.1/
+Vivado layouts directory: /home/adrien/.Xilinx/Vivado/2021.1/data/layouts
+PlanAhead jar file: 	/home/adrien/tools/Xilinx/Vivado/2021.1/lib/classes/planAhead.jar
+Vivado log file: 	/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/vivado.log
+Vivado journal file: 	/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-62047-adrien-OptiPlex-5050
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/adrien/tools/Xilinx/Vivado/2021.1/ids_lite/ISE
+XILINX_DSP: /home/adrien/tools/Xilinx/Vivado/2021.1/ids_lite/ISE
+XILINX_HLS: /home/adrien/tools/Xilinx/Vitis_HLS/2021.1
+XILINX_PLANAHEAD: /home/adrien/tools/Xilinx/Vivado/2021.1
+XILINX_SDK: /home/adrien/tools/Xilinx/Vitis/2021.1
+XILINX_VITIS: /home/adrien/tools/Xilinx/Vitis/2021.1
+XILINX_VIVADO: /home/adrien/tools/Xilinx/Vivado/2021.1
+XILINX_VIVADO_HLS: /home/adrien/tools/Xilinx/Vivado/2021.1
+
+
+GUI allocated memory:	314 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 1,789 MB
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: INFO: [Common 17-1460] Use of init.tcl in /home/adrien/.Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl  
+// Tcl Message: Sourcing tcl script '/home/adrien/.Xilinx/Vivado/init.tcl' 
+// Tcl Message: start_gui 
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+// HMemoryUtils.trashcanNow. Engine heap size: 1,731 MB. GUI used memory: 72 MB. Current time: 5/11/24, 10:42:31 PM CEST
+selectList(PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS, "/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr", 0); // r
+// bz (cs):  Open Project : addNotify
+// Opening Vivado Project: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr. Version: Vivado v2021.1 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FLOW_ADDED
+// Tcl Message: open_project /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: MSGMGR_REFRESH_MSG
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 119 MB (+122672kb) [00:00:14]
+// [Engine Memory]: 1,735 MB (+1667889kb) [00:00:14]
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 131 MB (+5657kb) [00:00:15]
+// [GUI Memory]: 142 MB (+5375kb) [00:00:16]
+// WARNING: HEventQueue.dispatchEvent() is taking  4266 ms.
+// Tcl Message: open_project /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/adrien/tools/Xilinx/Vivado/2021.1/data/ip'. 
+// [Engine Memory]: 1,822 MB (+43kb) [00:00:19]
+// Tcl Message: INFO: [IP_Flow 19-3899] Cannot get the environment domain name variable for the component vendor name. Setting the vendor name to 'user.org'. 
+// Tcl Message: open_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:07 . Memory (MB): peak = 7529.051 ; gain = 74.156 ; free physical = 8496 ; free virtual = 13712 
+// Project name: cva6_fpga; location: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga; part: xc7z020clg400-1
+// Elapsed time: 10 seconds
+dismissDialog("Open Project"); // bz
+// [Engine Memory]: 1,915 MB (+2106kb) [00:00:22]
+// [GUI Memory]: 157 MB (+7904kb) [00:00:25]
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// [GUI Memory]: 178 MB (+13279kb) [00:00:41]
+// Elapsed time: 20 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv)]", 5); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv)]", 12); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv)]", 13); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv)]", 17); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv)]", 21); // D
+// PAPropertyPanels.initPanels (multiplier.sv) elapsed time: 0.2s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false, false, false, false, false, true); // D - Double Click
+// WARNING: HEventQueue.dispatchEvent() is taking  2354 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,996 MB. GUI used memory: 122 MB. Current time: 5/11/24, 10:43:16 PM CEST
+selectCodeEditor("multiplier.sv", 89, 292); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 26, 230); // bP
+// Elapsed time: 19 seconds
+selectCodeEditor("multiplier.sv", 289, 237); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,013 MB (+2798kb) [00:01:36]
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 160, 52); // bP
+selectCodeEditor("multiplier.sv", 160, 52, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 223, 161); // bP
+selectCodeEditor("multiplier.sv", 223, 160, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 156, 57); // bP
+selectCodeEditor("multiplier.sv", 156, 57, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [GUI Memory]: 190 MB (+4111kb) [00:01:47]
+selectCodeEditor("multiplier.sv", 297, 51); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,032 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:44:11 PM CEST
+selectCodeEditor("multiplier.sv", 209, 48); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 303, 60); // bP
+selectCodeEditor("multiplier.sv", 210, 54); // bP
+selectCodeEditor("multiplier.sv", 288, 57); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 130, 50); // bP
+selectCodeEditor("multiplier.sv", 129, 50, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,067 MB. GUI used memory: 106 MB. Current time: 5/11/24, 10:44:26 PM CEST
+selectCodeEditor("multiplier.sv", 262, 56); // bP
+// Elapsed time: 15 seconds
+selectCodeEditor("multiplier.sv", 197, 53); // bP
+selectCodeEditor("multiplier.sv", 197, 53, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 253, 50); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 62, 69); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,102 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:45:26 PM CEST
+// Elapsed time: 38 seconds
+selectCodeEditor("multiplier.sv", 158, 49); // bP
+selectCodeEditor("multiplier.sv", 157, 49, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 432, 167); // bP
+selectCodeEditor("multiplier.sv", 110, 173); // bP
+selectCodeEditor("multiplier.sv", 111, 173, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 431, 172); // bP
+selectCodeEditor("multiplier.sv", 75, 173); // bP
+selectCodeEditor("multiplier.sv", 76, 173, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 179, 174); // bP
+selectCodeEditor("multiplier.sv", 167, 174); // bP
+// Elapsed time: 10 seconds
+selectCodeEditor("multiplier.sv", 96, 173); // bP
+selectCodeEditor("multiplier.sv", 96, 173, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 275, 172); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 239, 182); // bP
+selectCodeEditor("multiplier.sv", 238, 172); // bP
+selectCodeEditor("multiplier.sv", 240, 174); // bP
+selectCodeEditor("multiplier.sv", 319, 349); // bP
+selectCodeEditor("multiplier.sv", 182, 358); // bP
+selectCodeEditor("multiplier.sv", 182, 357, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 322, 479); // bP
+selectCodeEditor("multiplier.sv", 311, 479); // bP
+selectCodeEditor("multiplier.sv", 210, 469); // bP
+selectCodeEditor("multiplier.sv", 210, 469, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 150, 3); // bP
+selectCodeEditor("multiplier.sv", 248, 292); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 207, 292); // bP
+selectCodeEditor("multiplier.sv", 207, 292, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 163, 292); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 149, 316); // bP
+selectCodeEditor("multiplier.sv", 149, 305); // bP
+// [Engine Memory]: 2,122 MB (+7864kb) [00:04:29]
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,122 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:46:51 PM CEST
+selectCodeEditor("multiplier.sv", 170, 291); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 191, 309); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 234, 304); // bP
+selectCodeEditor("multiplier.sv", 262, 311); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 144, 294); // bP
+selectCodeEditor("multiplier.sv", 136, 290); // bP
+selectCodeEditor("multiplier.sv", 114, 189); // bP
+selectCodeEditor("multiplier.sv", 114, 189, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 141, 295); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 140, 309); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 287, 292); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 371, 307); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,154 MB. GUI used memory: 108 MB. Current time: 5/11/24, 10:47:21 PM CEST
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 210, 321); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 222, 323); // bP
+selectCodeEditor("multiplier.sv", 127, 192); // bP
+selectCodeEditor("multiplier.sv", 127, 192, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 196, 321); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 24 seconds
+selectCodeEditor("multiplier.sv", 91, 297); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 10 seconds
+selectCodeEditor("multiplier.sv", 140, 174); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,187 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:48:06 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 209, 175); // bP
+selectCodeEditor("multiplier.sv", 227, 305); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 397, 298); // bP
+selectCodeEditor("multiplier.sv", 198, 187); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 213, 264); // bP
+selectCodeEditor("multiplier.sv", 142, 178); // bP
+selectCodeEditor("multiplier.sv", 142, 178, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 103, 262); // bP
+selectCodeEditor("multiplier.sv", 103, 262, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 207, 254); // bP
+selectCodeEditor("multiplier.sv", 207, 262); // bP
+// Elapsed time: 40 seconds
+selectCodeEditor("multiplier.sv", 198, 253); // bP
+// Elapsed time: 29 seconds
+selectCodeEditor("multiplier.sv", 186, 251); // bP
+selectCodeEditor("multiplier.sv", 154, 260); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 122, 297); // bP
+selectCodeEditor("multiplier.sv", 150, 294); // bP
+selectCodeEditor("multiplier.sv", 136, 294); // bP
+selectCodeEditor("multiplier.sv", 188, 279); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 25 seconds
+selectCodeEditor("multiplier.sv", 135, 189); // bP
+selectCodeEditor("multiplier.sv", 135, 189, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 58, 303); // bP
+// [Engine Memory]: 2,237 MB (+9675kb) [00:07:59]
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 175, 282); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+typeControlKey(null, null, 'z');
+selectCodeEditor("multiplier.sv", 212, 282); // bP
+selectCodeEditor("multiplier.sv", 226, 282); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 92, 298); // bP
+selectCodeEditor("multiplier.sv", 125, 306); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 42, 263); // bP
+selectCodeEditor("multiplier.sv", 270, 298); // bP
+// TclEventType: DG_GRAPH_STALE
+selectCodeEditor("multiplier.sv", 56, 338); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,261 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:50:41 PM CEST
+selectCodeEditor("multiplier.sv", 226, 302); // bP
+selectCodeEditor("multiplier.sv", 56, 280); // bP
+selectCodeEditor("multiplier.sv", 55, 311); // bP
+selectCodeEditor("multiplier.sv", 277, 294); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,286 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:51:01 PM CEST
+selectCodeEditor("multiplier.sv", 85, 308); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 224, 300); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 24 seconds
+selectCodeEditor("multiplier.sv", 335, 337); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 277, 382); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 282, 398); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 344, 391); // bP
+// Elapsed time: 182 seconds
+selectCodeEditor("multiplier.sv", 35, 251); // bP
+// Elapsed time: 10 seconds
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 65, 325); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 149, 339); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,347 MB. GUI used memory: 108 MB. Current time: 5/11/24, 10:55:11 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,372 MB (+24120kb) [00:13:03]
+// HMemoryUtils.trashcanNow. Engine heap size: 2,372 MB. GUI used memory: 108 MB. Current time: 5/11/24, 10:55:26 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 36 seconds
+selectCodeEditor("multiplier.sv", 127, 255); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,405 MB. GUI used memory: 107 MB. Current time: 5/11/24, 10:55:56 PM CEST
+// Elapsed time: 68 seconds
+selectCodeEditor("multiplier.sv", 153, 156); // bP
+selectCodeEditor("multiplier.sv", 276, 187); // bP
+selectCodeEditor("multiplier.sv", 90, 187); // bP
+selectCodeEditor("multiplier.sv", 89, 187, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 109, 149); // bP
+selectCodeEditor("multiplier.sv", 108, 149, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 89, 143); // bP
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 54, 441); // bP
+selectCodeEditor("multiplier.sv", 97, 431); // bP
+selectCodeEditor("multiplier.sv", 41, 441); // bP
+selectCodeEditor("multiplier.sv", 173, 208); // bP
+selectCodeEditor("multiplier.sv", 62, 246); // bP
+// Elapsed time: 22 seconds
+selectCodeEditor("multiplier.sv", 93, 84); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 49 seconds
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+// Elapsed time: 12 seconds
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 379, 324); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,438 MB. GUI used memory: 106 MB. Current time: 5/11/24, 10:59:26 PM CEST
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 31, 185); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 59, 139); // bP
+selectCodeEditor("multiplier.sv", 17, 98); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 75, 293); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 139, 218); // bP
+selectCodeEditor("multiplier.sv", 188, 279); // bP
+selectCodeEditor("multiplier.sv", 99, 277); // bP
+selectCodeEditor("multiplier.sv", 89, 277); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 10 seconds
+selectCodeEditor("multiplier.sv", 136, 285); // bP
+selectCodeEditor("multiplier.sv", 136, 285, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 139, 276); // bP
+selectCodeEditor("multiplier.sv", 139, 276, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 144, 275); // bP
+selectCodeEditor("multiplier.sv", 144, 275, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+typeControlKey(null, null, 'z');
+selectCodeEditor("multiplier.sv", 135, 280); // bP
+selectCodeEditor("multiplier.sv", 133, 280, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 133, 280); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,470 MB. GUI used memory: 107 MB. Current time: 5/11/24, 11:00:16 PM CEST
+typeControlKey(null, null, 'z');
+selectCodeEditor("multiplier.sv", 110, 191); // bP
+selectCodeEditor("multiplier.sv", 110, 191, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 147, 280); // bP
+selectCodeEditor("multiplier.sv", 147, 280, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 116, 233); // bP
+selectCodeEditor("multiplier.sv", 116, 233, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 119, 234); // bP
+selectCodeEditor("multiplier.sv", 118, 234, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 68, 154); // bP
+selectCodeEditor("multiplier.sv", 68, 154, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 91, 190); // bP
+selectCodeEditor("multiplier.sv", 91, 190, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 189, 162); // bP
+selectCodeEditor("multiplier.sv", 189, 162, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 189, 194); // bP
+selectCodeEditor("multiplier.sv", 189, 194, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 255, 164); // bP
+selectCodeEditor("multiplier.sv", 255, 164, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 263, 187); // bP
+selectCodeEditor("multiplier.sv", 263, 187, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 72, 159); // bP
+selectCodeEditor("multiplier.sv", 72, 159, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 111, 144); // bP
+selectCodeEditor("multiplier.sv", 110, 144, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+// Elapsed time: 11 seconds
+selectCodeEditor("multiplier.sv", 76, 175); // bP
+selectCodeEditor("multiplier.sv", 76, 175, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 275, 169); // bP
+selectCodeEditor("multiplier.sv", 275, 169, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// Elapsed time: 11 seconds
+selectCodeEditor("multiplier.sv", 103, 276); // bP
+selectCodeEditor("multiplier.sv", 92, 218); // bP
+selectCodeEditor("multiplier.sv", 92, 218, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 142, 267); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 417, 263); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 320, 231); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 294, 263); // bP
+selectCodeEditor("multiplier.sv", 295, 263, false, false, false, false, true); // bP - Double Click
+// HMemoryUtils.trashcanNow. Engine heap size: 2,502 MB. GUI used memory: 106 MB. Current time: 5/11/24, 11:01:36 PM CEST
+// [Engine Memory]: 2,502 MB (+11896kb) [00:19:15]
+selectCodeEditor("multiplier.sv", 368, 251); // bP
+// Elapsed time: 22 seconds
+selectCodeEditor("multiplier.sv", 219, 206); // bP
+selectCodeEditor("multiplier.sv", 431, 210); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 384, 170); // bP
+selectCodeEditor("multiplier.sv", 384, 170, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 77, 172); // bP
+selectCodeEditor("multiplier.sv", 77, 172, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 200, 179); // bP
+selectCodeEditor("multiplier.sv", 199, 179, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 76, 176); // bP
+selectCodeEditor("multiplier.sv", 76, 176, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 86, 203); // bP
+selectCodeEditor("multiplier.sv", 86, 203, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 86, 267); // bP
+selectCodeEditor("multiplier.sv", 86, 267, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 84, 293); // bP
+selectCodeEditor("multiplier.sv", 112, 288); // bP
+selectCodeEditor("multiplier.sv", 49, 174); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 92, 263); // bP
+selectCodeEditor("multiplier.sv", 92, 263, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 367, 268); // bP
+selectCodeEditor("multiplier.sv", 367, 268, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 219, 263); // bP
+selectCodeEditor("multiplier.sv", 523, 260); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,534 MB. GUI used memory: 106 MB. Current time: 5/11/24, 11:02:41 PM CEST
+// Elapsed time: 10 seconds
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+typeControlKey(null, null, 'z');
+selectCodeEditor("multiplier.sv", 407, 264); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 67, 174); // bP
+selectCodeEditor("multiplier.sv", 67, 174, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 224, 171); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 50, 265); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 355, 260); // bP
+selectCodeEditor("multiplier.sv", 355, 260, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 399, 241); // bP
+selectCodeEditor("multiplier.sv", 287, 265); // bP
+selectCodeEditor("multiplier.sv", 288, 265, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 100, 266); // bP
+selectCodeEditor("multiplier.sv", 100, 266, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 91, 260); // bP
+selectCodeEditor("multiplier.sv", 92, 260, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 343, 263); // bP
+selectCodeEditor("multiplier.sv", 343, 263, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 312, 220); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 87, 203); // bP
+selectCodeEditor("multiplier.sv", 87, 203, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 96, 287); // bP
+selectCodeEditor("multiplier.sv", 94, 293); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,566 MB. GUI used memory: 107 MB. Current time: 5/11/24, 11:03:16 PM CEST
+selectCodeEditor("multiplier.sv", 92, 295); // bP
+selectCodeEditor("multiplier.sv", 92, 295, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 264, 296); // bP
+selectCodeEditor("multiplier.sv", 263, 296, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 66, 338); // bP
+selectCodeEditor("multiplier.sv", 66, 338, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 285, 342); // bP
+selectCodeEditor("multiplier.sv", 285, 342, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 88, 335); // bP
+selectCodeEditor("multiplier.sv", 88, 336, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 272, 332); // bP
+selectCodeEditor("multiplier.sv", 272, 332, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 265, 316); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 13 seconds
+selectCodeEditor("multiplier.sv", 115, 450); // bP
+selectCodeEditor("multiplier.sv", 37, 447); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 50, 358); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 84, 242); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 170, 251); // bP
+selectCodeEditor("multiplier.sv", 170, 251, false, false, false, false, true); // bP - Double Click
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "buf_pointer + 1", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+selectCodeEditor("multiplier.sv", 149, 235); // bP
+selectCodeEditor("multiplier.sv", 149, 235, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 465, 206); // bP
+selectCodeEditor("multiplier.sv", 73, 141); // bP
+selectCodeEditor("multiplier.sv", 72, 140, false, false, false, false, true); // bP - Double Click
+// Elapsed time: 11 seconds
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "operand_b_i", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+selectCodeEditor("multiplier.sv", 324, 238); // bP
+selectCodeEditor("multiplier.sv", 324, 238, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 360, 149); // bP
+// Elapsed time: 11 seconds
+selectCodeEditor("multiplier.sv", 87, 147); // bP
+selectCodeEditor("multiplier.sv", 87, 147, false, false, false, false, true); // bP - Double Click
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "operand_b_i"); // l
+selectCodeEditor("multiplier.sv", 101, 234); // bP
+selectCodeEditor("multiplier.sv", 101, 234, false, false, false, false, true); // bP - Double Click
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "operand_d_i", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+selectCodeEditor("multiplier.sv", 157, 213); // bP
+selectCodeEditor("multiplier.sv", 60, 190); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 113, 275); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 53, 278); // bP
+selectCodeEditor("multiplier.sv", 45, 279); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 84, 292); // bP
+selectCodeEditor("multiplier.sv", 73, 303); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 44, 160); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 109, 188); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,599 MB. GUI used memory: 110 MB. Current time: 5/11/24, 11:05:31 PM CEST
+selectCodeEditor("multiplier.sv", 109, 188, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 161, 114); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,631 MB (+4554kb) [00:23:26]
+// Elapsed time: 15 seconds
+selectCodeEditor("multiplier.sv", 161, 140); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,631 MB. GUI used memory: 111 MB. Current time: 5/11/24, 11:05:51 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 175, 103); // bP
+selectCodeEditor("multiplier.sv", 172, 102, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 172, 102); // bP
+selectCodeEditor("multiplier.sv", 171, 102); // bP
+selectCodeEditor("multiplier.sv", 171, 102); // bP
+selectCodeEditor("multiplier.sv", 171, 102, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 184, 117); // bP
+selectCodeEditor("multiplier.sv", 183, 116, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 244, 114); // bP
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "buf_pointer + 2", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+selectCodeEditor("multiplier.sv", 468, 220); // bP
+selectCodeEditor("multiplier.sv", 420, 281); // bP
+selectCodeEditor("multiplier.sv", 121, 176); // bP
+selectCodeEditor("multiplier.sv", 121, 176, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 178, 176); // bP
+selectCodeEditor("multiplier.sv", 178, 176, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 100, 173); // bP
+selectCodeEditor("multiplier.sv", 100, 173, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 95, 211); // bP
+selectCodeEditor("multiplier.sv", 95, 211, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 100, 200); // bP
+selectCodeEditor("multiplier.sv", 100, 200, false, false, false, false, true); // bP - Double Click
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "operand_b_i", 2); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 45, 446); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 52, 212); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 159, 277); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 14 seconds
+selectCodeEditor("multiplier.sv", 93, 294); // bP
+selectCodeEditor("multiplier.sv", 93, 294, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 85, 274); // bP
+selectCodeEditor("multiplier.sv", 92, 263); // bP
+selectCodeEditor("multiplier.sv", 92, 263, false, false, false, false, true); // bP - Double Click
+// HMemoryUtils.trashcanNow. Engine heap size: 2,664 MB. GUI used memory: 114 MB. Current time: 5/11/24, 11:07:21 PM CEST
+selectCodeEditor("multiplier.sv", 247, 268); // bP
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "buf_pointer + 3", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+// Elapsed time: 14 seconds
+selectCodeEditor("multiplier.sv", 90, 142); // bP
+selectCodeEditor("multiplier.sv", 90, 142, false, false, false, false, true); // bP - Double Click
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "operand_e_i", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+selectCodeEditor("multiplier.sv", 413, 79); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 22 seconds
+selectCodeEditor("multiplier.sv", 132, 133); // bP
+selectCodeEditor("multiplier.sv", 452, 120); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,697 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:08:31 PM CEST
+// Elapsed time: 46 seconds
+selectCodeEditor("multiplier.sv", 78, 254); // bP
+selectCodeEditor("multiplier.sv", 78, 254, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 118, 241); // bP
+selectCodeEditor("multiplier.sv", 114, 173); // bP
+selectCodeEditor("multiplier.sv", 114, 173, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 88, 233); // bP
+selectCodeEditor("multiplier.sv", 88, 233, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 147, 237); // bP
+selectCodeEditor("multiplier.sv", 146, 232); // bP
+selectCodeEditor("multiplier.sv", 147, 232, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 311, 235); // bP
+selectCodeEditor("multiplier.sv", 311, 235, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 302, 266); // bP
+selectCodeEditor("multiplier.sv", 300, 264, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 289, 290); // bP
+selectCodeEditor("multiplier.sv", 289, 290, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 289, 324); // bP
+selectCodeEditor("multiplier.sv", 289, 324, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 141, 261); // bP
+selectCodeEditor("multiplier.sv", 141, 261, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 119, 293); // bP
+selectCodeEditor("multiplier.sv", 119, 293, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 122, 322); // bP
+selectCodeEditor("multiplier.sv", 122, 322, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 169, 306); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 444, 327); // bP
+// Elapsed time: 11 seconds
+selectCodeEditor("multiplier.sv", 94, 336); // bP
+selectCodeEditor("multiplier.sv", 91, 336); // bP
+selectCodeEditor("multiplier.sv", 473, 321); // bP
+selectCodeEditor("multiplier.sv", 12, 382); // bP
+selectCodeEditor("multiplier.sv", 23, 368); // bP
+selectCodeEditor("multiplier.sv", 461, 324); // bP
+selectCodeEditor("multiplier.sv", 458, 325); // bP
+selectCodeEditor("multiplier.sv", 239, 220); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 437, 324); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// Elapsed time: 11 seconds
+selectCodeEditor("multiplier.sv", 118, 186); // bP
+selectCodeEditor("multiplier.sv", 118, 186, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 146, 218); // bP
+selectCodeEditor("multiplier.sv", 151, 227); // bP
+selectCodeEditor("multiplier.sv", 151, 227, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 147, 212); // bP
+selectCodeEditor("multiplier.sv", 147, 212, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 353, 220); // bP
+selectCodeEditor("multiplier.sv", 353, 220, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 307, 248); // bP
+selectCodeEditor("multiplier.sv", 307, 248, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 307, 278); // bP
+selectCodeEditor("multiplier.sv", 307, 278, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 309, 311); // bP
+selectCodeEditor("multiplier.sv", 309, 311, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 107, 312); // bP
+selectCodeEditor("multiplier.sv", 107, 312, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 111, 285); // bP
+selectCodeEditor("multiplier.sv", 111, 285, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 120, 278); // bP
+selectCodeEditor("multiplier.sv", 120, 278, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 121, 248); // bP
+selectCodeEditor("multiplier.sv", 121, 248, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 146, 233); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 12, 323); // bP
+selectCodeEditor("multiplier.sv", 27, 202); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,729 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:10:51 PM CEST
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 56, 326); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 148, 296); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 134, 293); // bP
+selectCodeEditor("multiplier.sv", 134, 293, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 319, 295); // bP
+selectCodeEditor("multiplier.sv", 319, 295, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 304, 321); // bP
+selectCodeEditor("multiplier.sv", 304, 321, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 298, 354); // bP
+selectCodeEditor("multiplier.sv", 297, 352, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 309, 393); // bP
+selectCodeEditor("multiplier.sv", 309, 385); // bP
+selectCodeEditor("multiplier.sv", 308, 385, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 146, 385); // bP
+selectCodeEditor("multiplier.sv", 145, 385, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 135, 355); // bP
+selectCodeEditor("multiplier.sv", 135, 355, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 135, 332); // bP
+selectCodeEditor("multiplier.sv", 139, 324); // bP
+selectCodeEditor("multiplier.sv", 139, 324, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 139, 290); // bP
+selectCodeEditor("multiplier.sv", 139, 290, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 26, 279); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 35, 397); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,761 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:11:16 PM CEST
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 2, 375); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,777 MB (+14658kb) [00:29:09]
+// Elapsed time: 12 seconds
+selectCodeEditor("multiplier.sv", 147, 230); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 171, 232); // bP
+selectCodeEditor("multiplier.sv", 173, 232, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 331, 233); // bP
+selectCodeEditor("multiplier.sv", 331, 233, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 330, 263); // bP
+selectCodeEditor("multiplier.sv", 330, 263, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 322, 292); // bP
+selectCodeEditor("multiplier.sv", 321, 291, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 322, 319); // bP
+selectCodeEditor("multiplier.sv", 322, 319, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 144, 323); // bP
+selectCodeEditor("multiplier.sv", 144, 323, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 143, 289); // bP
+selectCodeEditor("multiplier.sv", 143, 290, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 141, 263); // bP
+selectCodeEditor("multiplier.sv", 141, 263, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 381, 269); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,793 MB. GUI used memory: 116 MB. Current time: 5/11/24, 11:11:41 PM CEST
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 45 seconds
+selectCodeEditor("multiplier.sv", 1, 126); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 99, 143); // bP
+selectCodeEditor("multiplier.sv", 99, 143, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,825 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:12:36 PM CEST
+selectCodeEditor("multiplier.sv", 115, 225); // bP
+selectCodeEditor("multiplier.sv", 115, 225, false, false, false, false, true); // bP - Double Click
+typeControlKey(null, null, 'z');
+selectCodeEditor("multiplier.sv", 225, 239); // bP
+selectCodeEditor("multiplier.sv", 99, 217); // bP
+selectCodeEditor("multiplier.sv", 99, 217, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 126, 246); // bP
+selectCodeEditor("multiplier.sv", 278, 220); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 62, 240); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 269, 249); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 26 seconds
+selectCodeEditor("multiplier.sv", 283, 248); // bP
+selectCodeEditor("multiplier.sv", 237, 216); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 223, 205); // bP
+selectCodeEditor("multiplier.sv", 404, 195); // bP
+// TclEventType: DG_GRAPH_STALE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,857 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:13:41 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 190, 143); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 191, 139); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 131, 154); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 220, 146); // bP
+selectCodeEditor("multiplier.sv", 376, 228); // bP
+// Elapsed time: 66 seconds
+selectCodeEditor("multiplier.sv", 373, 245); // bP
+// Elapsed time: 10 seconds
+selectCodeEditor("multiplier.sv", 63, 85); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 77, 258); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 290, 277); // bP
+selectCodeEditor("multiplier.sv", 243, 265); // bP
+selectCodeEditor("multiplier.sv", 282, 292); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 105, 288); // bP
+selectCodeEditor("multiplier.sv", 104, 288, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 120, 261); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// Elapsed time: 10 seconds
+selectCodeEditor("multiplier.sv", 135, 293); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 263, 260); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// [Engine Memory]: 2,958 MB (+44586kb) [00:33:35]
+// TclEventType: DG_GRAPH_STALE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,937 MB. GUI used memory: 116 MB. Current time: 5/11/24, 11:16:01 PM CEST
+// Elapsed time: 127 seconds
+selectCodeEditor("multiplier.sv", 174, 257); // bP
+// Elapsed time: 35 seconds
+selectCodeEditor("multiplier.sv", 104, 228); // bP
+selectCodeEditor("multiplier.sv", 104, 228, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 175, 258); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 264, 280); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 42 seconds
+selectCodeEditor("multiplier.sv", 39, 262); // bP
+selectCodeEditor("multiplier.sv", 133, 268); // bP
+selectCodeEditor("multiplier.sv", 38, 240); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,961 MB. GUI used memory: 116 MB. Current time: 5/11/24, 11:19:21 PM CEST
+// Elapsed time: 16 seconds
+selectCodeEditor("multiplier.sv", 216, 278); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 197, 354); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 206, 162); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 216, 351); // bP
+selectCodeEditor("multiplier.sv", 181, 356); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 24 seconds
+selectCodeEditor("multiplier.sv", 104, 319); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,988 MB. GUI used memory: 116 MB. Current time: 5/11/24, 11:20:26 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 30 seconds
+selectCodeEditor("multiplier.sv", 169, 112); // bP
+selectCodeEditor("multiplier.sv", 169, 112, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 180, 115); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 14 seconds
+selectCodeEditor("multiplier.sv", 145, 83); // bP
+selectCodeEditor("multiplier.sv", 145, 83, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 380, 424); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 399, 427); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 307, 442); // bP
+selectCodeEditor("multiplier.sv", 307, 441, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 299, 442); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 10 seconds
+selectCodeEditor("multiplier.sv", 45, 250); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 566, 249); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 3,050 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:21:21 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 199, 263); // bP
+selectCodeEditor("multiplier.sv", 288, 239); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 351, 263); // bP
+selectCodeEditor("multiplier.sv", 616, 245); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,082 MB. GUI used memory: 116 MB. Current time: 5/11/24, 11:21:36 PM CEST
+// Elapsed time: 129 seconds
+selectCodeEditor("multiplier.sv", 258, 424); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 77, 427); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 3,106 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:23:51 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 288, 247); // bP
+// [Engine Memory]: 3,122 MB (+16808kb) [00:41:35]
+// Elapsed time: 158 seconds
+selectCodeEditor("multiplier.sv", 158, 184); // bP
+selectCodeEditor("multiplier.sv", 157, 184, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 150, 248); // bP
+selectCodeEditor("multiplier.sv", 150, 247, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 476, 232); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 103, 138); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 97, 228); // bP
+selectCodeEditor("multiplier.sv", 96, 228, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 450, 175); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 245, 161); // bP
+selectCodeEditor("multiplier.sv", 248, 180); // bP
+selectCodeEditor("multiplier.sv", 248, 180, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 250, 169); // bP
+selectCodeEditor("multiplier.sv", 250, 169, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 333, 177); // bP
+selectCodeEditor("multiplier.sv", 327, 173); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 425, 171); // bP
+selectCodeEditor("multiplier.sv", 410, 172); // bP
+selectCodeEditor("multiplier.sv", 410, 172, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 491, 171); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 591, 172); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 638, 164); // bP
+selectCodeEditor("multiplier.sv", 638, 168); // bP
+selectCodeEditor("multiplier.sv", 583, 172); // bP
+selectCodeEditor("multiplier.sv", 583, 172, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 652, 168); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 749, 170); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 3,146 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:27:21 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 17, 173); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 809, 169); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 172, 259); // bP
+selectCodeEditor("multiplier.sv", 171, 259, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 211, 308); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 233, 309); // bP
+selectCodeEditor("multiplier.sv", 233, 309, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 147, 488); // bP
+selectCodeEditor("multiplier.sv", 140, 472); // bP
+selectCodeEditor("multiplier.sv", 140, 472, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 304, 70); // bP
+// Elapsed time: 52 seconds
+selectCodeEditor("multiplier.sv", 133, 157); // bP
+selectCodeEditor("multiplier.sv", 133, 157, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 324, 164); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,211 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:29:06 PM CEST
+// Elapsed time: 21 seconds
+selectCodeEditor("multiplier.sv", 379, 291); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 32, 302); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 64 seconds
+selectCodeEditor("multiplier.sv", 138, 473); // bP
+selectCodeEditor("multiplier.sv", 137, 473, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 275, 428); // bP
+selectCodeEditor("multiplier.sv", 275, 428, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 217, 5); // bP
+selectCodeEditor("multiplier.sv", 234, 165); // bP
+selectCodeEditor("multiplier.sv", 233, 158); // bP
+selectCodeEditor("multiplier.sv", 233, 158, false, false, false, false, true); // bP - Double Click
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 168, 152); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,243 MB. GUI used memory: 117 MB. Current time: 5/11/24, 11:30:41 PM CEST
+// Elapsed time: 75 seconds
+selectCodeEditor("multiplier.sv", 187, 245); // bP
+selectCodeEditor("multiplier.sv", 187, 245, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 114, 251); // bP
+selectCodeEditor("multiplier.sv", 114, 251, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 188, 71); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 160, 66); // bP
+selectCodeEditor("multiplier.sv", 160, 66, false, false, false, true, false); // bP - Popup Trigger
+selectCodeEditor("multiplier.sv", 155, 64); // bP
+selectCodeEditor("multiplier.sv", 160, 68); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 215, 72); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_STATUS_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  7996 ms.
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ag (cs): Synthesis Completed: addNotify
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 1288 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a
+dismissDialog("Synthesis Completed"); // ag
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "Project Summary", 0); // m
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "multiplier.sv", 1); // m
+selectCodeEditor("multiplier.sv", 433, 348); // bP
+selectCodeEditor("multiplier.sv", 22, 355); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 3,246 MB. GUI used memory: 109 MB. Current time: 5/12/24, 12:00:41 AM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,272 MB. GUI used memory: 110 MB. Current time: 5/12/24, 12:02:26 AM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 3,288 MB (+9850kb) [01:20:09]
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,304 MB. GUI used memory: 109 MB. Current time: 5/12/24, 12:02:56 AM CEST
+// TclEventType: RUN_STATUS_CHANGE
+// WARNING: HTimer (StateMonitor Timer) is taking 1111ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  18586 ms.
+// Thread: AWT-Shutdown
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.Object.wait(Object.java:328)
+// 	at java.desktop@11.0.2/sun.awt.AWTAutoShutdown.run(AWTAutoShutdown.java:291)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Java2D Disposer
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+// 	at java.desktop@11.0.2/sun.java2d.Disposer.run(Disposer.java:144)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: hw_ila_monitor
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.Object.wait(Object.java:328)
+// 	at java.base@11.0.2/java.util.TimerThread.mainLoop(Timer.java:527)
+// 	at java.base@11.0.2/java.util.TimerThread.run(Timer.java:506)
+// Thread: Thread-661
+// Thread: Thread-2534
+// Thread: Thread-2538
+// Thread: SyntheticaCleanerThread
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.StyleFactory$ComponentPropertyStore$1.run(StyleFactory.java:1885)
+// Thread: pool-7-thread-1
+// 	at java.base@11.0.2/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@11.0.2/java.util.concurrent.locks.LockSupport.park(LockSupport.java:194)
+// 	at java.base@11.0.2/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2081)
+// 	at java.base@11.0.2/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Thread-658
+// Thread: Batik CleanerThread
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+// 	at org.apache.batik.util.CleanerThread.run(CleanerThread.java:106)
+// Thread: AWT-EventQueue-0
+// 	at ui.utils.q.e.actionPerformed(SourceFile:143)
+// 	at java.desktop@11.0.2/javax.swing.Timer.fireActionPerformed(Timer.java:317)
+// 	at ui.utils.q.d.fireActionPerformed(SourceFile:78)
+// 	at java.desktop@11.0.2/javax.swing.Timer$DoPostEvent.run(Timer.java:249)
+// 	at java.desktop@11.0.2/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+// 	at java.desktop@11.0.2/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+// 	at java.desktop@11.0.2/java.awt.EventQueue$4.run(EventQueue.java:721)
+// 	at java.desktop@11.0.2/java.awt.EventQueue$4.run(EventQueue.java:715)
+// 	at java.base@11.0.2/java.security.AccessController.doPrivileged(Native Method)
+// 	at java.base@11.0.2/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+// 	at java.desktop@11.0.2/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+// 	at ui.frmwork.a.d.dispatchEvent(SourceFile:92)
+// 	at java.desktop@11.0.2/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+// 	at java.desktop@11.0.2/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+// 	at java.desktop@11.0.2/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+// 	at java.desktop@11.0.2/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+// 	at java.desktop@11.0.2/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+// 	at java.desktop@11.0.2/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+// Thread: SyntheticaAnimation 50
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.painter.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:119)
+// Thread: Thread-5756
+// Thread: SyntheticaAnimation 70
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.painter.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:119)
+// Thread: pool-6-thread-1
+// 	at java.base@11.0.2/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@11.0.2/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+// 	at java.base@11.0.2/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+// 	at java.base@11.0.2/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+// 	at java.base@11.0.2/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Thread-1
+// Thread: AWT-XAWT
+// 	at java.desktop@11.0.2/sun.awt.X11.XlibWrapper.XEventsQueued(Native Method)
+// 	at java.desktop@11.0.2/sun.awt.X11.XToolkit.run(XToolkit.java:685)
+// 	at java.desktop@11.0.2/sun.awt.X11.XToolkit.run(XToolkit.java:652)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: TimerQueue
+// 	at java.base@11.0.2/java.security.AccessController.doPrivileged(Native Method)
+// 	at java.desktop@11.0.2/javax.swing.Timer.post(Timer.java:620)
+// 	at java.desktop@11.0.2/javax.swing.TimerQueue.run(TimerQueue.java:183)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Monitor HEventQueue Thread
+// 	at java.base@11.0.2/java.lang.Thread.dumpThreads(Native Method)
+// 	at java.base@11.0.2/java.lang.Thread.getAllStackTraces(Thread.java:1657)
+// 	at ui.utils.d.c.iFv(SourceFile:564)
+// 	at ui.frmwork.a.e.aOo(SourceFile:144)
+// 	at ui.frmwork.y.run(SourceFile:203)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: process reaper
+// 	at java.base@11.0.2/java.lang.ProcessHandleImpl.waitForProcessExit0(Native Method)
+// 	at java.base@11.0.2/java.lang.ProcessHandleImpl$1.run(ProcessHandleImpl.java:138)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: SyntheticaAnimation 25
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.painter.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:119)
+// Thread: Thread-2877
+// Thread: Thread-2876
+// Thread: Life support thread
+// 	at java.base@11.0.2/java.net.SocketOutputStream.socketWrite0(Native Method)
+// 	at java.base@11.0.2/java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:110)
+// 	at java.base@11.0.2/java.net.SocketOutputStream.write(SocketOutputStream.java:129)
+// 	at com.sigasi.lcm.l.run(SourceFile:79)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Common-Cleaner
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+// 	at java.base@11.0.2/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:148)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// 	at java.base@11.0.2/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:134)
+// Thread: Thread-18
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at ui.j.c.z.ixH(SourceFile:128)
+// 	at ui.j.c.z$$Lambda$257/0x00000008009cec40.run(Unknown Source)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Process Messages Thread
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at ui.frmwork.c.h.aOo(SourceFile:133)
+// 	at ui.frmwork.y.run(SourceFile:203)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: SyntheticaAnimation 50
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at com.jidesoft.plaf.synthetica.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:99)
+// Thread: pool-4-thread-1
+// 	at java.base@11.0.2/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@11.0.2/java.util.concurrent.locks.LockSupport.park(LockSupport.java:194)
+// 	at java.base@11.0.2/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2081)
+// 	at java.base@11.0.2/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Reference Handler
+// 	at java.base@11.0.2/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+// 	at java.base@11.0.2/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+// 	at java.base@11.0.2/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+// Thread: Finalizer
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+// 	at java.base@11.0.2/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+// Thread: ErrorGobbler
+// 	at java.base@11.0.2/java.io.FileInputStream.readBytes(Native Method)
+// 	at java.base@11.0.2/java.io.FileInputStream.read(FileInputStream.java:279)
+// 	at java.base@11.0.2/java.io.BufferedInputStream.read1(BufferedInputStream.java:290)
+// 	at java.base@11.0.2/java.io.BufferedInputStream.read(BufferedInputStream.java:351)
+// 	at java.base@11.0.2/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+// 	at java.base@11.0.2/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+// 	at java.base@11.0.2/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+// 	at java.base@11.0.2/java.io.InputStreamReader.read(InputStreamReader.java:185)
+// 	at java.base@11.0.2/java.io.BufferedReader.fill(BufferedReader.java:161)
+// 	at java.base@11.0.2/java.io.BufferedReader.readLine(BufferedReader.java:326)
+// 	at java.base@11.0.2/java.io.BufferedReader.readLine(BufferedReader.java:392)
+// 	at java.base@11.0.2/java.io.BufferedReader$1.hasNext(BufferedReader.java:574)
+// 	at java.base@11.0.2/java.util.Iterator.forEachRemaining(Iterator.java:132)
+// 	at java.base@11.0.2/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+// 	at java.base@11.0.2/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+// 	at com.sigasi.lcm.C.run(SourceFile:43)
+// Thread: ForkJoinPool.commonPool-worker-1
+// 	at java.base@11.0.2/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@11.0.2/java.util.concurrent.locks.LockSupport.park(LockSupport.java:194)
+// 	at java.base@11.0.2/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1628)
+// 	at java.base@11.0.2/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:177)
+// Thread: pool-2-thread-1
+// 	at java.base@11.0.2/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@11.0.2/java.util.concurrent.locks.LockSupport.park(LockSupport.java:194)
+// 	at java.base@11.0.2/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2081)
+// 	at java.base@11.0.2/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Thread-5758
+// Thread: Attach Listener
+// Thread: pool-3-thread-1
+// 	at java.base@11.0.2/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@11.0.2/java.util.concurrent.locks.LockSupport.park(LockSupport.java:194)
+// 	at java.base@11.0.2/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2081)
+// 	at java.base@11.0.2/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:433)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: main
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at ui.PlanAhead.c(SourceFile:1171)
+// 	at ui.PlanAhead.jswMain(SourceFile:1218)
+// Thread: OutputGobbler
+// 	at java.base@11.0.2/java.io.FileInputStream.readBytes(Native Method)
+// 	at java.base@11.0.2/java.io.FileInputStream.read(FileInputStream.java:279)
+// 	at java.base@11.0.2/java.io.BufferedInputStream.read1(BufferedInputStream.java:290)
+// 	at java.base@11.0.2/java.io.BufferedInputStream.read(BufferedInputStream.java:351)
+// 	at java.base@11.0.2/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+// 	at java.base@11.0.2/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+// 	at java.base@11.0.2/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+// 	at java.base@11.0.2/java.io.InputStreamReader.read(InputStreamReader.java:185)
+// 	at java.base@11.0.2/java.io.BufferedReader.fill(BufferedReader.java:161)
+// 	at java.base@11.0.2/java.io.BufferedReader.readLine(BufferedReader.java:326)
+// 	at java.base@11.0.2/java.io.BufferedReader.readLine(BufferedReader.java:392)
+// 	at java.base@11.0.2/java.io.BufferedReader$1.hasNext(BufferedReader.java:574)
+// 	at java.base@11.0.2/java.util.Iterator.forEachRemaining(Iterator.java:132)
+// 	at java.base@11.0.2/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+// 	at java.base@11.0.2/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+// 	at com.sigasi.lcm.C.run(SourceFile:43)
+// Thread: Update Runs Swing Worker Thread
+// 	at ui.project.projecti.HAPRRunMgr_updateAllRuns(Native Method)
+// 	at ui.data.experiment.D.cJf(SourceFile:210)
+// 	at ui.data.experiment.F.aOo(SourceFile:383)
+// 	at ui.frmwork.y.run(SourceFile:203)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Watchdog Thread for com.sigasi.lsp.server.BootstrappedLspServer
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at com.sigasi.lcm.B.run(SourceFile:66)
+// Thread: EMF Reference Cleaner
+// 	at java.base@11.0.2/java.lang.Object.wait(Native Method)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+// 	at java.base@11.0.2/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+// 	at org.eclipse.emf.common.util.CommonUtil$1ReferenceClearingQueuePollingThread.run(CommonUtil.java:70)
+// Thread: Refresh Filesets Swing Worker Thread
+// 	at ui.data.design.dai.HADAFileMgr_refreshFileSets(Native Method)
+// 	at ui.data.design.p.cfL(SourceFile:2138)
+// 	at ui.data.design.p.cfK(SourceFile:2129)
+// 	at ui.data.design.z.aOo(SourceFile:2511)
+// 	at ui.frmwork.y.run(SourceFile:203)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: Protocol translation thread 0
+// 	at java.base@11.0.2/java.net.SocketInputStream.socketRead0(Native Method)
+// 	at java.base@11.0.2/java.net.SocketInputStream.socketRead(SocketInputStream.java:115)
+// 	at java.base@11.0.2/java.net.SocketInputStream.read(SocketInputStream.java:168)
+// 	at java.base@11.0.2/java.net.SocketInputStream.read(SocketInputStream.java:140)
+// 	at java.base@11.0.2/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:448)
+// 	at java.base@11.0.2/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:68)
+// 	at java.base@11.0.2/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1104)
+// 	at java.base@11.0.2/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:823)
+// 	at java.base@11.0.2/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:758)
+// 	at com.sigasi.hdt.epl.lsp4j.PatchedStreamMessageProducer.listen(PatchedStreamMessageProducer.java:78)
+// 	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
+// 	at java.base@11.0.2/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+// 	at java.base@11.0.2/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+// 	at java.base@11.0.2/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+// 	at java.base@11.0.2/java.lang.Thread.run(Thread.java:834)
+// Thread: SyntheticaAnimation 50
+// 	at java.base@11.0.2/java.lang.Thread.sleep(Native Method)
+// 	at ui.utils.lnf.b.run(SourceFile:100)
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 17422ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  17625 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 520ms to process. Increasing delay to 3000 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 754ms to process. Increasing delay to 2000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1435 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 50780 ms. Increasing delay to 3000 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 1054ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1054 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 725ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1009 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1659 ms.
+// WARNING: HTimer (HMemoryUtils Timer) is taking 2020ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2420 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 2384ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2494 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 1231ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1682 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 994ms to process. Increasing delay to 5000 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 17658 ms. Increasing delay to 4000 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 1126ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1126 ms.
+// WARNING: HTimer (HMemoryUtils Timer) is taking 1780ms to process. Increasing delay to 7000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1782 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1752ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1784 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 1276ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1276 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2620 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 1616ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1898 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 825ms to process. Increasing delay to 5000 ms.

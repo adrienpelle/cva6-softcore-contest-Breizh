@@ -1,0 +1,284 @@
+/*
+
+Xilinx Vivado v2021.1 (64-bit) [Major: 2021, Minor: 1]
+SW Build: 3247384 on Thu Jun 10 19:36:07 MDT 2021
+IP Build: 3246043 on Fri Jun 11 00:30:35 MDT 2021
+
+Process ID (PID): 560145
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Sun May 12 16:33:01 CEST 2024
+Time zone: 	Central European Standard Time (Europe/Paris)
+
+OS: Ubuntu
+OS Version: 6.5.0-28-generic
+OS Architecture: amd64
+Available processors (cores): 4
+
+Display: 0
+Screen size: 1920x1080
+Screen resolution (DPI): 100
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+
+Java version: 	11.0.2 64-bit
+Java home: 	/home/adrien/tools/Xilinx/Vivado/2021.1/tps/lnx64/jre11.0.2
+Java executable: 	/home/adrien/tools/Xilinx/Vivado/2021.1/tps/lnx64/jre11.0.2/bin/java
+Java initial memory (-Xms): 	256 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	adrien
+User home directory: /home/adrien
+User working directory: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/adrien/tools/Xilinx/Vivado
+HDI_APPROOT: /home/adrien/tools/Xilinx/Vivado/2021.1
+RDI_DATADIR: /home/adrien/tools/Xilinx/Vivado/2021.1/data
+RDI_BINDIR: /home/adrien/tools/Xilinx/Vivado/2021.1/bin
+
+Vivado preferences file: /home/adrien/.Xilinx/Vivado/2021.1/vivado.xml
+Vivado preferences directory: /home/adrien/.Xilinx/Vivado/2021.1/
+Vivado layouts directory: /home/adrien/.Xilinx/Vivado/2021.1/data/layouts
+PlanAhead jar file: 	/home/adrien/tools/Xilinx/Vivado/2021.1/lib/classes/planAhead.jar
+Vivado log file: 	/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/vivado.log
+Vivado journal file: 	/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-560145-adrien-OptiPlex-5050
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/adrien/tools/Xilinx/Vivado/2021.1/ids_lite/ISE
+XILINX_DSP: /home/adrien/tools/Xilinx/Vivado/2021.1/ids_lite/ISE
+XILINX_HLS: /home/adrien/tools/Xilinx/Vitis_HLS/2021.1
+XILINX_PLANAHEAD: /home/adrien/tools/Xilinx/Vivado/2021.1
+XILINX_SDK: /home/adrien/tools/Xilinx/Vitis/2021.1
+XILINX_VITIS: /home/adrien/tools/Xilinx/Vitis/2021.1
+XILINX_VIVADO: /home/adrien/tools/Xilinx/Vivado/2021.1
+XILINX_VIVADO_HLS: /home/adrien/tools/Xilinx/Vivado/2021.1
+
+
+GUI allocated memory:	387 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 1,875 MB
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: INFO: [Common 17-1460] Use of init.tcl in /home/adrien/.Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl  
+// Tcl Message: Sourcing tcl script '/home/adrien/.Xilinx/Vivado/init.tcl' 
+// Tcl Message: start_gui 
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+selectList(PAResourceQtoS.SyntheticaGettingStartedView_RECENT_PROJECTS, "/home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr", 0); // r
+// bz (cs):  Open Project : addNotify
+// Opening Vivado Project: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr. Version: Vivado v2021.1 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FLOW_ADDED
+// HMemoryUtils.trashcanNow. Engine heap size: 1,888 MB. GUI used memory: 100 MB. Current time: 5/12/24, 4:33:02 PM CEST
+// Tcl Message: open_project /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_CURRENT
+// TclEventType: MSGMGR_REFRESH_MSG
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 91 MB (+93031kb) [00:00:11]
+// [Engine Memory]: 1,889 MB (+1829300kb) [00:00:11]
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 105 MB (+10224kb) [00:00:12]
+// [GUI Memory]: 116 MB (+5690kb) [00:00:13]
+// [GUI Memory]: 125 MB (+2795kb) [00:00:14]
+// [GUI Memory]: 141 MB (+10742kb) [00:00:14]
+// [Engine Memory]: 2,052 MB (+72184kb) [00:00:15]
+// WARNING: HEventQueue.dispatchEvent() is taking  4143 ms.
+// Tcl Message: open_project /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga/cva6_fpga.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/adrien/tools/Xilinx/Vivado/2021.1/data/ip'. 
+// [GUI Memory]: 153 MB (+4655kb) [00:00:16]
+// Tcl Message: INFO: [IP_Flow 19-3899] Cannot get the environment domain name variable for the component vendor name. Setting the vendor name to 'user.org'. 
+// Tcl Message: open_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:07 . Memory (MB): peak = 7551.148 ; gain = 82.156 ; free physical = 8222 ; free virtual = 13165 
+// Project name: cva6_fpga; location: /home/adrien/Documents/RISCV-Contest/cva6-softcore-contest-Breizh/corev_apu/fpga; part: xc7z020clg400-1
+dismissDialog("Open Project"); // bz
+// [GUI Memory]: 165 MB (+4503kb) [00:00:22]
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// [GUI Memory]: 178 MB (+5470kb) [00:00:24]
+// HMemoryUtils.trashcanNow. Engine heap size: 2,074 MB. GUI used memory: 108 MB. Current time: 5/12/24, 4:33:17 PM CEST
+// Elapsed time: 14 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv)]", 5); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv)]", 12); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv)]", 13); // D
+// Elapsed time: 13 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv)]", 17); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv)]", 21); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false, false, false, false, false, true); // D - Double Click
+// WARNING: HEventQueue.dispatchEvent() is taking  2649 ms.
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), i_mult : mult (mult.sv), i_multiplier : multiplier (multiplier.sv)]", 22, false); // D
+// Elapsed time: 31 seconds
+selectCodeEditor("multiplier.sv", 294, 202); // bP
+// Elapsed time: 20 seconds
+selectCodeEditor("multiplier.sv", 396, 253); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,074 MB. GUI used memory: 110 MB. Current time: 5/12/24, 4:34:42 PM CEST
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+selectCodeEditor("multiplier.sv", 511, 223); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,162 MB (+7334kb) [00:06:48]
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,180 MB. GUI used memory: 112 MB. Current time: 5/12/24, 4:41:02 PM CEST
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 768 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), lsu_i : load_store_unit (load_store_unit.sv)]", 24, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv), lsu_i : load_store_unit (load_store_unit.sv), xil_defaultlib.mmu]", 31, false, false, false, false, false, true); // D - Double Click
+// WARNING: HEventQueue.dispatchEvent() is taking  3223 ms.
+// Elapsed time: 19 seconds
+closeView(PAResourceOtoP.PAViews_CODE, "Code"); // D
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), ex_stage_i : ex_stage (ex_stage.sv)]", 17); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16, true); // D - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+// WARNING: HEventQueue.dispatchEvent() is taking  1918 ms.
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16, true, false, false, false, false, true); // D - Double Click - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv)]", 16); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv)]", 17, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_issue_read_operands : issue_read_operands (issue_read_operands.sv)]", 18, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_issue_read_operands : issue_read_operands (issue_read_operands.sv)]", 18, true, false, false, false, false, true); // D - Double Click - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1913 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 2,213 MB. GUI used memory: 113 MB. Current time: 5/12/24, 4:48:13 PM CEST
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_issue_read_operands : issue_read_operands (issue_read_operands.sv)]", 18, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_issue_read_operands : issue_read_operands (issue_read_operands.sv)]", 18, true, false, false, false, false, true); // D - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv)]", 17, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv), i_sel_rs4 : rr_arb_tree (rr_arb_tree.sv)]", 21, true, false, false, false, false, true); // D - Double Click - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1912 ms.
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv), i_sel_rs4 : rr_arb_tree (rr_arb_tree.sv)]", 21, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv)]", 17, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv)]", 17, true, false, false, false, false, true); // D - Double Click - Node
+selectTab((HResource) null, (HResource) null, "Messages", 1); // aK
+selectTab((HResource) null, (HResource) null, "Tcl Console", 0); // aK
+selectTab((HResource) null, (HResource) null, "Log", 2); // aK
+selectTab((HResource) null, (HResource) null, "Reports", 3); // aK
+selectTab((HResource) null, (HResource) null, "Messages", 1); // aK
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "multiplier.sv", 1); // m
+// Elapsed time: 11 seconds
+selectCodeEditor("multiplier.sv", 299, 287); // bP
+selectCodeEditor("multiplier.sv", 298, 287, false, false, false, false, true); // bP - Double Click
+// Elapsed time: 38 seconds
+selectCodeEditor("multiplier.sv", 313, 178); // bP
+selectCodeEditor("multiplier.sv", 313, 178, false, false, false, false, true); // bP - Double Click
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "1'b0", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+// HMemoryUtils.trashcanNow. Engine heap size: 2,228 MB. GUI used memory: 116 MB. Current time: 5/12/24, 4:49:42 PM CEST
+// Elapsed time: 13 seconds
+selectCodeEditor("multiplier.sv", 194, 207); // bP
+selectCodeEditor("multiplier.sv", 193, 207, false, false, false, false, true); // bP - Double Click
+selectComboBox("FindAndReplaceDialog.cs_Replace with:", "1'b1", -1); // JComboBox
+selectButton("FindAndReplaceDialog.cs_Find", "Find"); // JButton
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+selectCodeEditor("multiplier.sv", 325, 120); // bP
+// ag (cs): Synthesis Completed: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a
+dismissDialog("Synthesis Completed"); // ag
+selectCodeEditor("multiplier.sv", 182, 85); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [GUI Memory]: 204 MB (+17968kb) [00:17:09]
+// HMemoryUtils.trashcanNow. Engine heap size: 2,259 MB. GUI used memory: 117 MB. Current time: 5/12/24, 4:50:07 PM CEST
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ag (cs): Implementation Completed: addNotify
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 452 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a
+dismissDialog("Implementation Completed"); // ag
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// ag (cs): Bitstream Generation Completed: addNotify
+// Elapsed time: 11 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a
+dismissDialog("Bitstream Generation Completed"); // ag
+// Elapsed time: 125 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "issue_stage.sv", 2); // m
+selectCodeEditor("issue_stage.sv", 355, 265); // bP
+selectCodeEditor("issue_stage.sv", 355, 265, false, false, false, false, true); // bP - Double Click
+// Elapsed time: 27 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv)]", 17, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_scoreboard : scoreboard (scoreboard.sv)]", 17, true, false, false, false, false, true); // D - Double Click - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_issue_read_operands : issue_read_operands (issue_read_operands.sv)]", 18, true); // D - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, cva6_zybo_z7_20 (cva6_zybo_z7_20.sv), i_ariane : ariane (ariane.sv), i_cva6 : cva6 (cva6.sv), issue_stage_i : issue_stage (issue_stage.sv), i_issue_read_operands : issue_read_operands (issue_read_operands.sv)]", 18, true, false, false, false, false, true); // D - Double Click - Node
+// HMemoryUtils.trashcanNow. Engine heap size: 2,253 MB. GUI used memory: 120 MB. Current time: 5/12/24, 5:20:07 PM CEST
+// Elapsed time: 2381 seconds
+selectCodeEditor("issue_read_operands.sv", 121, 171); // bP
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "multiplier.sv", 1); // m
+selectCodeEditor("multiplier.sv", 312, 409); // bP
+selectCodeEditor("multiplier.sv", 312, 409, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("multiplier.sv", 282, 395); // bP
+selectCodeEditor("multiplier.sv", 281, 395, false, false, false, false, true); // bP - Double Click
+// Elapsed time: 18 seconds
+selectCodeEditor("multiplier.sv", 408, 395); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 414, 393); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 401, 427); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'c'); // bP
+selectCodeEditor("multiplier.sv", 427, 422); // bP
+typeControlKey((HResource) null, "multiplier.sv", 'v'); // bP
+selectCodeEditor("multiplier.sv", 142, 440); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,284 MB (+14702kb) [01:08:12]
+// HMemoryUtils.trashcanNow. Engine heap size: 2,284 MB. GUI used memory: 111 MB. Current time: 5/12/24, 5:41:07 PM CEST
+// Elapsed time: 22 seconds
+selectCodeEditor("multiplier.sv", 454, 349); // bP
+// HMemoryUtils.trashcanNow. Engine heap size: 2,268 MB. GUI used memory: 110 MB. Current time: 5/12/24, 6:11:07 PM CEST
