@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-#define CHOOSE_INPUT_IMAGE 3
+#define CHOOSE_INPUT_IMAGE 9
 
 #define NO_EXCEPT
 
@@ -42,3 +42,4 @@ static unsigned int OUTPUTS_SIZE[NETWORK_TARGETS] = {1};
 typedef int32_t Target_0_T;
 typedef Target_0_T Target_T;
 #endif // N2D2_EXPORTCPP_ENV_LAYER_H
+

@@ -55,14 +55,8 @@ bmarks = \
 	spmv \
 	pmp \
 	mnist \
-	testsimd \
-	testsimd2 \
-	testsimd3 \
-	testsimd4 \
-	custom_test \
-	mt-matmul \
-	custom-mt-matmul \
-	simd_mnist
+	mnist_golden \
+
 #--------------------------------------------------------------------
 # Build rules
 #--------------------------------------------------------------------

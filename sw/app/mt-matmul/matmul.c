@@ -21,4 +21,3 @@ void matmul(const size_t coreid, const size_t ncores, const size_t lda,  const d
     }
   }
 }
-

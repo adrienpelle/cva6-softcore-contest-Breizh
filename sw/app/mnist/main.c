@@ -7,6 +7,7 @@
 #include "Network.h"
 #include "util.h"
 
+
 void readStimulus(
                   UDATA_T* inputBuffer,
                   Target_T* expectedOutputBuffer)
