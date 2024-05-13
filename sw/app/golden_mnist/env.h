@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-#define CHOOSE_INPUT_IMAGE 9
+#define CHOOSE_INPUT_IMAGE 3
 
 #define NO_EXCEPT
 
@@ -14,12 +14,6 @@
 #define MNIST_INPUT_IMAGE env0003
 #elif CHOOSE_INPUT_IMAGE == 4618
 #define MNIST_INPUT_IMAGE env4618
-#elif CHOOSE_INPUT_IMAGE == 7
-#define MNIST_INPUT_IMAGE env0007
-#elif CHOOSE_INPUT_IMAGE == 8
-#define MNIST_INPUT_IMAGE env0008
-#elif CHOOSE_INPUT_IMAGE == 9
-#define MNIST_INPUT_IMAGE env0009
 #else
 #error You need to choose your input image : CHOOSE_INPUT_IMAGE
 #endif
@@ -42,4 +36,3 @@ static unsigned int OUTPUTS_SIZE[NETWORK_TARGETS] = {1};
 typedef int32_t Target_0_T;
 typedef Target_0_T Target_T;
 #endif // N2D2_EXPORTCPP_ENV_LAYER_H
-

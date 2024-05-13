@@ -55,7 +55,7 @@ bmarks = \
 	spmv \
 	pmp \
 	mnist \
-	mnist_golden \
+	golden_mnist \
 
 #--------------------------------------------------------------------
 # Build rules
